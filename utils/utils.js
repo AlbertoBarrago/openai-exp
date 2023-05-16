@@ -74,6 +74,7 @@ export const editImageOpenai = async (file, prompt) => {
         )
         urlImage = imageResp?.data.data[0].url;
     } catch (error) {
+        urlImage = '';
         console.error(error);
     }
 
@@ -88,6 +89,10 @@ export const checkIfIsGreaterThan4MB = (file) => {
 
 export const editImage = async (file, prompt, setEdit, setIsLoading) => {
     const urlImage = await editImageOpenai(file[0], prompt);
-    setEdit(urlImage);
-    setIsLoading(false);
+    if (urlImage === '') {
+        setIsLoading(false);
+    } else {
+        setEdit(urlImage);
+        setIsLoading(false);
+    }
 }

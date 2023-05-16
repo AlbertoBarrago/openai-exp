@@ -15,6 +15,7 @@ export default function Home() {
         if (checkIfIsGreaterThan4MB(data.file) || data.file[0].type !== 'image/png') {
             alert('File is greater than 4MB or is not a png file');
             setValue('file', '');
+            setIsLoading(false);
             return;
         }
         void editImage(data.file, data.prompt, setImageEdited, setIsLoading);
@@ -22,32 +23,38 @@ export default function Home() {
 
 
     return (
-        <main className="flex min-h-screen text-center flex-col items-center justify-between p-10">
-            <h1 className="text-[3rem] mb-1">OpenAi</h1>
-            <h2 className="mb-10">Edit photo {isLoading ? 'loading...': ''}</h2>
-
+        <main className="flex min-h-screen text-center flex-col justify-between p-10">
+            <h1 className="text-[3rem] mb-1">OpenAi
+            <span className="text-xs">Edit image</span></h1>
             {isLoading && (<p className="text-[2rem] animate-spin">🐈‍</p>)}
-            {!isLoading && (
+            {!isLoading && !imageEdited && (
                 <>
-                    <p className="mb-4 text-xs">Upload .png file ＜ 4MB</p>
                     <form onSubmit={handleSubmit(handleForm)}>
+                        <p className="mb-4 text-xs">Upload .png file ＜ 4MB</p>
                         <input type="file"
                                placeholder="Upload png < 4MB"
                                className="file-input w-full max-w-xs mb-2"
                                {...register('file', {required: true})}/>
 
-                        <p className="mb-2 text-left">{errors.file && (<span className="text-red-600">This File is required</span>)}</p>
+                        <p className="mb-2 text-left">{errors.file && (
+                            <span className="text-red-600">This File is required</span>)}</p>
 
                         <input type="text" placeholder="Type here"
                                className="input w-full max-w-xs mb-2 border-2 border-white"
                                {...register('prompt', {required: true})}/>
 
-                        <p className="mb-2 text-left">{errors.prompt && (<span className="text-red-600">This field is required</span>)}</p>
+                        <p className="mb-2 text-left">{errors.prompt && (
+                            <span className="text-red-600">This field is required</span>)}</p>
 
                         <input className="mt-5 cursor-pointer" type="submit"/>
                     </form>
-                    <div className="flex m-auto flex-col p-4">
+                </>
+            )}
+            {imageEdited !== '' && (
+                <>
+                    <div className="flex m-auto text-center flex-col">
                         {imageEdited !== '' && (<Image src={imageEdited} width={600} height={600} alt="AI"/>)}
+                        <button className="mt-2 m-auto btn btn-wide" onClick={() => setImageEdited('')}>Delete image</button>
                     </div>
                 </>
             )}
