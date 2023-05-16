@@ -5,9 +5,12 @@ import {
 } from "../../utils/utils";
 import {useState} from "react";
 import {useForm} from "react-hook-form";
+import Confetti from 'react-confetti'
 
 export default function Home() {
     const [isLoading, setIsLoading] = useState(false);
+    const [width, setWidth] = useState(0);
+    const [height, setHeight] = useState(0);
     const [imageEdited, setImageEdited] = useState('');
     const {setValue, register, handleSubmit, formState: {errors}} = useForm();
     const handleForm = (data) => {
@@ -18,7 +21,22 @@ export default function Home() {
             setIsLoading(false);
             return;
         }
-        void editImage(data.file, data.prompt, setImageEdited, setIsLoading);
+        void editImage(data.file, data.prompt, setImageEdited, setIsLoading).then(
+            () => {
+                showConfettiForSeconds(7);
+                setValue('file', '');
+                setValue('prompt', '');
+            }
+        );
+    }
+
+    const showConfettiForSeconds = (seconds) => {
+        setWidth(window.innerWidth);
+        setHeight(window.innerHeight);
+        setTimeout(() => {
+            setWidth(0);
+            setHeight(0);
+        }, seconds * 1000);
     }
 
 
@@ -29,6 +47,7 @@ export default function Home() {
             <meta name="description" content="OpenAi experiments"/>
         </head>
         <main className="flex min-h-screen text-center flex-col justify-between p-10">
+            <Confetti width={width} height={height} numberOfPieces={100}/>
             <h1 className="text-[3rem] mb-1">OpenAi
             <span className="text-xs">Edit image</span></h1>
             {isLoading && (<p className="text-[2rem] animate-spin">🐈‍</p>)}
