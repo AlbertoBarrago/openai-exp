@@ -96,3 +96,8 @@ export const editImage = async (file, prompt, setEdit, setIsLoading) => {
         setIsLoading(false);
     }
 }
+
+export const convertJpegInPng = async (file) => {
+    const image = await Jimp.read(file);
+    return await image.getBufferAsync(Jimp.MIME_PNG);
+}
