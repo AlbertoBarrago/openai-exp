@@ -1,7 +1,7 @@
 'use client';
 import Image from 'next/image'
 import {
-    checkIfIsGreaterThan4MB, convertJpegInPng, editImage,
+    checkIfIsGreaterThan4MB, convertJpegToPng, dataURLtoFile, editImage,
 } from "../../utils/utils";
 import {useState} from "react";
 import {useForm} from "react-hook-form";
@@ -18,21 +18,29 @@ export default function Home() {
     const [height, setHeight] = useState(0);
     const [imageEdited, setImageEdited] = useState('');
     const {setValue, register, handleSubmit, formState: {errors}} = useForm();
-    const handleForm = (data) => {
+    const handleForm = async (data) => {
         setIsLoading(true);
-        if (data.file[0].type !== 'image/png') {
-            convertJpegInPng(data.file[0]).then(
-                (file) => {
-                    data.file = file;
-                })
+        if (data.file[0].type === 'image/jpeg') {
+            data.file = await convertJpegToPng(data.file[0]);
+            if (checkIfIsGreaterThan4MB(data.file)) return;
+
+            void editImage(dataURLtoFile(data.file, 'random.png'), data.prompt, setImageEdited, setIsLoading, true).then(
+                () => {
+                    showConfettiForSeconds(7);
+                    setValue('file', '');
+                    setValue('prompt', '');
+                }
+            );
+            return;
         }
+
         if (checkIfIsGreaterThan4MB(data.file) || data.file[0].type !== 'image/png') {
             alert('File is greater than 4MB or is not a png file');
             setValue('file', '');
             setIsLoading(false);
             return;
         }
-        void editImage(data.file, data.prompt, setImageEdited, setIsLoading).then(
+        void editImage(data.file, data.prompt, setImageEdited, setIsLoading, false).then(
             () => {
                 showConfettiForSeconds(7);
                 setValue('file', '');
@@ -54,7 +62,7 @@ export default function Home() {
 
     const checkAuth = () => {
         if (!isLoaded || !isSignedIn) {
-            return <RedirectToSignIn />;
+            return <RedirectToSignIn/>;
         }
         return (
             <>
@@ -64,16 +72,12 @@ export default function Home() {
                             <a className="btn btn-ghost normal-case text-xl">Openai-Exp</a>
                         </div>
                         <div className="flex-none gap-2">
-                            {!userId && (
-                                <button onClick={signInHandle} className="btn btn-ghost btn-circle">
-                                    Login
-                                </button>)}
                             <UserButton className="text-left"/>
                         </div>
                     </div>
-                    <main className="flex  w-100 text-center flex-col justify-between p-3">
+                    <main className="flex w-100 text-center flex-col justify-between p-3">
                         <Confetti width={width} height={height} numberOfPieces={100}/>
-                        <h1 className="text-[3rem] mb-40">OpenAi
+                        <h1 className="text-[3rem] mb-32">OpenAi
                             <span className="text-xs">Edit image</span></h1>
                         {isLoading && (<p className="text-[2rem] animate-spin">🐈‍</p>)}
                         {!isLoading && !imageEdited && (
@@ -101,9 +105,9 @@ export default function Home() {
                         )}
                         {imageEdited !== '' && (
                             <>
-                                <div className="text-center">
+                                <div className="w-100 m-auto text-center">
                                     {imageEdited !== '' && (
-                                        <Image src={imageEdited} width={600} height={600} alt="AI"/>)}
+                                        <Image className="shadow border-2 border-accent-focus" src={imageEdited} width={300} height={300} alt="AI"/>)}
                                     <button className="mt-2 m-auto btn btn-wide"
                                             onClick={() => setImageEdited('')}>Delete
                                         image
@@ -111,11 +115,14 @@ export default function Home() {
                                 </div>
                             </>
                         )}
-                        <footer className="w-100 mt-[25%] text-center">
-                            <p className="text-[0.8rem]">Made with ❤️ by <a href="https://albz.dev">albz</a></p>
-                        </footer>
+
                     </main>
                 </div>
+                <footer className="w-screen fixed bottom-5">
+                    <div className="text-center m-auto w-52">
+                        <p className="text-[0.8rem]">Made with ❤️ by <a href="https://albz.dev">albz</a></p>
+                    </div>
+                </footer>
             </>
         );
     }
