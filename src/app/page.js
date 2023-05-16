@@ -20,10 +20,9 @@ export default function Home() {
     const {setValue, register, handleSubmit, formState: {errors}} = useForm();
     const handleForm = async (data) => {
         setIsLoading(true);
+        if (checkIfIsGreaterThan4MB(data.file)) return;
         if (data.file[0].type === 'image/jpeg') {
             data.file = await convertJpegToPng(data.file[0]);
-            if (checkIfIsGreaterThan4MB(data.file)) return;
-
             void editImage(dataURLtoFile(data.file, 'random.png'), data.prompt, setImageEdited, setIsLoading, true).then(
                 () => {
                     showConfettiForSeconds(7);
@@ -34,12 +33,13 @@ export default function Home() {
             return;
         }
 
-        if (checkIfIsGreaterThan4MB(data.file) || data.file[0].type !== 'image/png') {
+        if (data.file[0].type !== 'image/png') {
             alert('File is greater than 4MB or is not a png file');
             setValue('file', '');
             setIsLoading(false);
             return;
         }
+
         void editImage(data.file, data.prompt, setImageEdited, setIsLoading, false).then(
             () => {
                 showConfettiForSeconds(7);
@@ -77,13 +77,13 @@ export default function Home() {
                     </div>
                     <main className="flex w-100 text-center flex-col justify-between p-3">
                         <Confetti width={width} height={height} numberOfPieces={100}/>
-                        <h1 className="text-[3rem] mb-32">OpenAi
+                        <h1 className="text-[3rem] mb-28">OpenAi
                             <span className="text-xs">Edit image</span></h1>
                         {isLoading && (<p className="text-[2rem] animate-spin">🐈‍</p>)}
                         {!isLoading && !imageEdited && (
                             <>
                                 <form onSubmit={handleSubmit(handleForm)}>
-                                    <p className="mb-4 text-xs">Upload .png file ＜ 4MB</p>
+                                    <p className="mb-4 text-xs">Upload .png or .jpeg file ＜ 4MB</p>
                                     <input type="file"
                                            placeholder="Upload png < 4MB"
                                            className="file-input w-full max-w-xs mb-2"
@@ -107,8 +107,11 @@ export default function Home() {
                             <>
                                 <div className="w-100 m-auto text-center">
                                     {imageEdited !== '' && (
-                                        <Image className="shadow border-2 border-accent-focus" src={imageEdited} width={300} height={300} alt="AI"/>)}
-                                    <button className="mt-2 m-auto btn btn-wide"
+                                        <Image className="shadow border-2 border-accent-focus"
+                                               src={imageEdited}
+                                               width={300}
+                                               height={300} alt="AI"/>)}
+                                    <button className="mt-3 m-auto btn btn-wide"
                                             onClick={() => setImageEdited('')}>Delete
                                         image
                                     </button>

@@ -2,6 +2,11 @@
 
 ![pepe](https://www.icegif.com/wp-content/uploads/2023/01/icegif-804.gif)
 
+## Info
+This is a simple project to test the OpenAI API.
+I've added convertion to base64 to send the image to the API.
+
+
 ## Installation
 ```
 yarn install

@@ -81,14 +81,13 @@ export const editImageOpenai = async (file, prompt) => {
     return urlImage;
 }
 
-export const checkIfIsGreaterThan4MB = (file) => {
+export const checkIfIsGreaterThan4MB = (file, isJpeg) => {
     console.log('File size -> ', file[0].size)
     console.log('Check dimension -> ', 4 * 1024 * 1024)
     return file[0].size > 4 * 1024 * 1024;
 }
 
 export const editImage = async (file, prompt, setEdit, setIsLoading, isJpeg) => {
-    console.log('File -> ', file)
     let fileToSend;
     if(isJpeg) fileToSend = file;
     const urlImage = await editImageOpenai(fileToSend, prompt);
