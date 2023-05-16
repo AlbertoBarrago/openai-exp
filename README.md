@@ -1,4 +1,7 @@
-# Openai-exp
+# Openai Exp
+
+![pepe](https://www.icegif.com/wp-content/uploads/2023/01/icegif-804.gif)
+
 ## Installation
 ```
 yarn install
