@@ -1,48 +1,59 @@
 'use client';
 import Image from 'next/image'
 import {
-    checkIfIsGreaterThan4MB,
-    convertJpgToPng,
-    editImage,
-    editImageOpenai
+    checkIfIsGreaterThan4MB, editImage, editImageOpenai,
 } from "../../utils/utils";
 import {useState} from "react";
 import {useForm} from "react-hook-form";
 
 export default function Home() {
+    const [isLoading, setIsLoading] = useState(false);
     const [imageEdited, setImageEdited] = useState('');
     const {setValue, register, handleSubmit, formState: {errors}} = useForm();
     const handleForm = (data) => {
-        if(checkIfIsGreaterThan4MB(data.file) || data.file.type !== 'image/png') {
+        setIsLoading(true);
+        if (checkIfIsGreaterThan4MB(data.file) || data.file[0].type !== 'image/png') {
             alert('File is greater than 4MB or is not a png file');
             setValue('file', '');
             return;
         }
-         void editImage(data.file, data.prompt, setImageEdited);
+        void editImage(data.file, data.prompt, setImageEdited, setIsLoading);
     }
 
 
     return (
         <main className="flex min-h-screen text-center flex-col items-center justify-between p-10">
-            <h1 className="text-[3rem] mb-10">TEST api edit Image</h1>
+            <h1 className="text-[3rem] mb-1">OpenAi</h1>
+            <h2 className="mb-10">Edit photo {isLoading ? 'loading...': ''}</h2>
 
-            <form onSubmit={handleSubmit(handleForm)}>
-                <p className="mb-4">Upload .png file ＜ 4MB</p>
-                <input type="file"
-                       placeholder="Upload png < 4MB"
-                       className="file-input w-full max-w-xs mb-2"
-                       {...register('file', {required: true})}/>
+            {isLoading && (<p className="text-[2rem] animate-spin">🐈‍</p>)}
+            {!isLoading && (
+                <>
+                    <p className="mb-4 text-xs">Upload .png file ＜ 4MB</p>
+                    <form onSubmit={handleSubmit(handleForm)}>
+                        <input type="file"
+                               placeholder="Upload png < 4MB"
+                               className="file-input w-full max-w-xs mb-2"
+                               {...register('file', {required: true})}/>
 
-                <p>{errors.file && (<span>This File is required</span>)}</p>
-                <input type="text" placeholder="Type here"
-                       className="input w-full max-w-xs mb-2"
-                       {...register('prompt',  { required: true })}/>
-                <p>{errors.prompt && (<span>This field is required</span>)}</p>
-                <input className="mt-5 cursor-pointer" type="submit" />
-            </form>
-            <div className="flex m-auto flex-col p-4">
-                {imageEdited !== '' && (<Image src={imageEdited} width={600} height={600} alt="AI" />)}
-            </div>
+                        <p className="mb-2 text-left">{errors.file && (<span className="text-red-600">This File is required</span>)}</p>
+
+                        <input type="text" placeholder="Type here"
+                               className="input w-full max-w-xs mb-2 border-2 border-white"
+                               {...register('prompt', {required: true})}/>
+
+                        <p className="mb-2 text-left">{errors.prompt && (<span className="text-red-600">This field is required</span>)}</p>
+
+                        <input className="mt-5 cursor-pointer" type="submit"/>
+                    </form>
+                    <div className="flex m-auto flex-col p-4">
+                        {imageEdited !== '' && (<Image src={imageEdited} width={600} height={600} alt="AI"/>)}
+                    </div>
+                </>
+            )}
+            <footer>
+                <p className="text-[0.8rem]">Made with ❤️ by <a href="https://albz.dev">albz</a></p>
+            </footer>
         </main>
     )
 }

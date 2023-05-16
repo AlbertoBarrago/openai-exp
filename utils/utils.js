@@ -62,7 +62,6 @@ export const createImageOpenai = async (prompt) => {
  * @param prompt
  */
 export const editImageOpenai = async (file, prompt) => {
-    console.log();
     let urlImage = '';
     const fileForm = new File([file], file.name, {type: file.type});
     try {
@@ -82,10 +81,13 @@ export const editImageOpenai = async (file, prompt) => {
 }
 
 export const checkIfIsGreaterThan4MB = (file) => {
-    return file.size > 4 * 1024 * 1024;
+    console.log('File size -> ', file[0].size)
+    console.log('Check dimension -> ', 4 * 1024 * 1024)
+    return file[0].size > 4 * 1024 * 1024;
 }
 
-export const editImage = async (file, prompt, setEdit) => {
-    const urlImage = await editImageOpenai(file, prompt);
+export const editImage = async (file, prompt, setEdit, setIsLoading) => {
+    const urlImage = await editImageOpenai(file[0], prompt);
     setEdit(urlImage);
+    setIsLoading(false);
 }
