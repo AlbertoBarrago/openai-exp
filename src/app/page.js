@@ -23,6 +23,11 @@ export default function Home() {
 
 
     return (
+        <>
+        <head>
+            <title>Albz - OpenAi</title>
+            <meta name="description" content="OpenAi experiments"/>
+        </head>
         <main className="flex min-h-screen text-center flex-col justify-between p-10">
             <h1 className="text-[3rem] mb-1">OpenAi
             <span className="text-xs">Edit image</span></h1>
@@ -62,5 +67,6 @@ export default function Home() {
                 <p className="text-[0.8rem]">Made with ❤️ by <a href="https://albz.dev">albz</a></p>
             </footer>
         </main>
+        </>
     )
 }
