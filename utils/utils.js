@@ -285,6 +285,6 @@ export const downloadImage = (url, fileName) => {
  * @param prompt
  * @return {boolean}
  */
-export const checkIfHasMoreThan1000Chars = (prompt) => {
-    return prompt.length > 1000;
+export const checkIfHasLessThan1000Chars = (prompt) => {
+    return prompt.length < 1000;
 }

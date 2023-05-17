@@ -2,6 +2,7 @@
 import {RedirectToSignIn, useAuth} from "@clerk/nextjs";
 import {useForm} from "react-hook-form";
 import {
+    checkIfHasLessThan1000Chars,
     checkIfHasMoreThan1000Chars,
     checkIfIsGreaterThan4MB, convertFileToType, createImageOpenai,
     editImage, handleJpeg, handlePng,
@@ -69,7 +70,7 @@ export default function Dashboard() {
 
     }
     const handleCreateForm = async (data) => {
-        const isValid = checkIfHasMoreThan1000Chars(data.createDescription);
+        const isValid = checkIfHasLessThan1000Chars(data.createDescription);
         if (!isValid) {
             showAlert('Description must be less than 1000 chars', setAlertSetUp);
             setValueCreate('createDescription', '');
