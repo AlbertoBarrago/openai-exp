@@ -74,11 +74,10 @@ export const createImageOpenai = async (prompt) => {
 export const editImageOpenai = async (file, prompt) => {
     let urlImage = '';
     const fileForm = new File([file[0]], file.name, {type: file.type});
-    const fileMask = new File([await fetch('images/mask.png').then(r => r.blob())], file.name, {type: file.type});
     try {
         const imageResp = await openai.createImageEdit(
             fileForm,
-            `${prompt.toString()}`, fileMask, 2, "1024x1024"
+            `${prompt.toString()}`, null, 2, "1024x1024"
         )
         urlImage = imageResp?.data.data[0].url;
     } catch (error) {

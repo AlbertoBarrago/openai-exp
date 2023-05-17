@@ -1,14 +1,12 @@
 'use client';
-import {RedirectToSignIn, useAuth, UserButton} from "@clerk/nextjs";
+import {RedirectToSignIn, useAuth} from "@clerk/nextjs";
 import {useForm} from "react-hook-form";
 import {
     checkIfIsGreaterThan4MB,
-    convertFileToType,
     editImage,
     showAlert,
     showConfettiForSeconds
 } from "../../../utils/utils";
-import Link from "next/link";
 import {AlertComponent} from "@/components/alert";
 import Confetti from "react-confetti";
 import {LoaderComponent} from "@/components/loader";
@@ -18,13 +16,14 @@ import {useState} from "react";
 import {Title} from "@/components/title";
 
 export default function Dashboard() {
-    const {isLoaded, isSignedIn} = useAuth();
-    const [isLoading, setIsLoading] = useState(false);
-    const [width, setWidth] = useState(0);
-    const [height, setHeight] = useState(0);
-    const [alertSetUp, setAlertSetUp] = useState({show: false, message: ''});
-    const [imageEdited, setImageEdited] = useState('');
-    const {setValue, register, handleSubmit, formState: {errors}} = useForm();
+    const {isLoaded, isSignedIn} = useAuth(),
+        [isLoading, setIsLoading] = useState(false),
+        [width, setWidth] = useState(0),
+        [height, setHeight] = useState(0),
+        [alertSetUp, setAlertSetUp] = useState({show: false, message: ''}),
+        [imageEdited, setImageEdited] = useState(''),
+        {setValue, register, handleSubmit, formState: {errors}} = useForm();
+
     const handleForm = async (data) => {
         setIsLoading(true);
 
@@ -52,11 +51,9 @@ export default function Dashboard() {
             }
         );
     }
-
     const goToOpenaiApi = () => {
         window.open('https://platform.openai.com/docs/api-reference/images/create-edit', '_blank');
     }
-
     const checkAuth = () => {
         if (!isLoaded || !isSignedIn) {
             return <RedirectToSignIn/>;
@@ -108,6 +105,7 @@ export default function Dashboard() {
             </>
         );
     }
+
     return (
         <>
             {checkAuth()}
