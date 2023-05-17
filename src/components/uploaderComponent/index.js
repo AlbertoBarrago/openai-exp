@@ -5,8 +5,6 @@ export const UploaderComponent = ({handleSubmit, handleForm, register , errors})
                 <p className="mb-4 text-xs">Upload .png ＜ 4MB</p>
                 <input type="file"
                        placeholder="Upload png < 4MB"
-                       translate={"yes"}
-                       format
                        className="file-input text-secondary w-full max-w-xs mb-2"
                        {...register('file', {required: true})}/>
 
