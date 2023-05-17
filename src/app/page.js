@@ -4,7 +4,7 @@ import {useRouter} from "next/navigation";
 import {Title} from "@/components/title";
 import Image from "next/image";
 import {DescriptionFirstPage} from "@/components/descriptions/firstPage";
-import {GoToDashboard} from "@/components/goToDashBoard";
+import {GoToDashboard} from "@/components/goToDashboard";
 
 
 export default function Home() {
@@ -17,7 +17,7 @@ export default function Home() {
 
     const checkAuth = () => {
         if (!isLoaded || !isSignedIn) {
-            return <RedirectToSignIn/>;
+            return <RedirectToSignIn/>
         }
         return (
             <>
@@ -26,7 +26,7 @@ export default function Home() {
                     <DescriptionFirstPage/>
                     <GoToDashboard goToDashboard={goToDashboard}/>
                 </main>
-            </>);
+            </>)
     }
     return (
         <>

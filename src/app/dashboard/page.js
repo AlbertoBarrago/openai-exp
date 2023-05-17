@@ -80,10 +80,8 @@ export default function Dashboard() {
                         </>
                     )}
                     {isLoading && (
-                        <>
                             <LoaderComponent
                                 icon={"🥷"}/>
-                        </>
                     )}
                     {!isLoading && !imageEdited && (
                         <>
