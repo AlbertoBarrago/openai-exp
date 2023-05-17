@@ -20,7 +20,7 @@ export default function Home() {
         return (
             <>
                 <main className={`flex w-100 text-center flex-col justify-between p-3`}>
-                    <Title title={'OpenAI API'} subTitle={'Testing Project'}/>
+                    <Title title={'OpenAi'} subTitle={'Testing Project'}/>
                     <article className="prose lg:prose-xl m-auto mb-5">
                         <Image
                             className={`rounded-full m-auto cursor-pointer hover:opacity-80`}
