@@ -1,16 +1,26 @@
 import {Configuration, OpenAIApi} from "openai";
+/**
+ * Get openai message for post
+ */
 class CustomFormData extends FormData {
     getHeaders() {
         return {}
     }
 }
 
+/**
+ * Openai configuration
+ * @type {Configuration}
+ */
 const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY,
     formDataCtor: CustomFormData
 });
+/**
+ * Openai instance
+ * @type {OpenAIApi}
+ */
 export const openai = new OpenAIApi(configuration);
-
 /**
  * Get openai message for thank you
  * @param postText
@@ -58,7 +68,6 @@ export const createImageOpenai = async (prompt) => {
  * Edit image from openai
  * @param file
  * @param prompt
- * @param mask
  */
 export const editImageOpenai = async (file, prompt) => {
     let urlImage = '';
@@ -66,7 +75,7 @@ export const editImageOpenai = async (file, prompt) => {
     try {
         const imageResp = await openai.createImageEdit(
             fileForm,
-            `${prompt.toString()}`, null,1, "600x600"
+            `${prompt.toString()}`, null,2, "512x512"
         )
         urlImage = imageResp?.data.data[0].url;
     } catch (error) {
@@ -76,11 +85,22 @@ export const editImageOpenai = async (file, prompt) => {
 
     return urlImage;
 }
-
+/**
+ * Check if file is greater than 4MB
+ * @param file
+ * @return {boolean}
+ */
 export const checkIfIsGreaterThan4MB = (file) => {
     return file[0].size > 4 * 1024 * 1024;
 }
-
+/**
+ * Edit image
+ * @param file
+ * @param prompt
+ * @param setEdit
+ * @param setIsLoading
+ * @return {Promise<void>}
+ */
 export const editImage = async (file, prompt, setEdit, setIsLoading) => {
     const urlImage = await editImageOpenai(file, prompt);
     if (urlImage === '') {

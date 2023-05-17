@@ -29,12 +29,7 @@ export default function Home() {
             return;
         }
 
-        void editImage(
-            data.file,
-            data.prompt,
-            setImageEdited,
-            setIsLoading,
-            false,
+       void editImage(data.file, data.prompt, setImageEdited, setIsLoading).then(
             () => {
                 showConfettiForSeconds(7);
                 setValue('file', '');
@@ -65,7 +60,6 @@ export default function Home() {
                     </div>
                 </div>
                 <div className="container m-auto">
-
                     <main className="flex w-100 text-center flex-col justify-between p-3">
                         <Confetti width={width} height={height} numberOfPieces={100}/>
                         <h1 className="text-[3rem] mb-28">OpenAi
@@ -81,7 +75,6 @@ export default function Home() {
                                <UploaderImageComponent imageEdited={imageEdited} setImageEdited={setImageEdited}/>
                             </>
                         )}
-
                     </main>
                 </div>
                 <footer className="w-screen fixed bottom-5">
