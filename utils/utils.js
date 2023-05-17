@@ -1,4 +1,5 @@
 import {Configuration, OpenAIApi} from "openai";
+
 /**
  * Get openai message for post
  */
@@ -16,6 +17,7 @@ const configuration = new Configuration({
     apiKey: process.env.OPENAI_API_KEY,
     formDataCtor: CustomFormData
 });
+delete configuration.baseOptions.headers['User-Agent'];
 /**
  * Openai instance
  * @type {OpenAIApi}
@@ -75,7 +77,7 @@ export const editImageOpenai = async (file, prompt) => {
     try {
         const imageResp = await openai.createImageEdit(
             fileForm,
-            `${prompt.toString()}`, null,2, "512x512"
+            `${prompt.toString()}`, null, 2, "512x512"
         )
         urlImage = imageResp?.data.data[0].url;
     } catch (error) {
@@ -98,15 +100,40 @@ export const checkIfIsGreaterThan4MB = (file) => {
  * @param file
  * @param prompt
  * @param setEdit
- * @param setIsLoading
  * @return {Promise<void>}
  */
-export const editImage = async (file, prompt, setEdit, setIsLoading) => {
+export const editImage = async (file, prompt, setEdit) => {
     const urlImage = await editImageOpenai(file, prompt);
     if (urlImage === '') {
-        setIsLoading(false);
+        return null;
     } else {
         setEdit(urlImage);
-        setIsLoading(false);
+        return urlImage;
     }
+}
+/**
+ * Show confetti for seconds
+ * @param seconds
+ * @param setWidth
+ * @param setHeight
+ */
+export const showConfettiForSeconds = (seconds, setWidth, setHeight) => {
+    setWidth(window.innerWidth);
+    setHeight(window.innerHeight);
+    setTimeout(() => {
+        setWidth(0);
+        setHeight(0);
+    }, seconds * 1000);
+}
+/**
+ * Show alert for 5 seconds
+ * @param message
+ * @param setAlertSetUp
+ */
+export const showAlert = (message, setAlertSetUp) => {
+    setAlertSetUp({show: true, message: message})
+    setTimeout(
+        () => {
+            setAlertSetUp({show: false, message: ''})
+        }, 5000);
 }

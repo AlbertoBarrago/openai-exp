@@ -1,4 +1,6 @@
 import Head from 'next/head';
+import {Suspense} from "react";
+import Loading from "@/app/loader";
 export const Main = ({children}) => {
     return (
         <>
@@ -7,7 +9,9 @@ export const Main = ({children}) => {
                     <title>Albz - OpenAi</title>
                     <meta name="description" content="OpenAi experiments"/>
                 </Head>
-                <body>{children}</body>
+                <Suspense fallback={<Loading/>}>
+                     <body>{children}</body>
+                </Suspense>
             </html>
         </>
     )

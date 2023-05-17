@@ -1,6 +1,6 @@
 'use client';
 import {
-    checkIfIsGreaterThan4MB, editImage,
+    checkIfIsGreaterThan4MB, editImage, showAlert, showConfettiForSeconds,
 } from "../../utils/utils";
 import {useState} from "react";
 import {useForm} from "react-hook-form";
@@ -9,6 +9,8 @@ import {UploaderComponent} from "@/components/uploaderComponent";
 import {UploaderImageComponent} from "@/components/uploaderImageComponent";
 import Confetti from 'react-confetti'
 import Link from "next/link";
+import {AlertComponent} from "@/components/alert";
+import {LoaderComponent} from "@/components/loader";
 
 
 export default function Home() {
@@ -16,35 +18,36 @@ export default function Home() {
     const [isLoading, setIsLoading] = useState(false);
     const [width, setWidth] = useState(0);
     const [height, setHeight] = useState(0);
+    const [alertSetUp, setAlertSetUp] = useState({show: false, message: ''});
     const [imageEdited, setImageEdited] = useState('');
     const {setValue, register, handleSubmit, formState: {errors}} = useForm();
     const handleForm = async (data) => {
         setIsLoading(true);
-        if (checkIfIsGreaterThan4MB(data.file)) return;
 
-        if (data.file[0].type !== 'image/png') {
-            alert('File is greater than 4MB or is not a png file');
+        if (checkIfIsGreaterThan4MB(data.file)) {
+            showAlert('File is greater than 4MB', setAlertSetUp);
             setValue('file', '');
             setIsLoading(false);
             return;
         }
 
-       void editImage(data.file, data.prompt, setImageEdited, setIsLoading).then(
+        if (data.file[0].type !== 'image/png') {
+            showAlert('File is not a png', setAlertSetUp);
+            setValue('file', '');
+            setIsLoading(false);
+            return;
+        }
+
+       void editImage(data.file, data.prompt, setImageEdited).then(
             () => {
-                showConfettiForSeconds(7);
+                showConfettiForSeconds(7, setWidth, setHeight);
                 setValue('file', '');
                 setValue('prompt', '');
+                setIsLoading(false)
             }
         );
     }
-    const showConfettiForSeconds = (seconds) => {
-        setWidth(window.innerWidth);
-        setHeight(window.innerHeight);
-        setTimeout(() => {
-            setWidth(0);
-            setHeight(0);
-        }, seconds * 1000);
-    }
+
     const checkAuth = () => {
         if (!isLoaded || !isSignedIn) {
             return <RedirectToSignIn/>;
@@ -60,11 +63,12 @@ export default function Home() {
                     </div>
                 </div>
                 <div className="container m-auto">
+                    {alertSetUp.show && (<AlertComponent message={alertSetUp.message} type={"error"}/>)}
                     <main className="flex w-100 text-center flex-col justify-between p-3">
                         <Confetti width={width} height={height} numberOfPieces={100}/>
                         <h1 className="text-[3rem] mb-28">OpenAi
                             <span className="text-xs">Edit image</span></h1>
-                        {isLoading && (<p className="text-[2rem] animate-spin">🐈‍</p>)}
+                        {isLoading && (<LoaderComponent icon={"🥷"}/>)}
                         {!isLoading && !imageEdited && (
                             <>
                                 <UploaderComponent errors={errors} handleForm={handleForm} handleSubmit={handleSubmit} register={register}/>
