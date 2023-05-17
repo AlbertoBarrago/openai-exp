@@ -71,12 +71,17 @@ export const createImageOpenai = async (prompt) => {
  * @param file
  * @param prompt
  */
-export const editImageOpenai = async (file, prompt) => {
+export const editImageOpenai = async (file, prompt, isJpeg) => {
     let urlImage = '';
-    const fileForm = new File([file[0]], file.name, {type: file.type});
+    let correctFile;
+    if (isJpeg) {
+        correctFile = dataURLtoFile(file, 'image/png');
+    }
+    const fileForm = new File([file[0]], file.name, {type: 'image/png'});
+
     try {
         const imageResp = await openai.createImageEdit(
-            fileForm,
+            isJpeg ? correctFile : fileForm,
             `${prompt.toString()}`, null, 2, "1024x1024"
         )
         urlImage = imageResp?.data.data[0].url;
@@ -102,8 +107,8 @@ export const checkIfIsGreaterThan4MB = (file) => {
  * @param setEdit
  * @return {Promise<void>}
  */
-export const editImage = async (file, prompt, setEdit) => {
-    const urlImage = await editImageOpenai(file, prompt);
+export const editImage = async (file, prompt, setEdit, isJpeg) => {
+    const urlImage = await editImageOpenai(file, prompt, isJpeg);
     if (urlImage === '') {
         return null;
     } else {
@@ -143,16 +148,16 @@ export const showAlert = (message, setAlertSetUp) => {
  * @param type
  * @return {Promise<unknown>}
  */
-export const convertFileToType = (file, type) =>  {
+export const convertFileToType = (file, type) => {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
 
-        reader.onload = function(event) {
+        reader.onload = function (event) {
             const jpegDataUrl = event.target.result;
 
             const image = new Image();
 
-            image.onload = function() {
+            image.onload = function () {
                 const canvas = document.createElement('canvas');
                 const ctx = canvas.getContext('2d');
 
@@ -168,15 +173,8 @@ export const convertFileToType = (file, type) =>  {
 
                 // Manipulate the pixel data to remove the background
                 for (let i = 0; i < imageData.data.length; i += 4) {
-                    // Check if the pixel is white (or close to white)
-                    if (
-                        imageData.data[i] >= 200 &&
-                        imageData.data[i + 1] >= 200 &&
-                        imageData.data[i + 2] >= 200
-                    ) {
-                        // Set the alpha channel to 0 to make it transparent
-                        imageData.data[i + 3] = 0;
-                    }
+                    // Transform pixel to grayscale
+                    imageData.data[i + 3] = 0;
                 }
 
                 // Create a new canvas for RGBA data
@@ -204,9 +202,56 @@ export const convertFileToType = (file, type) =>  {
         // Read the file as data URL
         reader.readAsDataURL(file);
 
-        reader.onerror = function(event) {
+        reader.onerror = function (event) {
             // Reject the promise with the error event
             reject(event);
         };
     });
+}
+/**
+ * Convert data url to file
+ * This function do what new File does not do!
+ * @param dataurl
+ * @param filename
+ * @return {File}
+ */
+export const dataURLtoFile = (dataurl, filename) => {
+    let arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+        bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+    while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new File([u8arr], filename, {type: mime});
+}
+/**
+ * Handle jpeg
+ * @param data
+ * @param setValue
+ * @param setIsLoading
+ * @return {Promise<void>}
+ */
+export const handleJpeg = async (data, setValue, setImageEdited, setIsLoading, setWidth, setHeight) => {
+    await convertFileToType(data.file[0], 'image/png').then(
+        (file) => {
+            data.file = file;
+            void editImage(data.file, data.prompt, setImageEdited, true).then(
+                () => {
+                    showConfettiForSeconds(7, setWidth, setHeight);
+                    setValue('file', '');
+                    setValue('prompt', '');
+                    setIsLoading(false)
+                }
+            );
+        }
+    )
+}
+export const handlePng = async (data, setValue, setImageEdited, setIsLoading, setWidth, setHeight) => {
+    void editImage(data.file, data.prompt, setImageEdited, false).then(
+        () => {
+            showConfettiForSeconds(7, setWidth, setHeight);
+            setValue('file', '');
+            setValue('prompt', '');
+            setIsLoading(false)
+        }
+    );
 }

@@ -2,8 +2,8 @@
 import {RedirectToSignIn, useAuth} from "@clerk/nextjs";
 import {useForm} from "react-hook-form";
 import {
-    checkIfIsGreaterThan4MB,
-    editImage,
+    checkIfIsGreaterThan4MB, convertFileToType,
+    editImage, handleJpeg, handlePng,
     showAlert,
     showConfettiForSeconds
 } from "../../../utils/utils";
@@ -27,6 +27,13 @@ export default function Dashboard() {
     const handleForm = async (data) => {
         setIsLoading(true);
 
+        if (data.file[0].type !== 'image/png' && data.file[0].type !== 'image/jpeg') {
+            showAlert(`Type ${data.file[0].type} not allow`, setAlertSetUp);
+            setValue('file', '');
+            setIsLoading(false);
+            return;
+        }
+
         if (checkIfIsGreaterThan4MB(data.file)) {
             showAlert('File is greater than 4MB', setAlertSetUp);
             setValue('file', '');
@@ -34,22 +41,15 @@ export default function Dashboard() {
             return;
         }
 
-        if (data.file[0].type !== 'image/png') {
-            showAlert('File is not a png', setAlertSetUp);
-            setValue('file', '');
-            setIsLoading(false);
+        if (data.file[0].type === 'image/jpeg') {
+            void handleJpeg(data, setValue, setImageEdited, setIsLoading, setWidth, setHeight);
             return;
         }
 
+        if (data.file[0].type === 'image/png') {
+            void handlePng(data, setValue, setImageEdited, setIsLoading, setWidth, setHeight);
+        }
 
-        void editImage(data.file, data.prompt, setImageEdited).then(
-            () => {
-                showConfettiForSeconds(7, setWidth, setHeight);
-                setValue('file', '');
-                setValue('prompt', '');
-                setIsLoading(false)
-            }
-        );
     }
     const goToOpenaiApi = () => {
         window.open('https://platform.openai.com/docs/api-reference/images/create-edit', '_blank');
@@ -80,8 +80,8 @@ export default function Dashboard() {
                         </>
                     )}
                     {isLoading && (
-                            <LoaderComponent
-                                icon={"🥷"}/>
+                        <LoaderComponent
+                            icon={"🥷"}/>
                     )}
                     {!isLoading && !imageEdited && (
                         <>
@@ -95,6 +95,7 @@ export default function Dashboard() {
                     {imageEdited !== '' && (
                         <>
                             <UploaderImage
+                                isLoading={isLoading}
                                 imageEdited={imageEdited}
                                 setImageEdited={setImageEdited}/>
                         </>

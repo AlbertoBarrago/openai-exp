@@ -2,9 +2,9 @@ export const Uploader = ({handleSubmit, handleForm, register , errors}) => {
     return (
         <>
             <form onSubmit={handleSubmit(handleForm)}>
-                <p className="mb-4 text-red-600 p-3 animate-pulse rounded">Upload a transparent(rgba) .png ＜ 4MB</p>
+                <p className="mb-4 text-red-600 p-3 animate-pulse rounded">Upload a transparent .png or.jpeg ＜ 4MB</p>
                 <input type="file"
-                       accept="image/png"
+                       accept="image/png, image/jpeg"
                        className="file-input text-secondary w-full max-w-xs mb-2"
                        {...register('file', {required: true})}/>
 
