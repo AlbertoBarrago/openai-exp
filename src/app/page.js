@@ -21,7 +21,7 @@ export default function Home() {
         }
         return (
             <>
-                <main className={`flex w-100 text-center flex-col justify-between p-3`}>
+                <main className={`flex w-100 text-center flex-col justify-between p-2`}>
                     <Title title={'OpenAi'} subTitle={'Testing Project'}/>
                     <DescriptionFirstPage/>
                     <GoToDashboard goToDashboard={goToDashboard}/>

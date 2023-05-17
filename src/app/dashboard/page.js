@@ -60,14 +60,15 @@ export default function Dashboard() {
         }
         return (
             <>
-                <main className="flex w-100 text-center flex-col justify-between p-3">
+                <main className="flex w-100 text-center flex-col justify-between p-2">
                     <Confetti width={width} height={height} numberOfPieces={100}/>
                     <Title title={'OpenAi'} subTitle={'Edit image'}/>
-                    <article className="m-auto prose mb-3">
+                    <article className="m-auto w-100 mb-3">
                         <h4>Here, we are testing:
-                            <pre className={`cursor-pointer`} onClick={() => goToOpenaiApi()}>
+                            <br/>
+                            <code className={`text-xs md:text-[1rem] relative top-2 cursor-pointer rounded bg-primary text-red-600 p-1 mt-3`} onClick={() => goToOpenaiApi()}>
                                 POST https://api.openai.com/v1/images/edits
-                            </pre>
+                            </code>
                         </h4>
                     </article>
                     {alertSetUp.show && (
