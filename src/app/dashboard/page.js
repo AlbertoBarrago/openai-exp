@@ -2,7 +2,7 @@
 import {RedirectToSignIn, useAuth} from "@clerk/nextjs";
 import {useForm} from "react-hook-form";
 import {
-    checkIfIsGreaterThan4MB, convertFileToType,
+    checkIfIsGreaterThan4MB, convertFileToType, createImageOpenai,
     editImage, handleJpeg, handlePng,
     showAlert,
     showConfettiForSeconds
@@ -14,17 +14,33 @@ import {Uploader} from "@/components/uploader";
 import {UploaderImage} from "@/components/uploaderImage";
 import {useState} from "react";
 import {Title} from "@/components/title";
+import {CreateForm} from "@/components/createForm";
+import Image from "next/image";
 
 export default function Dashboard() {
     const {isLoaded, isSignedIn} = useAuth(),
         [isLoading, setIsLoading] = useState(false),
+        [isLoadingCreate, setIsLoadingCreate] = useState(false),
         [width, setWidth] = useState(0),
         [height, setHeight] = useState(0),
         [alertSetUp, setAlertSetUp] = useState({show: false, message: ''}),
         [imageEdited, setImageEdited] = useState(''),
-        {setValue, register, handleSubmit, formState: {errors}} = useForm();
+        [imageCreated, setImageCreated] = useState(''),
+        {
+            setValue,
+            register,
+            handleSubmit,
+            formState: {errors}
+        } = useForm(),
+        {
+            setValue: setValueCreate,
+            register: registerCreate,
+            handleSubmit: handleSubmitCreate,
+            formState: {errors: errorsCreate}
+        } = useForm();
 
-    const handleForm = async (data) => {
+
+    const handleEditForm = async (data) => {
         setIsLoading(true);
 
         if (data.file[0].type !== 'image/png' && data.file[0].type !== 'image/jpeg') {
@@ -51,6 +67,12 @@ export default function Dashboard() {
         }
 
     }
+    const handleCreateForm = async (data) => {
+        setIsLoadingCreate(true);
+        const urlImageByOpenai = await createImageOpenai(data.createDescription)
+        setImageCreated(urlImageByOpenai);
+        setIsLoadingCreate(false);
+    }
     const goToOpenaiApi = () => {
         window.open('https://platform.openai.com/docs/api-reference/images/create-edit', '_blank');
     }
@@ -60,47 +82,90 @@ export default function Dashboard() {
         }
         return (
             <>
-                <main className="flex w-100 text-center flex-col justify-between p-2">
-                    <Confetti width={width} height={height} numberOfPieces={100}/>
-                    <Title title={'OpenAi'} subTitle={'Edit image'}/>
-                    <article className="m-auto w-100 mb-3">
-                        <h4>Here, we are testing:
-                            <br/>
-                            <code className={`text-xs md:text-[1rem] relative top-2 cursor-pointer rounded bg-primary text-red-600 p-1 mt-3`} onClick={() => goToOpenaiApi()}>
-                                POST https://api.openai.com/v1/images/edits
-                            </code>
-                        </h4>
-                    </article>
-                    {alertSetUp.show && (
-                        <>
-                            <div className={`w-auto m-auto mb-10`}>
-                                <AlertComponent
-                                    message={alertSetUp.message}
-                                    type={"error"}/>
-                            </div>
-                        </>
-                    )}
-                    {isLoading && (
-                        <LoaderComponent
-                            icon={"🥷"}/>
-                    )}
-                    {!isLoading && !imageEdited && (
-                        <>
-                            <Uploader
-                                errors={errors}
-                                handleForm={handleForm}
-                                handleSubmit={handleSubmit}
-                                register={register}/>
-                        </>
-                    )}
-                    {imageEdited !== '' && (
-                        <>
-                            <UploaderImage
-                                isLoading={isLoading}
-                                imageEdited={imageEdited}
-                                setImageEdited={setImageEdited}/>
-                        </>
-                    )}
+                <main className="w-100 p-2">
+                    <div className={`grid grid-cols-1 text-center`}>
+                        <Confetti width={width} height={height} numberOfPieces={100}/>
+                        <Title title={'OpenAi'} subTitle={'Lab'}/>
+                    </div>
+                    <div className={`grid grid-cols-1 md:grid-cols-2 text-center`}>
+                        <div>
+                            <h3 className={`text-[2rem]`}>Create Image</h3>
+                            <article className="m-auto w-100 mb-3">
+                                <h4>Here, we are testing:
+                                    <br/>
+                                    <code
+                                        className={`text-xs md:text-[1rem] relative top-2 cursor-pointer rounded bg-primary text-red-600 p-1 mt-3`}
+                                        onClick={() => goToOpenaiApi()}>
+                                        POST https://api.openai.com/v1/images/generations
+                                    </code>
+                                </h4>
+                            </article>
+                            {(imageCreated === '' && !isLoadingCreate) && (
+                                <>
+                                    <CreateForm registerCreate={registerCreate}
+                                                handleCreateForm={handleCreateForm}
+                                                errorsCreate={errorsCreate}
+                                                handleSubmitCreate={handleSubmitCreate}
+
+                                    />
+                                </>
+                            )}
+                            {isLoadingCreate && (
+                                <LoaderComponent icon={"🤪"}/>
+                            )}
+                            {!isLoadingCreate && imageCreated !== '' && (
+                                <>
+                                    <UploaderImage
+                                        isLoading={isLoadingCreate}
+                                        imageEdited={imageCreated}
+                                        setImageEdited={setImageCreated}/>
+                                </>
+                            )}
+                        </div>
+                        <div>
+                            <h3 className={`text-[2rem]`}>Edit Image</h3>
+                            <article className="m-auto w-100 mb-3">
+                                <h4>Miss the mask... We are working on it.
+                                    <br/>
+                                    <code
+                                        className={`text-xs md:text-[1rem] relative top-2 cursor-pointer rounded bg-primary text-red-600 p-1 mt-3`}
+                                        onClick={() => goToOpenaiApi()}>
+                                        POST https://api.openai.com/v1/images/edits
+                                    </code>
+                                </h4>
+                            </article>
+                            {alertSetUp.show && (
+                                <>
+                                    <div className={`w-auto m-auto mb-10`}>
+                                        <AlertComponent
+                                            message={alertSetUp.message}
+                                            type={"error"}/>
+                                    </div>
+                                </>
+                            )}
+                            {isLoading && (
+                                <LoaderComponent
+                                    icon={"🥷"}/>
+                            )}
+                            {!isLoading && !imageEdited && (
+                                <>
+                                    <Uploader
+                                        errors={errors}
+                                        handleForm={handleEditForm}
+                                        handleSubmit={handleSubmit}
+                                        register={register}/>
+                                </>
+                            )}
+                            {imageEdited !== '' && (
+                                <>
+                                    <UploaderImage
+                                        isLoading={isLoading}
+                                        imageEdited={imageEdited}
+                                        setImageEdited={setImageEdited}/>
+                                </>
+                            )}
+                        </div>
+                    </div>
                 </main>
             </>
         );

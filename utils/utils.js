@@ -245,6 +245,16 @@ export const handleJpeg = async (data, setValue, setImageEdited, setIsLoading, s
         }
     )
 }
+/**
+ * Handle png
+ * @param data
+ * @param setValue
+ * @param setImageEdited
+ * @param setIsLoading
+ * @param setWidth
+ * @param setHeight
+ * @return {Promise<void>}
+ */
 export const handlePng = async (data, setValue, setImageEdited, setIsLoading, setWidth, setHeight) => {
     void editImage(data.file, data.prompt, setImageEdited, false).then(
         () => {
@@ -254,4 +264,18 @@ export const handlePng = async (data, setValue, setImageEdited, setIsLoading, se
             setIsLoading(false)
         }
     );
+}
+/**
+ * Download image
+ * @param url
+ * @param fileName
+ */
+export const downloadImage = (url, fileName) => {
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
 }
