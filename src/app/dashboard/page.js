@@ -46,6 +46,10 @@ export default function Dashboard() {
         );
     }
 
+    const goToOpenaiApi = () => {
+        window.open('https://platform.openai.com/docs/api-reference/images/create-edit', '_blank');
+    }
+
     const checkAuth = () => {
         if (!isLoaded || !isSignedIn) {
             return <RedirectToSignIn/>;
@@ -55,6 +59,13 @@ export default function Dashboard() {
                 <main className="flex w-100 text-center flex-col justify-between p-3">
                     <Confetti width={width} height={height} numberOfPieces={100}/>
                     <Title title={'OpenAi'} subTitle={'Edit image'}/>
+                    <article className="m-auto prose mb-3">
+                        <h4>Here, we are testing:
+                            <pre className={`cursor-pointer`} onClick={() => goToOpenaiApi()}>
+                                POST https://api.openai.com/v1/images/edits
+                            </pre>
+                        </h4>
+                    </article>
                     {alertSetUp.show && (
                         <>
                             <div className={`w-auto m-auto mb-10`}>
