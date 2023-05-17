@@ -2,6 +2,7 @@
 import {RedirectToSignIn, useAuth} from "@clerk/nextjs";
 import {useForm} from "react-hook-form";
 import {
+    checkIfHasMoreThan1000Chars,
     checkIfIsGreaterThan4MB, convertFileToType, createImageOpenai,
     editImage, handleJpeg, handlePng,
     showAlert,
@@ -68,10 +69,17 @@ export default function Dashboard() {
 
     }
     const handleCreateForm = async (data) => {
+        const isValid = checkIfHasMoreThan1000Chars(data.createDescription);
+        if (!isValid) {
+            showAlert('Description must be less than 1000 chars', setAlertSetUp);
+            setValueCreate('createDescription', '');
+            return;
+        }
         setIsLoadingCreate(true);
         const urlImageByOpenai = await createImageOpenai(data.createDescription)
         setImageCreated(urlImageByOpenai);
         setIsLoadingCreate(false);
+        showConfettiForSeconds(7, setWidth, setHeight);
     }
     const goToOpenaiApi = () => {
         window.open('https://platform.openai.com/docs/api-reference/images/create-edit', '_blank');
@@ -86,6 +94,15 @@ export default function Dashboard() {
                     <div className={`grid grid-cols-1 text-center`}>
                         <Confetti width={width} height={height} numberOfPieces={100}/>
                         <Title title={'OpenAi'} subTitle={'Lab'}/>
+                        {alertSetUp.show && (
+                            <>
+                                <div className={`w-auto m-auto mb-10`}>
+                                    <AlertComponent
+                                        message={alertSetUp.message}
+                                        type={"error"}/>
+                                </div>
+                            </>
+                        )}
                     </div>
                     <div className={`grid grid-cols-1 md:grid-cols-2 text-center`}>
                         <div>
@@ -134,15 +151,6 @@ export default function Dashboard() {
                                     </code>
                                 </h4>
                             </article>
-                            {alertSetUp.show && (
-                                <>
-                                    <div className={`w-auto m-auto mb-10`}>
-                                        <AlertComponent
-                                            message={alertSetUp.message}
-                                            type={"error"}/>
-                                    </div>
-                                </>
-                            )}
                             {isLoading && (
                                 <LoaderComponent
                                     icon={"🥷"}/>

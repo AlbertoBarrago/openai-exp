@@ -1,5 +1,4 @@
 import {Configuration, OpenAIApi} from "openai";
-
 /**
  * Get openai message for post
  */
@@ -8,7 +7,6 @@ class CustomFormData extends FormData {
         return {}
     }
 }
-
 /**
  * Openai configuration
  * @type {Configuration}
@@ -211,11 +209,11 @@ export const convertFileToType = (file, type) => {
 /**
  * Convert data url to file
  * This function do what new File does not do!
- * @param dataurl
+ * @param dataUrl
  * @param filename
  * @return {File}
  */
-export const dataURLtoFile = (dataurl, filename) => {
+export const dataURLtoFile = (dataUrl, filename) => {
     let arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
         bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
     while (n--) {
@@ -227,7 +225,10 @@ export const dataURLtoFile = (dataurl, filename) => {
  * Handle jpeg
  * @param data
  * @param setValue
+ * @param setImageEdited
  * @param setIsLoading
+ * @param setWidth
+ * @param setHeight
  * @return {Promise<void>}
  */
 export const handleJpeg = async (data, setValue, setImageEdited, setIsLoading, setWidth, setHeight) => {
@@ -278,4 +279,12 @@ export const downloadImage = (url, fileName) => {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+}
+/**
+ * Check if prompt has more than 1000 chars
+ * @param prompt
+ * @return {boolean}
+ */
+export const checkIfHasMoreThan1000Chars = (prompt) => {
+    return prompt.length > 1000;
 }

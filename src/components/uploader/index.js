@@ -12,7 +12,7 @@ export const Uploader = ({handleSubmit, handleForm, register , errors}) => {
                     <span className="text-red-600">This File is required</span>)}</p>
 
                 <input type="text" placeholder="Type here"
-                       className="input w-full max-w-xs mb-2 border-2 border-white"
+                       className="input w-full max-w-xs mt-3 mb-2 border-2 border-white"
                        {...register('prompt', {required: true})}/>
 
                 <p className="mb-2">{errors.prompt && (
