@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-export const UploaderImageComponent = ({imageEdited, setImageEdited}) => {
+export const UploaderImage = ({imageEdited, setImageEdited}) => {
         return (
             <>
                 <div className="w-100 m-auto text-center">

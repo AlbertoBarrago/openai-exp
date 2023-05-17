@@ -1,4 +1,4 @@
-export const GoToDashBoard = ({goToDashboard}) => {
+export const GoToDashboard = ({goToDashboard}) => {
     return (
         <>
             <div className={`w-auto m-auto mb-10`}>

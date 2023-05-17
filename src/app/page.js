@@ -4,7 +4,7 @@ import {useRouter} from "next/navigation";
 import {Title} from "@/components/title";
 import Image from "next/image";
 import {DescriptionFirstPage} from "@/components/descriptions/firstPage";
-import {GoToDashBoard} from "openai-exp/src/components/goToDashBoard";
+import {GoToDashboard} from "@/components/goToDashBoard";
 
 
 export default function Home() {
@@ -24,7 +24,7 @@ export default function Home() {
                 <main className={`flex w-100 text-center flex-col justify-between p-3`}>
                     <Title title={'OpenAi'} subTitle={'Testing Project'}/>
                     <DescriptionFirstPage/>
-                    <GoToDashBoard goToDashboard={goToDashboard}/>
+                    <GoToDashboard goToDashboard={goToDashboard}/>
                 </main>
             </>);
     }

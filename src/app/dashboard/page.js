@@ -10,8 +10,8 @@ import {
 import {AlertComponent} from "@/components/alert";
 import Confetti from "react-confetti";
 import {LoaderComponent} from "@/components/loader";
-import {UploaderComponent} from "@/components/uploaderComponent";
-import {UploaderImageComponent} from "@/components/uploaderImageComponent";
+import {Uploader} from "@/components/uploader";
+import {UploaderImage} from "@/components/uploaderImage";
 import {useState} from "react";
 import {Title} from "@/components/title";
 
@@ -87,7 +87,7 @@ export default function Dashboard() {
                     )}
                     {!isLoading && !imageEdited && (
                         <>
-                            <UploaderComponent
+                            <Uploader
                                 errors={errors}
                                 handleForm={handleForm}
                                 handleSubmit={handleSubmit}
@@ -96,7 +96,7 @@ export default function Dashboard() {
                     )}
                     {imageEdited !== '' && (
                         <>
-                            <UploaderImageComponent
+                            <UploaderImage
                                 imageEdited={imageEdited}
                                 setImageEdited={setImageEdited}/>
                         </>

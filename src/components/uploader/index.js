@@ -1,4 +1,4 @@
-export const UploaderComponent = ({handleSubmit, handleForm, register , errors}) => {
+export const Uploader = ({handleSubmit, handleForm, register , errors}) => {
     return (
         <>
             <form onSubmit={handleSubmit(handleForm)}>
