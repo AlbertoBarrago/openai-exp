@@ -1,7 +1,13 @@
 'use client';
 import {RedirectToSignIn, useAuth, UserButton} from "@clerk/nextjs";
 import {useForm} from "react-hook-form";
-import {checkIfIsGreaterThan4MB, editImage, showAlert, showConfettiForSeconds} from "../../../utils/utils";
+import {
+    checkIfIsGreaterThan4MB,
+    convertFileToType,
+    editImage,
+    showAlert,
+    showConfettiForSeconds
+} from "../../../utils/utils";
 import Link from "next/link";
 import {AlertComponent} from "@/components/alert";
 import Confetti from "react-confetti";
@@ -22,9 +28,6 @@ export default function Dashboard() {
     const handleForm = async (data) => {
         setIsLoading(true);
 
-        //upload mask for openai
-        let fileMask = await fetch('images/mask.png').then(r => r.blob());
-
         if (checkIfIsGreaterThan4MB(data.file)) {
             showAlert('File is greater than 4MB', setAlertSetUp);
             setValue('file', '');
@@ -39,8 +42,6 @@ export default function Dashboard() {
             return;
         }
 
-        console.log('data.file', data.file);
-        console.log('fileMask', fileMask);
 
         void editImage(data.file, data.prompt, setImageEdited).then(
             () => {

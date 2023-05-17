@@ -74,10 +74,11 @@ export const createImageOpenai = async (prompt) => {
 export const editImageOpenai = async (file, prompt) => {
     let urlImage = '';
     const fileForm = new File([file[0]], file.name, {type: file.type});
+    const fileMask = new File([await fetch('images/mask.png').then(r => r.blob())], file.name, {type: file.type});
     try {
         const imageResp = await openai.createImageEdit(
             fileForm,
-            `${prompt.toString()}`, null, 2, "512x512"
+            `${prompt.toString()}`, fileMask, 2, "1024x1024"
         )
         urlImage = imageResp?.data.data[0].url;
     } catch (error) {
@@ -136,4 +137,77 @@ export const showAlert = (message, setAlertSetUp) => {
         () => {
             setAlertSetUp({show: false, message: ''})
         }, 5000);
+}
+/**
+ * Convert file to type
+ * @param file
+ * @param type
+ * @return {Promise<unknown>}
+ */
+export const convertFileToType = (file, type) =>  {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = function(event) {
+            const jpegDataUrl = event.target.result;
+
+            const image = new Image();
+
+            image.onload = function() {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+
+                // Set canvas dimensions to match the image
+                canvas.width = image.width;
+                canvas.height = image.height;
+
+                // Draw the image onto the canvas
+                ctx.drawImage(image, 0, 0);
+
+                // Get the RGBA pixel data
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+                // Manipulate the pixel data to remove the background
+                for (let i = 0; i < imageData.data.length; i += 4) {
+                    // Check if the pixel is white (or close to white)
+                    if (
+                        imageData.data[i] >= 200 &&
+                        imageData.data[i + 1] >= 200 &&
+                        imageData.data[i + 2] >= 200
+                    ) {
+                        // Set the alpha channel to 0 to make it transparent
+                        imageData.data[i + 3] = 0;
+                    }
+                }
+
+                // Create a new canvas for RGBA data
+                const rgbaCanvas = document.createElement('canvas');
+                const rgbaCtx = rgbaCanvas.getContext('2d');
+
+                // Set RGBA canvas dimensions
+                rgbaCanvas.width = canvas.width;
+                rgbaCanvas.height = canvas.height;
+
+                // Set RGBA data
+                rgbaCtx.putImageData(imageData, 0, 0);
+
+                // Convert RGBA canvas to PNG data URL
+                const pngDataUrl = rgbaCanvas.toDataURL(type);
+
+                // Resolve the promise with the PNG data URL
+                resolve(pngDataUrl);
+            };
+
+            // Set the JPEG data URL
+            image.src = jpegDataUrl;
+        };
+
+        // Read the file as data URL
+        reader.readAsDataURL(file);
+
+        reader.onerror = function(event) {
+            // Reject the promise with the error event
+            reject(event);
+        };
+    });
 }
