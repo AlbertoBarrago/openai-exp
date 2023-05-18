@@ -11,7 +11,7 @@ export default function Home() {
     const router = useRouter();
 
     const goToDashboard = () => {
-        void router.push('/(dashboard)');
+        void router.push('/dashboard');
     }
 
     const checkAuth = () => {

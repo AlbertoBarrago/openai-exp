@@ -4,7 +4,7 @@ import {UserButton} from "@clerk/nextjs";
 import {usePathname, useRouter} from "next/navigation";
 import {useEffect, useState} from "react";
 
-const privateRoutes = ['/', '/(dashboard)'];
+const privateRoutes = ['/', '/dashboard'];
 
 export const Header = () => {
     const pathname = usePathname();
