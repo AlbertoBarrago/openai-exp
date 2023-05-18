@@ -1,6 +1,12 @@
-export const CreateForm =({handleSubmitCreate, handleCreateForm, registerCreate, errorsCreate}) => {
+import {LoaderComponent} from "@/components/layout/loader";
+
+export const CreateImage =({handleSubmitCreate, handleCreateForm, registerCreate, errorsCreate, isLoadingCreate}) => {
     return (
         <>
+            {isLoadingCreate && (
+                <LoaderComponent icon={"🐈‍⬛"}/>
+            )}
+            {!isLoadingCreate && (
             <form key={1} onSubmit={handleSubmitCreate(handleCreateForm)}>
                 <p className="mb-4 text-red-600 p-3 rounded">Insert a description ＜ 1000 chars </p>
 
@@ -13,6 +19,7 @@ export const CreateForm =({handleSubmitCreate, handleCreateForm, registerCreate,
 
                 <input className="mt-2 cursor-pointer btn btn-secondary" type="submit"/>
             </form>
+            )}
         </>
     )
 }

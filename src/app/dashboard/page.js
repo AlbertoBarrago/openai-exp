@@ -10,12 +10,11 @@ import {
 } from "../../../utils/utils";
 import {AlertComponent} from "@/components/shared/alert";
 import Confetti from "react-confetti";
-import {LoaderComponent} from "@/components/layout/loader";
 import {Uploader} from "@/components/dashboard/uploader";
 import {UploaderImage} from "@/components/dashboard/uploaderImage";
 import {useState} from "react";
 import {Title} from "@/components/layout/title";
-import {CreateForm} from "@/components/dashboard/createForm";
+import {CreateImage} from "@/components/dashboard/createImage";
 import {DescriptionTitle} from "@/components/dashboard/title";
 
 export default function Dashboard() {
@@ -39,7 +38,6 @@ export default function Dashboard() {
             handleSubmit: handleSubmitCreate,
             formState: {errors: errorsCreate}
         } = useForm();
-
 
     const handleEditForm = async (data) => {
         setIsLoading(true);
@@ -118,20 +116,17 @@ export default function Dashboard() {
                                               h4={'Here, we are testing:'}
                                               apiUrl={'POST https://api.openai.com/v1/images/generations'}
                                               type={'client'}/>
-                            {isLoadingCreate && (
-                                <LoaderComponent icon={"🤪"}/>
-                            )}
-                            {(imageCreated === '' && !isLoadingCreate) && (
-                                <>
-                                    <CreateForm registerCreate={registerCreate}
-                                                handleCreateForm={handleCreateForm}
-                                                errorsCreate={errorsCreate}
-                                                handleSubmitCreate={handleSubmitCreate}
 
-                                    />
+                            {(imageCreated === '') && (
+                                <>
+                                    <CreateImage registerCreate={registerCreate}
+                                                 handleCreateForm={handleCreateForm}
+                                                 errorsCreate={errorsCreate}
+                                                 handleSubmitCreate={handleSubmitCreate}
+                                                 isLoadingCreate={isLoadingCreate}/>
                                 </>
                             )}
-                            {!isLoadingCreate && imageCreated !== '' && (
+                            {imageCreated !== '' && (
                                 <>
                                     <UploaderImage
                                         isLoading={isLoadingCreate}
@@ -147,17 +142,15 @@ export default function Dashboard() {
                                               h4={'Upload a mask with specific area to edit your image'}
                                               apiUrl={' POST https://api.openai.com/v1/images/edits'}
                                               type={'create-edit'}/>
-                            {isLoading && (
-                                <LoaderComponent
-                                    icon={"🥷"}/>
-                            )}
-                            {!isLoading && !imageEdited && (
+
+                            {imageEdited === '' && (
                                 <>
                                     <Uploader
                                         errors={errors}
                                         handleForm={handleEditForm}
                                         handleSubmit={handleSubmit}
-                                        register={register}/>
+                                        register={register}
+                                        isLoading={isLoading}/>
                                 </>
                             )}
                             {imageEdited !== '' && (
