@@ -1,4 +1,4 @@
-import {LoaderComponent} from "@/components/loader";
+import {LoaderComponent} from "@/components/layout/loader";
 
 function LoadingSkeleton() {
     return (

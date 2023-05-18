@@ -8,14 +8,15 @@ import {
     showAlert,
     showConfettiForSeconds
 } from "../../../utils/utils";
-import {AlertComponent} from "@/components/alert";
+import {AlertComponent} from "@/components/shared/alert";
 import Confetti from "react-confetti";
-import {LoaderComponent} from "@/components/loader";
-import {Uploader} from "@/components/uploader";
-import {UploaderImage} from "@/components/uploaderImage";
+import {LoaderComponent} from "@/components/layout/loader";
+import {Uploader} from "@/components/dashboard/uploader";
+import {UploaderImage} from "@/components/dashboard/uploaderImage";
 import {useState} from "react";
-import {Title} from "@/components/title";
-import {CreateForm} from "@/components/createForm";
+import {Title} from "@/components/layout/title";
+import {CreateForm} from "@/components/dashboard/createForm";
+import {DescriptionTitle} from "@/components/dashboard/title";
 
 export default function Dashboard() {
     const {isLoaded, isSignedIn} = useAuth(),
@@ -105,17 +106,11 @@ export default function Dashboard() {
                     </div>
                     <div className={`grid grid-cols-1 md:grid-cols-2 text-center`}>
                         <div>
-                            <h3 className={`text-[2rem]`}>Create Image</h3>
-                            <article className="m-auto w-100 mb-3">
-                                <h4>Here, we are testing:
-                                    <br/>
-                                    <code
-                                        className={`text-xs md:text-[1rem] relative top-2 cursor-pointer rounded bg-primary text-red-600 p-1 mt-3`}
-                                        onClick={() => goToOpenaiApi('create')}>
-                                        POST https://api.openai.com/v1/images/generations
-                                    </code>
-                                </h4>
-                            </article>
+                            <DescriptionTitle goToOpenaiApi={goToOpenaiApi}
+                                              h3={'Create Image'}
+                                              h4={'Here, we are testing:'}
+                                              apiUrl={'POST https://api.openai.com/v1/images/generations'}
+                                              type={'client'}/>
                             {(imageCreated === '' && !isLoadingCreate) && (
                                 <>
                                     <CreateForm registerCreate={registerCreate}
@@ -140,17 +135,11 @@ export default function Dashboard() {
                             )}
                         </div>
                         <div>
-                            <h3 className={`text-[2rem]`}>Edit Image</h3>
-                            <article className="m-auto w-100 mb-3">
-                                <h4>Miss the mask... We are working on it.
-                                    <br/>
-                                    <code
-                                        className={`text-xs md:text-[1rem] relative top-2 cursor-pointer rounded bg-primary text-red-600 p-1 mt-3`}
-                                        onClick={() => goToOpenaiApi('create-edit')}>
-                                        POST https://api.openai.com/v1/images/edits
-                                    </code>
-                                </h4>
-                            </article>
+                            <DescriptionTitle goToOpenaiApi={goToOpenaiApi}
+                                              h3={'Edit Image'}
+                                              h4={'Miss the mask... We are working on it...'}
+                                              apiUrl={' POST https://api.openai.com/v1/images/edits'}
+                                              type={'create-edit'}/>
                             {isLoading && (
                                 <LoaderComponent
                                     icon={"🥷"}/>
