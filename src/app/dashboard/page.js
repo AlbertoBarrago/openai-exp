@@ -22,8 +22,8 @@ export default function Dashboard() {
     const {isLoaded, isSignedIn} = useAuth(),
         [isLoading, setIsLoading] = useState(false),
         [isLoadingCreate, setIsLoadingCreate] = useState(false),
-        [width, setWidth] = useState(0),
-        [height, setHeight] = useState(0),
+        [confettiWidth, setConfettiWidth] = useState(0),
+        [confettiHeight, setConfettiHeight] = useState(0),
         [alertSetUp, setAlertSetUp] = useState({show: false, message: ''}),
         [imageEdited, setImageEdited] = useState(''),
         [imageCreated, setImageCreated] = useState(''),
@@ -59,12 +59,12 @@ export default function Dashboard() {
         }
 
         if (data.file[0].type === 'image/jpeg') {
-            void handleJpeg(data, setValue, setImageEdited, setIsLoading, setWidth, setHeight);
+            void handleJpeg(data, setValue, setImageEdited, setIsLoading, setConfettiWidth, setConfettiHeight);
             return;
         }
 
         if (data.file[0].type === 'image/png') {
-            void handlePng(data, setValue, setImageEdited, setIsLoading, setWidth, setHeight);
+            void handlePng(data, setValue, setImageEdited, setIsLoading, setConfettiWidth, setConfettiHeight);
         }
 
     }
@@ -79,7 +79,7 @@ export default function Dashboard() {
         const urlImageByOpenai = await createImageOpenai(data.createDescription)
         setImageCreated(urlImageByOpenai);
         setIsLoadingCreate(false);
-        showConfettiForSeconds(7, setWidth, setHeight);
+        showConfettiForSeconds(7, setConfettiWidth, setConfettiHeight);
     }
     const goToOpenaiApi = (type) => {
         window.open(`//platform.openai.com/docs/api-reference/images/${type}`, '_blank');
@@ -90,9 +90,9 @@ export default function Dashboard() {
         }
         return (
             <>
-                <main className="w-100 p-2">
+                <main className="container mx-auto text-center w-100 p-2">
                     <div className={`grid grid-cols-1 text-center`}>
-                        <Confetti width={width} height={height} numberOfPieces={100}/>
+                        <Confetti width={confettiWidth} height={confettiHeight} numberOfPieces={100}/>
                         <Title title={'OpenAi'} subTitle={'Lab'}/>
                         {alertSetUp.show && (
                             <>
@@ -104,13 +104,16 @@ export default function Dashboard() {
                             </>
                         )}
                     </div>
-                    <div className={`grid grid-cols-1 md:grid-cols-2 text-center`}>
-                        <div>
+                    <div className={`grid grid-cols-1 xl:grid-cols-2 text-center`}>
+                        <div className="p-3 bg-neutral rounded mb-10 m-3">
                             <DescriptionTitle goToOpenaiApi={goToOpenaiApi}
                                               h3={'Create Image'}
                                               h4={'Here, we are testing:'}
                                               apiUrl={'POST https://api.openai.com/v1/images/generations'}
                                               type={'client'}/>
+                            {isLoadingCreate && (
+                                <LoaderComponent icon={"🤪"}/>
+                            )}
                             {(imageCreated === '' && !isLoadingCreate) && (
                                 <>
                                     <CreateForm registerCreate={registerCreate}
@@ -120,9 +123,6 @@ export default function Dashboard() {
 
                                     />
                                 </>
-                            )}
-                            {isLoadingCreate && (
-                                <LoaderComponent icon={"🤪"}/>
                             )}
                             {!isLoadingCreate && imageCreated !== '' && (
                                 <>
@@ -134,7 +134,7 @@ export default function Dashboard() {
                                 </>
                             )}
                         </div>
-                        <div>
+                        <div className="p-3 bg-neutral rounded mb-10 m-3">
                             <DescriptionTitle goToOpenaiApi={goToOpenaiApi}
                                               h3={'Edit Image'}
                                               h4={'Miss the mask... We are working on it...'}

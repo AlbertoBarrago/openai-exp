@@ -25,9 +25,9 @@ export const Footer = () => {
     }, [])
     return (
         <>
-            {!isMobile && (<footer className="w-screen absolute bottom-5">
+            {!isMobile && (<footer className="w-screen mb-5">
                 <div className="text-center m-auto w-52">
-                    <p className="text-[0.8rem]">Made with ❤️ by <a href="https://albz.dev">albz</a></p>
+                    <p className="text-[0.8rem]">Made with <span className={`animate-pulse`}>❤️</span> by <a href="https://albz.dev">albz</a></p>
                 </div>
             </footer>)}
         </>

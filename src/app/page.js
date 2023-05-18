@@ -20,7 +20,7 @@ export default function Home() {
         }
         return (
             <>
-                <main className={`flex w-100 text-center flex-col justify-between p-2`}>
+                <main className={`container mx-auto text-center w-100 p-2`}>
                     <Title title={'OpenAi'} subTitle={'Testing Project'}/>
                     <DescriptionFirstPage/>
                     <GoToDashboard goToDashboard={goToDashboard}/>

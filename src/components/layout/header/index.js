@@ -26,7 +26,7 @@ export const Header = () => {
                         <Link href="/" className="btn btn-ghost normal-case text-xl text-primary">Openai-Exp</Link>
                     </div>
                     <div className="flex-none gap-2 me-3">
-                        <Link href="/dashboard" className="btn btn-ghost normal-case text-primary">Dashboard</Link>
+                        <Link href="/dashboard" className={`btn btn-ghost normal-case text-primary ${pathname === '/dashboard' ? 'btn-active' : ''}`}>Dashboard</Link>
                         <span><UserButton className="text-left"/></span>
                     </div>
                 </div>

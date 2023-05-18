@@ -1,4 +1,5 @@
 import './globals.css'
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import {ClerkProvider} from "@clerk/nextjs";
 import Head from "next/head";
 import {Header} from "@/components/layout/header";
@@ -12,7 +13,7 @@ export default function RootLayout({children}) {
                 <title>Albz - OpenAi</title>
                 <meta name="description" content="OpenAi experiments"/>
             </Head>
-            <body>
+            <body className={`overflow-x-hidden`}>
              <Header/>
                 {children}
              <Footer/>
