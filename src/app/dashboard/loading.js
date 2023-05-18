@@ -1,17 +1,15 @@
+import {LoaderComponent} from "@/components/loader";
+
 function LoadingSkeleton() {
     return (
-        <div className="loader">
-            <div className="loader__bar"/>
-            <div className="loader__bar"/>
-            <div className="loader__bar"/>
-            <div className="loader__bar"/>
-            <div className="loader__bar"/>
-            <div className="loader__ball"/>
-        </div>
+        <>
+            <main className={`grid grid-cols-1`}>
+                <LoaderComponent icon={`🐈‍⬛`}/>
+            </main>
+        </>
     )
 }
 
 export default function Loading() {
-    // You can add any UI inside Loading, including a Skeleton.
     return <LoadingSkeleton />;
 }

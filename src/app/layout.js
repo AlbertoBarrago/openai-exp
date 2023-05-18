@@ -13,9 +13,9 @@ export default function RootLayout({children}) {
                 <meta name="description" content="OpenAi experiments"/>
             </Head>
             <body>
-                <Header/>
-                    {children}
-                <Footer/>
+             <Header/>
+                {children}
+             <Footer/>
             </body>
             </html>
         </ClerkProvider>
