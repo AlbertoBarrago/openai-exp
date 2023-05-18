@@ -1,5 +1,4 @@
 import Image from "next/image";
-import {downloadImage} from "../../../../utils/utils";
 
 export const UploaderImage = ({imageEdited, setImageEdited, setValue, isLoading}) => {
         return (
