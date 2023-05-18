@@ -3,6 +3,7 @@ import Link from "next/link";
 import {UserButton} from "@clerk/nextjs";
 import {usePathname} from "next/navigation";
 import {useEffect, useState} from "react";
+import {Footer} from "@/components/layout/footer";
 
 const privateRoutes = ['/', '/dashboard'];
 

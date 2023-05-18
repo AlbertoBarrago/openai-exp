@@ -13,7 +13,7 @@ export default function RootLayout({children}) {
                 <title>Albz - OpenAi</title>
                 <meta name="description" content="OpenAi experiments"/>
             </Head>
-            <body className={`overflow-x-hidden`}>
+            <body className={`overflow-x-hidden min-h-screen`}>
              <Header/>
                 {children}
              <Footer/>
