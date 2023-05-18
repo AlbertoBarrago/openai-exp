@@ -1,4 +1,5 @@
 import Image from "next/image";
+import {downloadImage} from "../../../../utils/utils";
 
 export const UploaderImage = ({imageEdited, setImageEdited, setValue, isLoading}) => {
         return (
@@ -10,14 +11,17 @@ export const UploaderImage = ({imageEdited, setImageEdited, setValue, isLoading}
                                loader={isLoading}
                                width={300}
                                height={300} alt="AI"/>)}
-                    <button className="mt-3 mb-5 m-auto btn btn-wide"
-                            onClick={() => {
-                                setImageEdited('')
-                                setValue('createDescription', '')
+                    <div className={`grid grid-cols-1`}></div>
+                    <div>
+                        <button className="mt-3 mb-5 m-auto btn btn-wide"
+                                onClick={() => {
+                                    setImageEdited('')
+                                    setValue('createDescription', '')
                                 }
-                            }>
+                                }>
                             Delete image
-                    </button>
+                        </button>
+                    </div>
                 </div>
             </>
         )

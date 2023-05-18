@@ -55,7 +55,7 @@ export const createImageOpenai = async (prompt) => {
         const imageResp = await openai.createImage(
             {
                 prompt: `${prompt}`,
-                n: 2,
+                n: 1,
                 size: "1024x1024",
             }
         )
@@ -309,21 +309,6 @@ export const handlePng = async (data, setValue, setImageEdited, setIsLoading, se
     );
 }
 
-/**
- * Download image
- * @param url
- * @param fileName
- * @deprecated
- */
-export const downloadImage = (url, fileName) => {
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = fileName;
-
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-}
 /**
  * Check if prompt has more than 1000 chars
  * @param prompt

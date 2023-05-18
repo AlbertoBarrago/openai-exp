@@ -119,7 +119,7 @@ export default function Dashboard() {
     }
 
     const goToOpenaiApi = (type) => {
-        window.open(`//platform.openai.com/docs/api-reference/images/${type}`, '_blank');
+        window.open(`//platform.openai.com/docs/api-reference/images/${type.toString()}`, '_blank');
     }
     const checkAuth = () => {
         if (!isLoaded || !isSignedIn) {
