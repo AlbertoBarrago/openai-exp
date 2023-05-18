@@ -8,10 +8,10 @@ export const Uploader = ({handleSubmit, handleForm, register, errors, isLoading}
             )}
             {!isLoading && (
                 <form key={2} onSubmit={handleSubmit(handleForm)}>
-                    <p className="mb-4 text-red-600 p-3 animate-pulse rounded">Upload a .png ＜ 4MB</p>
+                    <p className="mb-4 text-red-600 p-3 rounded">Upload: .png ＜ 4MB</p>
                     <div className={`grid grid-cols-1 md:grid-cols-2 gap-2 mb-2`}>
                         <div>
-                            <small>Select a file</small>
+                            <small>Select file</small>
                             <input type="file"
                                    accept="image/png, image/jpeg"
                                    className="file-input file-input-bordered text-secondary w-full max-w-xs mb-2"
@@ -21,7 +21,7 @@ export const Uploader = ({handleSubmit, handleForm, register, errors, isLoading}
                                 <span className="text-red-600">This File is required</span>)}</p>
                         </div>
                         <div>
-                            <small>Select a mask</small>
+                            <small>Select mask</small>
                             <input type="file"
                                    accept="image/png, image/jpeg"
                                    placeholder={"Mask"}
@@ -40,7 +40,7 @@ export const Uploader = ({handleSubmit, handleForm, register, errors, isLoading}
                     <p className="mb-2">{errors.prompt && (
                         <span className="text-red-600">This field is required</span>)}</p>
 
-                    <input className="mt-2 cursor-pointer btn btn-secondary" type="submit"/>
+                    <input className="mt-2 mb-5 cursor-pointer btn btn-secondary" type="submit"/>
                 </form>
             )}
         </>

@@ -1,4 +1,5 @@
 import {Configuration, OpenAIApi} from "openai";
+
 /**
  * Get openai message for post
  */
@@ -7,6 +8,7 @@ class CustomFormData extends FormData {
         return {}
     }
 }
+
 /**
  * Openai configuration
  * @type {Configuration}
@@ -82,7 +84,7 @@ export const editImageOpenai = async (file, mask, prompt, isJpeg) => {
     try {
         const imageResp = await openai.createImageEdit(
             isJpeg ? correctFile : fileForm,
-            `${prompt.toString()}`, fileMask, 2, "1024x1024"
+            `${prompt.toString()}`, fileMask, 1, "1024x1024"
         )
         urlImage = imageResp?.data.data[0].url;
     } catch (error) {
@@ -91,14 +93,6 @@ export const editImageOpenai = async (file, mask, prompt, isJpeg) => {
     }
 
     return urlImage;
-}
-/**
- * Check if file is greater than 4MB
- * @param file
- * @return {boolean}
- */
-export const checkIfIsGreaterThan4MB = (file) => {
-    return file[0].size > 4 * 1024 * 1024;
 }
 /**
  * Edit image
@@ -119,7 +113,53 @@ export const editImage = async (file, mask, prompt, setEdit, isJpeg) => {
     }
 }
 /**
- * Show confetti for seconds
+ * Produce image variations with openai
+ * @param image
+ * @param userId
+ * @param setValue
+ * @param setIsLoading
+ * @param seImageVariation
+ * @param setWidth
+ * @param setHeight
+ * @return {boolean}
+ */
+export const produceImageVariations = async (image, userId, setValue, setIsLoading, seImageVariation, setWidth, setHeight) => {
+    debugger;
+    const fileForm = new File([image.file[0]], image.file[0].name, {type: 'image/png'});
+    try {
+        const returnUrl = await openai.createImageVariation(
+            fileForm,
+            1,
+            '1024x1024',
+            'url',
+            userId,
+        );
+        console.log(returnUrl)
+        if (returnUrl === null) {
+            return null
+        } else {
+            seImageVariation(returnUrl.data.data[0].url);
+            showConfettiForSeconds(7, setWidth, setHeight);
+            setValue('file', '');
+            setIsLoading(false)
+        }
+    } catch (error) {
+        alert(error);
+        setIsLoading(false)
+        console.error(error);
+    }
+
+}
+/**
+ * Check if file is greater than 4MB
+ * @param file
+ * @return {boolean}
+ */
+export const checkIfIsGreaterThan4MB = (file) => {
+    return file[0].size > 4 * 1024 * 1024;
+}
+/**
+ * Show confetti for seconds and set width and height
  * @param seconds
  * @param setWidth
  * @param setHeight
@@ -269,10 +309,12 @@ export const handlePng = async (data, setValue, setImageEdited, setIsLoading, se
         }
     );
 }
+
 /**
  * Download image
  * @param url
  * @param fileName
+ * @deprecated
  */
 export const downloadImage = (url, fileName) => {
     const link = document.createElement('a');
@@ -291,3 +333,4 @@ export const downloadImage = (url, fileName) => {
 export const checkIfHasLessThan1000Chars = (prompt) => {
     return prompt.length < 1000;
 }
+

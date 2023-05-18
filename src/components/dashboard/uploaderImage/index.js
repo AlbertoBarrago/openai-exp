@@ -10,7 +10,7 @@ export const UploaderImage = ({imageEdited, setImageEdited, setValue, isLoading}
                                loader={isLoading}
                                width={300}
                                height={300} alt="AI"/>)}
-                    <button className="mt-3 m-auto btn btn-wide"
+                    <button className="mt-3 mb-5 m-auto btn btn-wide"
                             onClick={() => {
                                 setImageEdited('')
                                 setValue('createDescription', '')

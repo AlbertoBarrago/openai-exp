@@ -16,6 +16,8 @@ And also, I want to test the [Clerk](https://clerk.dev/) authentication system.
 - [x] OpenAI API
 - [x] Create image
 - [x] Edit image (conversion for *jpeg* implemented)
+- [ ] Handling errors
+- [ ] e2e tests
 - [ ] Variations of the image
 - [ ] Save image on cloudinary (prepare setup for integration)
 
