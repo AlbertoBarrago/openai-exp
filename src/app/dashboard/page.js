@@ -136,6 +136,7 @@ export default function Dashboard() {
                                     <UploaderImage
                                         isLoading={isLoadingCreate}
                                         imageEdited={imageCreated}
+                                        setValue={setValueCreate}
                                         setImageEdited={setImageCreated}/>
                                 </>
                             )}

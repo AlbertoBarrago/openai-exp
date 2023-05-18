@@ -1,7 +1,7 @@
 import Image from "next/image";
 import {downloadImage} from "../../../utils/utils";
 
-export const UploaderImage = ({imageEdited, setImageEdited, isLoading}) => {
+export const UploaderImage = ({imageEdited, setImageEdited, setValue, isLoading}) => {
         return (
             <>
                 <div className="w-100 m-auto text-center mt-5">
@@ -12,7 +12,11 @@ export const UploaderImage = ({imageEdited, setImageEdited, isLoading}) => {
                                width={300}
                                height={300} alt="AI"/>)}
                     <button className="mt-3 m-auto btn btn-wide"
-                            onClick={() => setImageEdited('')}>
+                            onClick={() => {
+                                setImageEdited('')
+                                setValue('createDescription', '')
+                                }
+                            }>
                             Delete image
                     </button>
                     {/*<button className="mt-3 m-auto btn btn-wide"*/}

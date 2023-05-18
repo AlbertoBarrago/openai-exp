@@ -2,7 +2,7 @@ export const CreateForm =({handleSubmitCreate, handleCreateForm, registerCreate,
     return (
         <>
             <form key={1} onSubmit={handleSubmitCreate(handleCreateForm)}>
-                <p className="mb-4 text-red-600 p-3 rounded">Insert a description</p>
+                <p className="mb-4 text-red-600 p-3 rounded">Insert a description ＜ 1000 chars </p>
 
                 <textarea placeholder="Type here"
                        className="textarea textarea-primary w-full max-w-xs mb-2 border-2 border-white"
