@@ -134,7 +134,6 @@ export const produceImageVariations = async (image, userId, setValue, setIsLoadi
             'url',
             userId,
         );
-        console.log(returnUrl)
         if (returnUrl === null) {
             return null
         } else {
