@@ -3,9 +3,8 @@ import {RedirectToSignIn, useAuth} from "@clerk/nextjs";
 import {useForm} from "react-hook-form";
 import {
     checkIfHasLessThan1000Chars,
-    checkIfHasMoreThan1000Chars,
-    checkIfIsGreaterThan4MB, convertFileToType, createImageOpenai,
-    editImage, handleJpeg, handlePng,
+    checkIfIsGreaterThan4MB, createImageOpenai,
+    handleJpeg, handlePng,
     showAlert,
     showConfettiForSeconds
 } from "../../../utils/utils";
@@ -17,7 +16,6 @@ import {UploaderImage} from "@/components/uploaderImage";
 import {useState} from "react";
 import {Title} from "@/components/title";
 import {CreateForm} from "@/components/createForm";
-import Image from "next/image";
 
 export default function Dashboard() {
     const {isLoaded, isSignedIn} = useAuth(),
