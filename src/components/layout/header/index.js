@@ -1,7 +1,7 @@
 'use client';
 import Link from "next/link";
 import {UserButton} from "@clerk/nextjs";
-import {usePathname, useRouter} from "next/navigation";
+import {usePathname} from "next/navigation";
 import {useEffect, useState} from "react";
 
 const privateRoutes = ['/', '/dashboard'];
@@ -29,7 +29,7 @@ export const Header = () => {
                             </svg> <span className={`ms-2 text-secondary`}>Openai-Exp</span></Link>
                     </div>
                     <div className="flex-none gap-2 me-3">
-                        <Link href="/dashboard" className={`btn btn-ghost normal-case text-primary  ${pathname === '/dashboard' ? 'btn-active' : ''}`}>
+                        <Link href={`/dashboard`} className={`btn btn-ghost normal-case text-secondary  ${pathname === '/dashboard' ? 'btn-active' : ''}`}>
                             <i className="bi bi-airplane-fill me-2"></i> Dashboard</Link>
                         <span><UserButton className="text-left"/></span>
                     </div>

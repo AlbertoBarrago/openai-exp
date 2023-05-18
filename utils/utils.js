@@ -67,20 +67,22 @@ export const createImageOpenai = async (prompt) => {
 /**
  * Edit image from openai
  * @param file
+ * @param mask
  * @param prompt
+ * @param isJpeg
  */
-export const editImageOpenai = async (file, prompt, isJpeg) => {
-    let urlImage = '';
+export const editImageOpenai = async (file, mask, prompt, isJpeg) => {
+    let urlImage;
     let correctFile;
     if (isJpeg) {
         correctFile = dataURLtoFile(file, 'image/png');
     }
     const fileForm = new File([file[0]], file.name, {type: 'image/png'});
-
+    const fileMask = new File([mask[0]], mask.name, {type: 'image/png'});
     try {
         const imageResp = await openai.createImageEdit(
             isJpeg ? correctFile : fileForm,
-            `${prompt.toString()}`, null, 2, "1024x1024"
+            `${prompt.toString()}`, fileMask, 2, "1024x1024"
         )
         urlImage = imageResp?.data.data[0].url;
     } catch (error) {
@@ -101,12 +103,14 @@ export const checkIfIsGreaterThan4MB = (file) => {
 /**
  * Edit image
  * @param file
+ * @param mask
  * @param prompt
  * @param setEdit
+ * @param isJpeg
  * @return {Promise<void>}
  */
-export const editImage = async (file, prompt, setEdit, isJpeg) => {
-    const urlImage = await editImageOpenai(file, prompt, isJpeg);
+export const editImage = async (file, mask, prompt, setEdit, isJpeg) => {
+    const urlImage = await editImageOpenai(file, mask, prompt, isJpeg);
     if (urlImage === '') {
         return null;
     } else {
@@ -235,16 +239,15 @@ export const handleJpeg = async (data, setValue, setImageEdited, setIsLoading, s
     await convertFileToType(data.file[0], 'image/png').then(
         (file) => {
             data.file = file;
-            void editImage(data.file, data.prompt, setImageEdited, true).then(
+            void editImage(data.file, data.mask, data.prompt, setImageEdited, true).then(
                 () => {
                     showConfettiForSeconds(7, setWidth, setHeight);
                     setValue('file', '');
                     setValue('prompt', '');
                     setIsLoading(false)
                 }
-            );
-        }
-    )
+            )
+        })
 }
 /**
  * Handle png
@@ -257,7 +260,7 @@ export const handleJpeg = async (data, setValue, setImageEdited, setIsLoading, s
  * @return {Promise<void>}
  */
 export const handlePng = async (data, setValue, setImageEdited, setIsLoading, setWidth, setHeight) => {
-    void editImage(data.file, data.prompt, setImageEdited, false).then(
+    void editImage(data.file, data.mask, data.prompt, setImageEdited, false).then(
         () => {
             showConfettiForSeconds(7, setWidth, setHeight);
             setValue('file', '');

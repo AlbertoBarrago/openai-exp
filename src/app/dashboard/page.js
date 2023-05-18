@@ -51,6 +51,13 @@ export default function Dashboard() {
             return;
         }
 
+        if (!checkIfHasLessThan1000Chars(data.prompt)) {
+            showAlert('Prompt must be less than 1000 chars', setAlertSetUp);
+            setValue('prompt', '');
+            setIsLoading(false);
+            return;
+        }
+
         if (checkIfIsGreaterThan4MB(data.file)) {
             showAlert('File is greater than 4MB', setAlertSetUp);
             setValue('file', '');

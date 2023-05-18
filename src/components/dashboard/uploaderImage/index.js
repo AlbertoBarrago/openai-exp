@@ -1,5 +1,4 @@
 import Image from "next/image";
-import {downloadImage} from "../../../../utils/utils";
 
 export const UploaderImage = ({imageEdited, setImageEdited, setValue, isLoading}) => {
         return (
@@ -19,10 +18,6 @@ export const UploaderImage = ({imageEdited, setImageEdited, setValue, isLoading}
                             }>
                             Delete image
                     </button>
-                    {/*<button className="mt-3 m-auto btn btn-wide"*/}
-                    {/*        onClick={() => downloadImage(imageEdited, 'random-albz-ai.png')}>*/}
-                    {/*    Download image*/}
-                    {/*</button>*/}
                 </div>
             </>
         )
