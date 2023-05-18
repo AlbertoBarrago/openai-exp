@@ -144,7 +144,7 @@ export default function Dashboard() {
                         <div className="p-3 bg-neutral rounded mb-10 m-3">
                             <DescriptionTitle goToOpenaiApi={goToOpenaiApi}
                                               h3={'Edit Image'}
-                                              h4={'Miss the mask... We are working on it...'}
+                                              h4={'Upload a mask with specific area to edit your image'}
                                               apiUrl={' POST https://api.openai.com/v1/images/edits'}
                                               type={'create-edit'}/>
                             {isLoading && (
