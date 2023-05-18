@@ -80,8 +80,8 @@ export default function Dashboard() {
         setIsLoadingCreate(false);
         showConfettiForSeconds(7, setWidth, setHeight);
     }
-    const goToOpenaiApi = () => {
-        window.open('https://platform.openai.com/docs/api-reference/images/create-edit', '_blank');
+    const goToOpenaiApi = (type) => {
+        window.open(`//platform.openai.com/docs/api-reference/images/${type}`, '_blank');
     }
     const checkAuth = () => {
         if (!isLoaded || !isSignedIn) {
@@ -111,7 +111,7 @@ export default function Dashboard() {
                                     <br/>
                                     <code
                                         className={`text-xs md:text-[1rem] relative top-2 cursor-pointer rounded bg-primary text-red-600 p-1 mt-3`}
-                                        onClick={() => goToOpenaiApi()}>
+                                        onClick={() => goToOpenaiApi('create')}>
                                         POST https://api.openai.com/v1/images/generations
                                     </code>
                                 </h4>
@@ -146,7 +146,7 @@ export default function Dashboard() {
                                     <br/>
                                     <code
                                         className={`text-xs md:text-[1rem] relative top-2 cursor-pointer rounded bg-primary text-red-600 p-1 mt-3`}
-                                        onClick={() => goToOpenaiApi()}>
+                                        onClick={() => goToOpenaiApi('create-edit')}>
                                         POST https://api.openai.com/v1/images/edits
                                     </code>
                                 </h4>
