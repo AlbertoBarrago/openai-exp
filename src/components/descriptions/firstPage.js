@@ -11,7 +11,7 @@ export const DescriptionFirstPage = () => {
                     onClick={() => {
                         void router.push('https://albz.dev');
                     }}
-                    src="https://i.pinimg.com/280x280_RS/7e/72/bc/7e72bc3e4275e649eb87b456eea5a641.jpg"
+                    src="https://ujasntkfphywizsdaapi.supabase.co/storage/v1/object/public/content/app_logos/485244ee-9158-4685-8f1e-d349e97b35e1.png"
                     alt="me"/>
                 <h4>Overview:</h4>
                 <p>
