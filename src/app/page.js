@@ -2,7 +2,6 @@
 import {RedirectToSignIn, useAuth} from "@clerk/nextjs";
 import {useRouter} from "next/navigation";
 import {Title} from "@/components/title";
-import Image from "next/image";
 import {DescriptionFirstPage} from "@/components/descriptions/firstPage";
 import {GoToDashboard} from "@/components/goToDashboard";
 
