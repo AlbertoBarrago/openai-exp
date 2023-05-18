@@ -124,7 +124,6 @@ export const editImage = async (file, mask, prompt, setEdit, isJpeg) => {
  * @return {boolean}
  */
 export const produceImageVariations = async (image, userId, setValue, setIsLoading, seImageVariation, setWidth, setHeight) => {
-    debugger;
     const fileForm = new File([image.file[0]], image.file[0].name, {type: 'image/png'});
     try {
         const returnUrl = await openai.createImageVariation(
