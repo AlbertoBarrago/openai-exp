@@ -18,7 +18,6 @@
     "eslint-config-next": "13.4.2",
     "jimp": "^0.22.8",
     "next": "13.4.2",
-    "node": "^20.1.0",
     "openai": "^3.2.1",
     "paco": "^0.4.0",
     "postcss": "8.4.23",
