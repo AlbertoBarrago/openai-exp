@@ -32,7 +32,7 @@ export const Header = () => {
                     <div className="flex-none gap-2 me-3">
                         <Link href={`/dashboard`} className={`btn btn-ghost normal-case text-secondary  ${pathname === '/dashboard' ? 'btn-active' : ''}`}>
                             <i className="bi bi-airplane-fill me-2"></i> Dashboard</Link>
-                        <span><UserButton className="text-left"/></span>
+                        <span><UserButton className="text-left me-2"/></span>
                     </div>
                 </div>
             )}
