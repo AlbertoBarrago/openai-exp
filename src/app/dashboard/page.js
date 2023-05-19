@@ -146,7 +146,7 @@ export default function Dashboard() {
                             <DescriptionTitle goToOpenaiApi={goToOpenaiApi}
                                               h3={'Create Image'}
                                               h4={'Here, we are testing:'}
-                                              apiUrl={'POST .../v1/images/generations'}
+                                              apiUrl={'POST .../v1/result/generations'}
                                               type={'client'}/>
 
                             {(imageCreated === '') && (
@@ -172,7 +172,7 @@ export default function Dashboard() {
                             <DescriptionTitle goToOpenaiApi={goToOpenaiApi}
                                               h3={'Create Variation'}
                                               h4={'Upload an image to create a variation of it'}
-                                              apiUrl={'.../v1/images/variation'}
+                                              apiUrl={'.../v1/result/variation'}
                                               type={'create-variation'}/>
 
                             {imageVariation === '' && (
@@ -198,7 +198,7 @@ export default function Dashboard() {
                             <DescriptionTitle goToOpenaiApi={goToOpenaiApi}
                                               h3={'Edit Image'}
                                               h4={'Upload a mask with specific area to edit your image'}
-                                              apiUrl={'.../v1/images/edits'}
+                                              apiUrl={'.../v1/result/edits'}
                                               type={'create-edit'}/>
 
                             {imageEdited === '' && (
