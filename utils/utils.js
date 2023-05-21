@@ -101,14 +101,16 @@ export const editImageOpenai = async (file, mask, prompt, isJpeg) => {
  * @param prompt
  * @param setEdit
  * @param isJpeg
- * @return {Promise<void>}
+ * @param insertOnMongo
+ * @return string
  */
-export const editImage = async (file, mask, prompt, setEdit, isJpeg) => {
+export const editImage = async (file, mask, prompt, setEdit, isJpeg, insertOnMongo) => {
     const urlImage = await editImageOpenai(file, mask, prompt, isJpeg);
     if (urlImage === '') {
         return null;
     } else {
         setEdit(urlImage);
+        await insertOnMongo(urlImage, 'random.editTitle', 'Edit');
         return urlImage;
     }
 }
@@ -121,9 +123,10 @@ export const editImage = async (file, mask, prompt, setEdit, isJpeg) => {
  * @param seImageVariation
  * @param setWidth
  * @param setHeight
- * @return {boolean}
+ * @param insertImageOnMongo
+ * @return void
  */
-export const produceImageVariations = async (image, userId, setValue, setIsLoading, seImageVariation, setWidth, setHeight) => {
+export const produceImageVariations = async (image, userId, setValue, setIsLoading, seImageVariation, setWidth, setHeight, insertImageOnMongo) => {
     const fileForm = new File([image.file[0]], image.file[0].name, {type: 'image/png'});
     try {
         const returnUrl = await openai.createImageVariation(
@@ -140,9 +143,9 @@ export const produceImageVariations = async (image, userId, setValue, setIsLoadi
             showConfettiForSeconds(7, setWidth, setHeight);
             setValue('file', '');
             setIsLoading(false)
+            await insertImageOnMongo(returnUrl.data.data[0].url, 'random.varTitle', 'Variation');
         }
     } catch (error) {
-        alert(error);
         setIsLoading(false)
         console.error(error);
     }
@@ -273,16 +276,17 @@ export const dataURLtoFile = (dataUrl, filename) => {
  * @param setHeight
  * @return {Promise<void>}
  */
-export const handleJpeg = async (data, setValue, setImageEdited, setIsLoading, setWidth, setHeight) => {
+export const handleJpeg = async (data, setValue, setImageEdited, setIsLoading, setWidth, setHeight, insertOnMongo) => {
     await convertFileToType(data.file[0], 'image/png').then(
         (file) => {
             data.file = file;
-            void editImage(data.file, data.mask, data.prompt, setImageEdited, true).then(
-                () => {
+             editImage(data.file, data.mask, data.prompt, setImageEdited, true, insertOnMongo).then(
+                (respUrl) => {
                     showConfettiForSeconds(7, setWidth, setHeight);
                     setValue('file', '');
                     setValue('prompt', '');
                     setIsLoading(false)
+                    return respUrl;
                 }
             )
         })
@@ -295,15 +299,17 @@ export const handleJpeg = async (data, setValue, setImageEdited, setIsLoading, s
  * @param setIsLoading
  * @param setWidth
  * @param setHeight
- * @return {Promise<void>}
+ * @param insertOnMongo
+ * @return string
  */
-export const handlePng = async (data, setValue, setImageEdited, setIsLoading, setWidth, setHeight) => {
-    void editImage(data.file, data.mask, data.prompt, setImageEdited, false).then(
-        () => {
+export const handlePng = async (data, setValue, setImageEdited, setIsLoading, setWidth, setHeight, insertOnMongo) => {
+    await editImage(data.file, data.mask, data.prompt, setImageEdited, false, insertOnMongo).then(
+        (respUrl) => {
             showConfettiForSeconds(7, setWidth, setHeight);
             setValue('file', '');
             setValue('prompt', '');
             setIsLoading(false)
+            return respUrl;
         }
     );
 }
@@ -316,4 +322,42 @@ export const handlePng = async (data, setValue, setImageEdited, setIsLoading, se
 export const checkIfHasLessThan1000Chars = (prompt) => {
     return prompt.length < 1000;
 }
+export const uploadImage = async (imageUrl) => {
+    try {
+        const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/upload`;
+        const cloudinaryApiKey = process.env.CLOUDINARY_API_KEY;
+        const cloudinaryUploadPreset = process.env.CLD_CLOUD_NAME;
+
+        // Make the fetch request to Cloudinary
+        const response = await fetch(cloudinaryUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                file: imageUrl,
+                api_key: cloudinaryApiKey,
+                upload_preset: cloudinaryUploadPreset
+            }),
+        });
+
+        // Check the response from Cloudinary
+        if (response.ok) {
+            const data = await response.json();
+            // console.log('Image uploaded successfully', data);
+
+            return data;
+
+        } else {
+            console.log('Image upload failed', response);
+        }
+    } catch (e) {
+        console.log('Error uploading image', e);
+        new Response({
+            error: 500,
+            success: false
+        });
+    }
+}
+
 

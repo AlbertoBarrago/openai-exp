@@ -13,6 +13,8 @@ export const Header = () => {
         name: 'Home', path: '/', icon: <i className="bi bi-house"></i>
     }, {
         name: 'Dashboard', path: '/dashboard', icon: <i className="bi bi-lightning"></i>
+    }, {
+        name: 'Result', path: '/result', icon: <i className="bi bi-square"></i>
     }]
 
     useEffect(() => {

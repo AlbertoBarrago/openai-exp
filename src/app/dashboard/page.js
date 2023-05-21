@@ -6,7 +6,7 @@ import {
     checkIfIsGreaterThan4MB, createImageOpenai,
     handleJpeg, handlePng, produceImageVariations,
     showAlert,
-    showConfettiForSeconds
+    showConfettiForSeconds, uploadImage
 } from "../../../utils/utils";
 import {AlertComponent} from "@/components/shared/alert";
 import Confetti from "react-confetti";
@@ -17,6 +17,8 @@ import {Title} from "@/components/layout/title";
 import {CreateImage} from "@/components/dashboard/createImage";
 import {DescriptionTitle} from "@/components/dashboard/title";
 import {UploaderVariation} from "@/components/dashboard/variationUploader";
+import {SubDescription} from "@/components/dashboard/subDescription";
+
 
 export default function Dashboard() {
     const {isLoaded, isSignedIn, userId} = useAuth(),
@@ -48,6 +50,38 @@ export default function Dashboard() {
             formState: {errors: errorsVariation}
         } = useForm();
 
+    const insertImageOnMongo = async (imageUrl, title, type) => {
+        let body = {
+            urlImage: imageUrl,
+            userId: userId,
+            title: title ? title : "random title",
+            creationDate: new Date().getTime(),
+            type,
+        };
+        try {
+            const response = await fetch('api/cloudinary/insert', {
+                method: 'POST',
+                body: JSON.stringify(body),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (response.ok) {
+                const data = await response.json();
+                new Response({
+                    data,
+                    success: true
+                });
+            }
+        } catch (e) {
+            console.log('Error uploading image', e);
+            new Response({
+                error: 500,
+                success: false
+            });
+        }
+    }
+
     const handleCreateForm = async (data) => {
         const isValid = checkIfHasLessThan1000Chars(data.createDescription);
         if (!isValid) {
@@ -57,7 +91,9 @@ export default function Dashboard() {
         }
         setIsLoadingCreate(true);
         const urlImageByOpenai = await createImageOpenai(data.createDescription)
-        setImageCreated(urlImageByOpenai);
+        const urlFromCloudinary = await uploadImage(urlImageByOpenai)
+        setImageCreated(urlImageByOpenai)
+        void insertImageOnMongo(urlFromCloudinary?.url, 'randomTitle', 'created')
         setIsLoadingCreate(false);
         showConfettiForSeconds(7, setConfettiWidth, setConfettiHeight);
     }
@@ -80,8 +116,7 @@ export default function Dashboard() {
         }
 
 
-        void produceImageVariations(data, userId, setValueVariation, setIsLoadingVariation, setImageVariation, setConfettiWidth, setConfettiHeight);
-
+        void produceImageVariations(data, userId, setValueVariation, setIsLoadingVariation, setImageVariation, setConfettiWidth, setConfettiHeight, insertImageOnMongo);
     }
     const handleEditForm = async (data) => {
         setIsLoadingEdited(true);
@@ -108,12 +143,12 @@ export default function Dashboard() {
         }
 
         if (data.file[0].type === 'image/jpeg') {
-            void handleJpeg(data, setValue, setImageEdited, setIsLoadingEdited, setConfettiWidth, setConfettiHeight);
+            void handleJpeg(data, setValue, setImageEdited, setIsLoadingEdited, setConfettiWidth, setConfettiHeight, insertImageOnMongo);
             return;
         }
 
         if (data.file[0].type === 'image/png') {
-            void handlePng(data, setValue, setImageEdited, setIsLoadingEdited, setConfettiWidth, setConfettiHeight);
+            void handlePng(data, setValue, setImageEdited, setIsLoadingEdited, setConfettiWidth, setConfettiHeight, insertImageOnMongo);
         }
 
     }
@@ -131,6 +166,7 @@ export default function Dashboard() {
                     <div className={`grid grid-cols-1 text-center`}>
                         <Confetti width={confettiWidth} height={confettiHeight} numberOfPieces={100}/>
                         <Title title={'OpenAi'} subTitle={'Lab'}/>
+                        <SubDescription description={'Here you can test the OpenAi API'}/>
                         {alertSetUp.show && (
                             <>
                                 <div className={`w-auto m-auto mb-10`}>
@@ -158,7 +194,7 @@ export default function Dashboard() {
                                                  isLoadingCreate={isLoadingCreate}/>
                                 </>
                             )}
-                            {imageCreated !== '' && (
+                            {(imageCreated !== '') && (
                                 <>
                                     <UploaderImage
                                         isLoading={isLoadingCreate}

@@ -29,7 +29,8 @@ export const TableResult = ({data}) => {
         return date.toLocaleDateString("en-US",{year: 'numeric', month: 'long', day: 'numeric'});
     }
     return (
-        <div className="overflow-x-auto">
+        //use card instead of table
+        <div className="overflow-x-auto mt-10">
             <table className="table w-full">
                 {/* head */}
                 <thead>
