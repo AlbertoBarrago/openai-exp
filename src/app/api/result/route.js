@@ -30,10 +30,12 @@ export async function GET() {
     let responseImageList = [];
     // Remove ID field from every document
     data.forEach((item) => {
-        delete item._id;
-        delete item.userId;
+        // delete item._id;
+        // delete item.userId;
         item.creationDate = handleTimeStamp(item.creationDate);
         responseImageList.push({
+            id: item._id,
+            // userId: item.userId,
             type: item.type,
             title: item.title,
             creationDate: item.creationDate,

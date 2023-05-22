@@ -4,7 +4,7 @@ import {UserButton} from "@clerk/nextjs";
 import {usePathname} from "next/navigation";
 import {useEffect, useState} from "react";
 
-const privateRoutes = ['/', '/dashboard', '/result'];
+const privateRoutes = ['/', '/lab', '/result'];
 
 export const Header = () => {
     const pathname = usePathname();
@@ -12,7 +12,7 @@ export const Header = () => {
     const routes = [{
         name: 'Home', path: '/', icon: <i className="bi bi-house"></i>
     }, {
-        name: 'Dashboard', path: '/dashboard', icon: <i className="bi bi-lightning"></i>
+        name: 'Lab', path: '/lab', icon: <i className="bi bi-lightning"></i>
     }, {
         name: 'Result', path: '/result', icon: <i className="bi bi-square"></i>
     }]

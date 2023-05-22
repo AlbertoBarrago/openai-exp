@@ -4,7 +4,7 @@ export const CreateImage =({handleSubmitCreate, handleCreateForm, registerCreate
     return (
         <>
             {isLoadingCreate && (
-                <LoaderComponent icon={"🐈‍⬛"}/>
+                <LoaderComponent/>
             )}
             {!isLoadingCreate && (
             <form key={1} onSubmit={handleSubmitCreate(handleCreateForm)}>

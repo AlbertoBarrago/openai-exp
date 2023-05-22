@@ -4,7 +4,7 @@ export const Uploader = ({handleSubmit, handleForm, register, errors, isLoading}
     return (
         <>
             {isLoading && (
-                <LoaderComponent icon={"🥷"}/>
+                <LoaderComponent/>
             )}
             {!isLoading && (
                 <form key={2} onSubmit={handleSubmit(handleForm)}>

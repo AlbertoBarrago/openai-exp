@@ -4,7 +4,7 @@ function LoadingSkeleton() {
     return (
         <>
             <main className={`grid grid-cols-1 mb-56`}>
-                <LoaderComponent icon={`🐈‍⬛`}/>
+                <LoaderComponent/>
             </main>
         </>
     )

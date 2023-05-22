@@ -101,16 +101,14 @@ export const editImageOpenai = async (file, mask, prompt, isJpeg) => {
  * @param prompt
  * @param setEdit
  * @param isJpeg
- * @param insertOnMongo
  * @return string
  */
-export const editImage = async (file, mask, prompt, setEdit, isJpeg, insertOnMongo) => {
+export const editImage = async (file, mask, prompt, setEdit, isJpeg) => {
     const urlImage = await editImageOpenai(file, mask, prompt, isJpeg);
     if (urlImage === '') {
         return null;
     } else {
         setEdit(urlImage);
-        await insertOnMongo(urlImage, 'random.editTitle', 'Edit');
         return urlImage;
     }
 }
@@ -119,14 +117,10 @@ export const editImage = async (file, mask, prompt, setEdit, isJpeg, insertOnMon
  * @param image
  * @param userId
  * @param setValue
- * @param setIsLoading
  * @param seImageVariation
- * @param setWidth
- * @param setHeight
- * @param insertImageOnMongo
- * @return void
+ * @return Promise<string|null>
  */
-export const produceImageVariations = async (image, userId, setValue, setIsLoading, seImageVariation, setWidth, setHeight, insertImageOnMongo) => {
+export const produceImageVariations = async (image, userId, setValue, seImageVariation) => {
     const fileForm = new File([image.file[0]], image.file[0].name, {type: 'image/png'});
     try {
         const returnUrl = await openai.createImageVariation(
@@ -140,13 +134,10 @@ export const produceImageVariations = async (image, userId, setValue, setIsLoadi
             return null
         } else {
             seImageVariation(returnUrl.data.data[0].url);
-            showConfettiForSeconds(7, setWidth, setHeight);
             setValue('file', '');
-            setIsLoading(false)
-            await insertImageOnMongo(returnUrl.data.data[0].url, 'random.varTitle', 'Variation');
+            return returnUrl.data.data[0].url;
         }
     } catch (error) {
-        setIsLoading(false)
         console.error(error);
     }
 
@@ -271,21 +262,16 @@ export const dataURLtoFile = (dataUrl, filename) => {
  * @param data
  * @param setValue
  * @param setImageEdited
- * @param setIsLoading
- * @param setWidth
- * @param setHeight
  * @return {Promise<void>}
  */
-export const handleJpeg = async (data, setValue, setImageEdited, setIsLoading, setWidth, setHeight, insertOnMongo) => {
+export const handleJpeg = async (data, setValue, setImageEdited) => {
     await convertFileToType(data.file[0], 'image/png').then(
         (file) => {
             data.file = file;
-             editImage(data.file, data.mask, data.prompt, setImageEdited, true, insertOnMongo).then(
+             editImage(data.file, data.mask, data.prompt, setImageEdited, true).then(
                 (respUrl) => {
-                    showConfettiForSeconds(7, setWidth, setHeight);
                     setValue('file', '');
                     setValue('prompt', '');
-                    setIsLoading(false)
                     return respUrl;
                 }
             )
@@ -296,19 +282,13 @@ export const handleJpeg = async (data, setValue, setImageEdited, setIsLoading, s
  * @param data
  * @param setValue
  * @param setImageEdited
- * @param setIsLoading
- * @param setWidth
- * @param setHeight
- * @param insertOnMongo
- * @return string
+ * @return {Promise<void>}
  */
-export const handlePng = async (data, setValue, setImageEdited, setIsLoading, setWidth, setHeight, insertOnMongo) => {
-    await editImage(data.file, data.mask, data.prompt, setImageEdited, false, insertOnMongo).then(
+export const handlePng = async (data, setValue, setImageEdited) => {
+    await editImage(data.file, data.mask, data.prompt, setImageEdited, false).then(
         (respUrl) => {
-            showConfettiForSeconds(7, setWidth, setHeight);
             setValue('file', '');
             setValue('prompt', '');
-            setIsLoading(false)
             return respUrl;
         }
     );

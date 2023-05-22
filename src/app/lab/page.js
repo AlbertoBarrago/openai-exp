@@ -68,20 +68,22 @@ export default function Dashboard() {
             });
             if (response.ok) {
                 const data = await response.json();
-                new Response({
-                    data,
-                    success: true
-                });
+                console.log('success uploaded on mongo', data)
             }
         } catch (e) {
-            console.log('Error uploading image', e);
-            new Response({
-                error: 500,
-                success: false
-            });
+            console.error('error on upload image on mongo', e)
         }
     }
-
+    const handleUploadOnMongoForClient = async (respUrl, setIsLoading) => {
+        const respMongoUpload = await insertImageOnMongo(respUrl, 'randomTitle', 'edited')
+        if(respMongoUpload){
+            setIsLoading(false);
+            showConfettiForSeconds(7, setConfettiWidth, setConfettiHeight);
+        } else {
+            setIsLoading(false);
+            setAlertSetUp({show: true, message: 'Error on upload image on mongo'})
+        }
+    }
     const handleCreateForm = async (data) => {
         const isValid = checkIfHasLessThan1000Chars(data.createDescription);
         if (!isValid) {
@@ -89,12 +91,18 @@ export default function Dashboard() {
             setValueCreate('createDescription', '');
             return;
         }
+        //loader
         setIsLoadingCreate(true);
+        //create image
         const urlImageByOpenai = await createImageOpenai(data.createDescription)
+        //upload image
         const urlFromCloudinary = await uploadImage(urlImageByOpenai)
-        setImageCreated(urlImageByOpenai)
+        //insert image on mongo
         void insertImageOnMongo(urlFromCloudinary?.url, 'randomTitle', 'created')
+        //set image
+        setImageCreated(urlImageByOpenai)
         setIsLoadingCreate(false);
+        //show confetti
         showConfettiForSeconds(7, setConfettiWidth, setConfettiHeight);
     }
     const handleVariationForm = async (data) => {
@@ -116,7 +124,8 @@ export default function Dashboard() {
         }
 
 
-        void produceImageVariations(data, userId, setValueVariation, setIsLoadingVariation, setImageVariation, setConfettiWidth, setConfettiHeight, insertImageOnMongo);
+        const respUrl = await produceImageVariations(data, userId, setValueVariation, setImageVariation);
+        void handleUploadOnMongoForClient(respUrl, setIsLoadingVariation);
     }
     const handleEditForm = async (data) => {
         setIsLoadingEdited(true);
@@ -143,12 +152,14 @@ export default function Dashboard() {
         }
 
         if (data.file[0].type === 'image/jpeg') {
-            void handleJpeg(data, setValue, setImageEdited, setIsLoadingEdited, setConfettiWidth, setConfettiHeight, insertImageOnMongo);
+            const respUrl= await handleJpeg(data, setValue, setImageEdited);
+            void handleUploadOnMongoForClient(respUrl, setIsLoadingEdited);
             return;
         }
 
         if (data.file[0].type === 'image/png') {
-            void handlePng(data, setValue, setImageEdited, setIsLoadingEdited, setConfettiWidth, setConfettiHeight, insertImageOnMongo);
+            const respUrl= await handlePng(data, setValue, setImageEdited);
+            void handleUploadOnMongoForClient(respUrl, setIsLoadingEdited);
         }
 
     }

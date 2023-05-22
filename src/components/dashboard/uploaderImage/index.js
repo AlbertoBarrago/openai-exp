@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export const UploaderImage = ({imageEdited, setImageEdited, setValue, isLoading}) => {
         return (
@@ -11,15 +12,29 @@ export const UploaderImage = ({imageEdited, setImageEdited, setValue, isLoading}
                                width={300}
                                height={300} alt="AI"/>)}
                     <div className={`grid grid-cols-1`}></div>
-                    <div>
-                        <button className="mt-3 mb-5 m-auto btn btn-wide"
-                                onClick={() => {
-                                    setImageEdited('')
-                                    setValue('createDescription', '')
-                                }
-                                }>
-                            Delete image
-                        </button>
+                    <div className={`grid grid-cols-1 md:grid-cols-2`}>
+                        <div>
+                            <button className="mt-3 mb-5 m-auto btn btn-wide"
+                                    onClick={() => {
+                                        setImageEdited('')
+                                        setValue('createDescription', '')
+                                    }
+                                    }>
+                                Delete image
+                            </button>
+                        </div>
+                        <div>
+                            <Link
+                                href={'/result'}
+                                className="mt-3 mb-5 m-auto btn btn-wide"
+                                    onClick={() => {
+                                        setImageEdited('')
+                                        setValue('createDescription', '')
+                                    }
+                                    }>
+                               Go to results
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </>

@@ -3,7 +3,7 @@ import {RedirectToSignIn, useAuth} from "@clerk/nextjs";
 import {useRouter} from "next/navigation";
 import {Title} from "@/components/layout/title";
 import {DescriptionFirstPage} from "@/components/home/descriptions/firstPage";
-import {GoToDashboard} from "@/components/home/goToDashboard";
+import {GoToLab} from "@/components/home/goToLab";
 
 
 export default function Home() {
@@ -11,7 +11,7 @@ export default function Home() {
     const router = useRouter();
 
     const goToDashboard = () => {
-        void router.push('/dashboard');
+        void router.push('/lab');
     }
 
     const checkAuth = () => {
@@ -23,7 +23,7 @@ export default function Home() {
                 <main className={`container mx-auto text-center w-100 p-2`}>
                     <Title title={'OpenAi'} subTitle={'Testing Project'}/>
                     <DescriptionFirstPage/>
-                    <GoToDashboard goToDashboard={goToDashboard}/>
+                    <GoToLab goToDashboard={goToDashboard}/>
                 </main>
             </>)
     }

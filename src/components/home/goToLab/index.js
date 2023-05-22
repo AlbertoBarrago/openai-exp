@@ -1,4 +1,4 @@
-export const GoToDashboard = ({goToDashboard}) => {
+export const GoToLab = ({goToDashboard}) => {
     return (
         <>
             <div className={`w-auto m-auto mb-10`}>
@@ -6,7 +6,7 @@ export const GoToDashboard = ({goToDashboard}) => {
                     onClick={goToDashboard}
                     className={`btn btn-btn-secondary`}
                 >
-                    Go to dashboard
+                    Go to Lab
                 </button>
             </div>
         </>
