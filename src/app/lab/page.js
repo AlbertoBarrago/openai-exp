@@ -13,14 +13,14 @@ import {
 } from "../../../utils/utils";
 import {AlertComponent} from "@/components/shared/alert";
 import Confetti from "react-confetti";
-import {Uploader} from "@/components/dashboard/uploader";
-import {UploaderImage} from "@/components/dashboard/uploaderImage";
+import {Uploader} from "@/components/lab/uploader";
+import {UploaderImage} from "@/components/lab/uploaderImage";
 import {useState} from "react";
 import {Title} from "@/components/layout/title";
-import {CreateImage} from "@/components/dashboard/createImage";
-import {DescriptionTitle} from "@/components/dashboard/title";
-import {UploaderVariation} from "@/components/dashboard/variationUploader";
-import {SubDescription} from "@/components/dashboard/subDescription";
+import {CreateImage} from "@/components/lab/createImage";
+import {DescriptionTitle} from "@/components/lab/title";
+import {UploaderVariation} from "@/components/lab/variationUploader";
+import {SubDescription} from "@/components/lab/subDescription";
 
 
 export default function Dashboard() {

@@ -1,11 +1,11 @@
 import Image from "next/image";
 
-export const DescriptionFirstPage = () => {
+export const DescriptionFirstPage = ({router}) => {
     return (
         <>
-            <article className="prose lg:prose-xl m-auto mb-5">
+            <article className="prose lg:prose-xl m-auto mb-5 mt-4">
                 <Image
-                    className={`rounded-full m-auto cursor-pointer hover:opacity-80`}
+                    className={`m-auto cursor-pointer hover:opacity-80 custom-parallax`}
                     width={280}
                     height={280}
                     onClick={() => {

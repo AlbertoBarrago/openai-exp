@@ -22,7 +22,7 @@ export default function Home() {
             <>
                 <main className={`container mx-auto text-center w-100 p-2`}>
                     <Title title={'OpenAi'} subTitle={'Testing Project'}/>
-                    <DescriptionFirstPage/>
+                    <DescriptionFirstPage router={router}/>
                     <GoToLab goToDashboard={goToDashboard}/>
                 </main>
             </>)
