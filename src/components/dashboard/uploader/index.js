@@ -9,23 +9,29 @@ export const Uploader = ({handleSubmit, handleForm, register, errors, isLoading}
             {!isLoading && (
                 <form key={2} onSubmit={handleSubmit(handleForm)}>
                     <p className="mb-4 text-red-600 p-3 rounded">Upload: .png ＜ 4MB</p>
-                    <div className={`grid grid-cols-1 md:grid-cols-2 gap-2 mb-2`}>
+                    <div className={`grid grid-cols-1 gap-2 mb-2`}>
                         <div>
-                            <small>Select file</small>
+                            <small>Select file</small> <br/>
+                            {/*<label>*/}
+                            {/*    <span className="btn me-1"> 📁</span>*/}
+                            {/*</label>*/}
                             <input type="file"
                                    accept="image/png, image/jpeg"
-                                   className="file-input file-input-bordered text-secondary w-full max-w-xs mb-2"
+                                   className="file-input file-input-bordered [&::file-selector-button]:hidden p-2.5 text-secondary"
                                    {...register('file', {required: true})}/>
 
                             <p className="mb-2">{errors.file && (
                                 <span className="text-red-600">This File is required</span>)}</p>
                         </div>
                         <div>
-                            <small>Select mask</small>
+                            <small>Choose mask</small> <br/>
+                            {/*<label>*/}
+                            {/*    <span className="btn me-1">👺</span>*/}
+                            {/*</label>*/}
                             <input type="file"
                                    accept="image/png, image/jpeg"
                                    placeholder={"Mask"}
-                                   className="file-input file-input-bordered text-secondary w-full max-w-xs mb-2"
+                                   className="file-input file-input-bordered [&::file-selector-button]:hidden p-2.5 text-secondary"
                                    {...register('mask', {required: true})}/>
 
                             <p className="mb-2">{errors.mask && (
@@ -33,6 +39,7 @@ export const Uploader = ({handleSubmit, handleForm, register, errors, isLoading}
                         </div>
                     </div>
 
+                    <p className={`m-auto w-5/6 mb-5`}> For create an accurate image give some instructions properly; like style, texture etc...</p>
                     <textarea placeholder="Less than 1000 chars"
                               className="textarea textarea-primary w-full max-w-xs mb-2 border-2 border-white"
                               {...register('prompt', {required: true})}/>

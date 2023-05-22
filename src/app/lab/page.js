@@ -263,7 +263,7 @@ export default function Dashboard() {
                                               h3={'Create Image'}
                                               h4={'Here, we are testing:'}
                                               apiUrl={'POST .../v1/result/generations'}
-                                              type={'client'}/>
+                                              type={'create'}/>
 
                             {(imageCreated === '') && (
                                 <>

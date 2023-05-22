@@ -15,7 +15,7 @@ export const UploaderVariation = ({handleSubmit, handleForm, register, errors, i
                             <br/>
                             <input type="file"
                                    accept="image/png"
-                                   className="file-input file-input-bordered text-secondary w-full max-w-xs mb-2"
+                                   className="file-input file-input-bordered [&::file-selector-button]:hidden p-2.5 text-secondary"
                                    {...register('file', {required: true})}/>
 
                             <p className="mb-2">{errors.file && (

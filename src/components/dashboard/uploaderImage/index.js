@@ -20,7 +20,7 @@ export const UploaderImage = ({imageEdited, setImageEdited, setValue, isLoading}
                                         setValue('createDescription', '')
                                     }
                                     }>
-                                Delete image
+                                Clean
                             </button>
                         </div>
                         <div>
