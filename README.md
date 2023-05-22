@@ -1,5 +1,4 @@
-# Openai-Exp
-
+# Openai-Exp with Next.js@latest
 ![pepe](https://www.icegif.com/wp-content/uploads/2023/01/icegif-804.gif)
 
 ## Info
@@ -7,8 +6,77 @@ This is a side project to test the OpenAI API. The idea is to create a web app w
 And also, I want to test the [Clerk](https://clerk.dev/) authentication system.
 
 
-## Powered by Vercel 
-[![Powered by Vercel](https://raw.githubusercontent.com/abumalick/powered-by-vercel/master/powered-by-vercel.svg)](https://vercel.com?utm_source=powered-by-vercel)
+## Structure of the project
+```
+
+.
+├── app
+│   ├── api
+│   │   ├── cloudinary
+│   │   │   └── insertByUrl
+│   │   │       └── route.js
+│   │   ├── mongo
+│   │   │   └── insert
+│   │   │       └── route.js
+│   │   └── result
+│   │       └── route.js
+│   ├── favicon.ico
+│   ├── globals.css
+│   ├── lab
+│   │   ├── error.js
+│   │   ├── loading.js
+│   │   └── page.js
+│   ├── layout.js
+│   ├── not-found.js
+│   ├── page.js
+│   ├── result
+│   │   ├── error.js
+│   │   ├── loading.js
+│   │   └── page.js
+│   ├── sign-in
+│   │   └── [[...sign-in]]
+│   │       └── page.js
+│   └── sign-up
+│       └── [[...sign-up]]
+│           └── page.js
+├── components
+│   ├── dashboard
+│   │   ├── createImage
+│   │   │   └── index.js
+│   │   ├── subDescription
+│   │   │   └── index.js
+│   │   ├── title
+│   │   │   └── index.js
+│   │   ├── uploader
+│   │   │   └── index.js
+│   │   ├── uploaderImage
+│   │   │   └── index.js
+│   │   └── variationUploader
+│   │       └── index.js
+│   ├── home
+│   │   ├── descriptions
+│   │   │   └── firstPage.js
+│   │   └── goToLab
+│   │       └── index.js
+│   ├── layout
+│   │   ├── footer
+│   │   │   └── index.js
+│   │   ├── header
+│   │   │   └── index.js
+│   │   ├── loader
+│   │   │   └── index.js
+│   │   └── title
+│   │       └── index.js
+│   ├── result
+│   │   ├── cardList.js
+│   │   └── table.js
+│   └── shared
+│       └── alert
+│           └── index.js
+└── middleware.js
+```
+
+33 directories, 32 files
 
 ## Features
 - [x] Login with Clerk
@@ -65,8 +133,13 @@ yarn start
 
 ____
 
-### Utils 
+### Source Used 
 - [OpenAI API](https://beta.openai.com/docs/introduction)
-- [OpenAI API - Playground](https://beta.openai.com/playground)
-- [OpenAI API - Playground - Examples](https://beta.openai.com/examples)
-- [OpenAI API - Playground - Examples - Image Completation](https://beta.openai.com/examples/default-image-completion)
+- [DaisyUI](https://daisyui.com/)
+- [Clerk](https://clerk.dev/)
+- [Next.js](https://nextjs.org/)
+- [MongoDB](https://www.mongodb.com/)
+- [Cloudinary](https://cloudinary.com/)
+
+## Powered by Vercel
+[![Powered by Vercel](https://raw.githubusercontent.com/abumalick/powered-by-vercel/master/powered-by-vercel.svg)](https://vercel.com?utm_source=powered-by-vercel)
