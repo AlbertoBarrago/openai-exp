@@ -26,12 +26,7 @@ export const UploaderImage = ({imageEdited, setImageEdited, setValue, isLoading}
                         <div>
                             <Link
                                 href={'/result'}
-                                className="mt-3 mb-5 m-auto btn btn-wide"
-                                    onClick={() => {
-                                        setImageEdited('')
-                                        setValue('createDescription', '')
-                                    }
-                                    }>
+                                className={"mt-3 mb-5 m-auto btn btn-wide"}>
                                Go to results
                             </Link>
                         </div>

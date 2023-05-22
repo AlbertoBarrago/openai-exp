@@ -100,7 +100,7 @@ export const editImageOpenai = async (file, mask, prompt, isJpeg) => {
  * @param mask
  * @param prompt
  * @param isJpeg
- * @return string
+ * @return Promise<string|null>
  */
 export const editImage = async (file, mask, prompt, isJpeg) => {
     const urlImage = await editImageOpenai(file, mask, prompt, isJpeg);
@@ -114,11 +114,9 @@ export const editImage = async (file, mask, prompt, isJpeg) => {
  * Produce image variations with openai
  * @param image
  * @param userId
- * @param setValue
- * @param seImageVariation
  * @return Promise<string|null>
  */
-export const produceImageVariations = async (image, userId, setValue, seImageVariation) => {
+export const produceImageVariations = async (image, userId) => {
     const fileForm = new File([image.file[0]], image.file[0].name, {type: 'image/png'});
     try {
         const returnUrl = await openai.createImageVariation(
@@ -131,8 +129,6 @@ export const produceImageVariations = async (image, userId, setValue, seImageVar
         if (returnUrl === null) {
             return null
         } else {
-            seImageVariation(returnUrl.data.data[0].url);
-            setValue('file', '');
             return returnUrl.data.data[0].url;
         }
     } catch (error) {
@@ -258,7 +254,6 @@ export const dataURLtoFile = (dataUrl, filename) => {
 /**
  * Handle jpeg
  * @param data
- * @param setValue
  * @return {Promise<void>}
  */
 export const handleJpeg = async (data) => {
@@ -275,10 +270,15 @@ export const handleJpeg = async (data) => {
 /**
  * Handle png
  * @param data
- * @param setValue
- * @return {Promise<void>}
+ * @return {Promise<string>}
  */
 export const handlePng = async (data) => {
+    /**
+     * Edit image
+     * @type {string}
+     * @private
+     * @return {Promise<string>}
+     */
     await editImage(data.file, data.mask, data.prompt, false).then(
         (respUrl) => {
             return respUrl;

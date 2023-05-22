@@ -3,8 +3,11 @@ import {RedirectToSignIn, useAuth} from "@clerk/nextjs";
 import {useForm} from "react-hook-form";
 import {
     checkIfHasLessThan1000Chars,
-    checkIfIsGreaterThan4MB, createImageOpenai,
-    handleJpeg, handlePng, produceImageVariations,
+    checkIfIsGreaterThan4MB,
+    createImageOpenai,
+    handleJpeg,
+    handlePng,
+    produceImageVariations,
     showAlert,
     showConfettiForSeconds
 } from "../../../utils/utils";
@@ -49,6 +52,11 @@ export default function Dashboard() {
             handleSubmit: handleSubmitVariation,
             formState: {errors: errorsVariation}
         } = useForm();
+    /**
+     * Handle upload image on cloudinary
+     * @param imageUrl
+     * @return {Promise<*>}
+     */
     const uploadOnCloudinary = async (imageUrl) => {
         try {
             const cloudResp = await fetch(`api/cloudinary/insertByUrl`, {
@@ -61,12 +69,19 @@ export default function Dashboard() {
                 })
             })
 
-            const result =  await cloudResp.json();
+            const result = await cloudResp.json();
             return result.data;
         } catch (e) {
             console.error('error on upload image on cloudinary', e)
         }
     }
+    /**
+     * Handle insert image on mongo
+     * @param imageUrl
+     * @param title
+     * @param type
+     * @return {Promise<void>}
+     */
     const insertImageOnMongo = async (imageUrl, title, type) => {
         let body = {
             urlImage: imageUrl,
@@ -91,16 +106,20 @@ export default function Dashboard() {
             console.error('error on get image on mongo', e)
         }
     }
-    const handleUploadOnMongoForClient = async (respUrl, fileName, setIsLoading) => {
-        const respMongoUpload = await insertImageOnMongo(respUrl, fileName, 'edited')
-        if(respMongoUpload){
-            setIsLoading(false);
-            showConfettiForSeconds(7, setConfettiWidth, setConfettiHeight);
-        } else {
-            setIsLoading(false);
-            setAlertSetUp({show: true, message: 'Error on get image on mongo'})
-        }
+    /**
+     *
+     * @param respUrl
+     * @param fileName
+     * @return {Promise<void>}
+     */
+    const handleUploadOnMongoForClient = async (respUrl, fileName) => {
+        return await insertImageOnMongo(respUrl, fileName, 'edited');
     }
+    /**
+     * Handle create image
+     * @param data
+     * @return {Promise<void>}
+     */
     const handleCreateForm = async (data) => {
         const isValid = checkIfHasLessThan1000Chars(data.createDescription);
         if (!isValid) {
@@ -122,45 +141,66 @@ export default function Dashboard() {
         //show confetti
         showConfettiForSeconds(7, setConfettiWidth, setConfettiHeight);
     }
+    /**
+     * Handle variation image
+     * @param data
+     * @return {Promise<void>}
+     */
     const handleVariationForm = async (data) => {
         setIsLoadingVariation(true);
-
+        //check if file is png or jpeg
         if (data.file[0].type !== 'image/png' && data.file[0].type !== 'image/jpeg') {
             showAlert(`Type ${data.file[0].type} not allow`, setAlertSetUp);
             setValueVariation('file', '');
             setIsLoadingVariation(false);
             return;
         }
-
-
+        // check if file is greater than 4MB
         if (checkIfIsGreaterThan4MB(data.file)) {
             showAlert('File is greater than 4MB', setAlertSetUp);
             setValueVariation('file', '');
             setIsLoadingVariation(false);
             return;
         }
-
-
-        const respUrl = await produceImageVariations(data, userId, setValueVariation, setImageVariation);
-        void handleUploadOnMongoForClient(respUrl, data.file[0].name, setIsLoadingVariation);
+        // Start process
+        const respUrl = await produceImageVariations(data, userId);
+        const urlFromCloudinary = await uploadOnCloudinary(respUrl)
+        const mongoResp = handleUploadOnMongoForClient(urlFromCloudinary.url, data.file[0].name);
+        //check if success
+        if (mongoResp) {
+            //show success
+            setIsLoadingVariation(false)
+            setValue('file', '');
+            setImageVariation(respUrl);
+        } else {
+            //show error
+            showAlert('Error on upload image on mongo', setAlertSetUp);
+            setValue('file', '');
+            setIsLoadingVariation(false);
+        }
     }
+    /**
+     * Handle edit image
+     * @param data
+     * @return {Promise<void>}
+     */
     const handleEditForm = async (data) => {
         setIsLoadingEdited(true);
-
+        //check if file is png or jpeg
         if (data.file[0].type !== 'image/png' && data.file[0].type !== 'image/jpeg') {
             showAlert(`Type ${data.file[0].type} not allow`, setAlertSetUp);
             setValue('file', '');
             setIsLoadingEdited(false);
             return;
         }
-
+        //check if prompt is less than 1000 chars
         if (!checkIfHasLessThan1000Chars(data.prompt)) {
             showAlert('Prompt must be less than 1000 chars', setAlertSetUp);
             setValue('prompt', '');
             setIsLoadingEdited(false);
             return;
         }
-
+        //check if file is less than 4MB
         if (checkIfIsGreaterThan4MB(data.file)) {
             showAlert('File is greater than 4MB', setAlertSetUp);
             setValue('file', '');
@@ -168,25 +208,31 @@ export default function Dashboard() {
             return;
         }
 
-        if (data.file[0].type === 'image/jpeg') {
-            const respUrl= await handleJpeg(data);
-            await handleUploadOnMongoForClient(respUrl, data.file[0].name, setIsLoadingEdited);
+        //Start process
+        const respUrl = data.file[0].type !== 'image/jpeg' ? await handleJpeg(data) : await handlePng(data);
+        const urlFromCloudinary = await uploadOnCloudinary(respUrl)
+        const mongoResp = await handleUploadOnMongoForClient(urlFromCloudinary.url, data.file[0].name, setIsLoadingEdited);
+        //check if success
+        if (mongoResp) {
+            //set success
             setValue('file', '');
             setValue('prompt', '');
-            setImageEdited(respUrl ? respUrl : '');
-            return;
+            setImageEdited(respUrl ? respUrl : null);
+            setIsLoadingEdited(false);
+        } else {
+            //show error
+            showAlert('Error on upload image on mongo', setAlertSetUp);
+            setValue('file', '');
+            setValue('prompt', '');
+            setIsLoadingEdited(false);
         }
 
-        if (data.file[0].type === 'image/png') {
-            const respUrl= await handlePng(data);
-            await handleUploadOnMongoForClient(respUrl, data.file[0].name , setIsLoadingEdited);
-            setValue('file', '');
-            setValue('prompt', '');
-            setImageEdited(respUrl ? respUrl : '');
-        }
 
     }
-
+    /**
+     * Go to openai api
+     * @param type
+     */
     const goToOpenaiApi = (type) => {
         window.open(`//platform.openai.com/docs/api-reference/images/${type.toString()}`, '_blank');
     }
