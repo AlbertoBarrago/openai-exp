@@ -9,7 +9,6 @@ export const CardList = ({data}) => {
 
     return (
         <>
-            <div className={`grid grid-cols-1 md:grid-cols-3 gap-5 mt-10`}>
                 {data.map((item) => {
                     return (
                         <div key={item.id} className="card w-96 bg-neutral shadow-xl">
@@ -30,7 +29,6 @@ export const CardList = ({data}) => {
                         </div>
                     )
                 })}
-            </div>
         </>
     )
 }

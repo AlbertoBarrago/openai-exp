@@ -5,6 +5,7 @@ import {useEffect, useState} from "react";
 import {CardList} from "@/components/result/cardList";
 import {LoaderComponent} from "@/components/layout/loader";
 import {LoadMore} from "@/components/result/loadMore";
+import {FilterResult} from "@/components/result/filter";
 
 async function getData(pageSize) {
     const pageNumber = 1;
@@ -42,6 +43,9 @@ export default function Result() {
             setIsLoading(false);
         });
     }
+    const handleFilter = async (filter) => {
+        console.log(filter);
+    }
 
     useEffect(() => {
         getData(pageSize).then(data => {
@@ -58,7 +62,10 @@ export default function Result() {
             {(!isLoading && data) && (<>
                 <Title title={'OpenAi'} subTitle={'results'}/>
                 <SubDescription description={'Stored creations'} limit={limit} dataLength={data.length}/>
-                <CardList data={data}/>
+                {/*<FilterResult handleFilter={handleFilter}/>*/}
+                <div className={`grid grid-cols-1 md:grid-cols-3 gap-5 mt-10`}>
+                    <CardList data={data}/>
+                </div>
                 <LoadMore handleLoadMore={handleLoadMore} isLoading={isLoading}/>
             </>)}
         </main>
