@@ -6,7 +6,7 @@ import {
     checkIfIsGreaterThan4MB, createImageOpenai,
     handleJpeg, handlePng, produceImageVariations,
     showAlert,
-    showConfettiForSeconds, uploadImage
+    showConfettiForSeconds
 } from "../../../utils/utils";
 import {AlertComponent} from "@/components/shared/alert";
 import Confetti from "react-confetti";
@@ -49,7 +49,24 @@ export default function Dashboard() {
             handleSubmit: handleSubmitVariation,
             formState: {errors: errorsVariation}
         } = useForm();
+    const uploadOnCloudinary = async (imageUrl) => {
+        try {
+            const cloudResp = await fetch(`api/cloudinary/insertByUrl`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    imageUrl
+                })
+            })
 
+            const result =  await cloudResp.json();
+            return result.data;
+        } catch (e) {
+            console.error('error on upload image on cloudinary', e)
+        }
+    }
     const insertImageOnMongo = async (imageUrl, title, type) => {
         let body = {
             urlImage: imageUrl,
@@ -59,7 +76,7 @@ export default function Dashboard() {
             type,
         };
         try {
-            const response = await fetch('api/cloudinary/insert', {
+            const response = await fetch('api/mongo/insert', {
                 method: 'POST',
                 body: JSON.stringify(body),
                 headers: {
@@ -71,17 +88,17 @@ export default function Dashboard() {
                 console.log('success uploaded on mongo', data)
             }
         } catch (e) {
-            console.error('error on upload image on mongo', e)
+            console.error('error on get image on mongo', e)
         }
     }
-    const handleUploadOnMongoForClient = async (respUrl, setIsLoading) => {
-        const respMongoUpload = await insertImageOnMongo(respUrl, 'randomTitle', 'edited')
+    const handleUploadOnMongoForClient = async (respUrl, fileName, setIsLoading) => {
+        const respMongoUpload = await insertImageOnMongo(respUrl, fileName, 'edited')
         if(respMongoUpload){
             setIsLoading(false);
             showConfettiForSeconds(7, setConfettiWidth, setConfettiHeight);
         } else {
             setIsLoading(false);
-            setAlertSetUp({show: true, message: 'Error on upload image on mongo'})
+            setAlertSetUp({show: true, message: 'Error on get image on mongo'})
         }
     }
     const handleCreateForm = async (data) => {
@@ -95,10 +112,10 @@ export default function Dashboard() {
         setIsLoadingCreate(true);
         //create image
         const urlImageByOpenai = await createImageOpenai(data.createDescription)
-        //upload image
-        const urlFromCloudinary = await uploadImage(urlImageByOpenai)
+        //get image
+        const urlFromCloudinary = await uploadOnCloudinary(urlImageByOpenai)
         //insert image on mongo
-        void insertImageOnMongo(urlFromCloudinary?.url, 'randomTitle', 'created')
+        void insertImageOnMongo(urlFromCloudinary?.url, data.createDescription, 'created')
         //set image
         setImageCreated(urlImageByOpenai)
         setIsLoadingCreate(false);
@@ -125,7 +142,7 @@ export default function Dashboard() {
 
 
         const respUrl = await produceImageVariations(data, userId, setValueVariation, setImageVariation);
-        void handleUploadOnMongoForClient(respUrl, setIsLoadingVariation);
+        void handleUploadOnMongoForClient(respUrl, data.file[0].name, setIsLoadingVariation);
     }
     const handleEditForm = async (data) => {
         setIsLoadingEdited(true);
@@ -152,14 +169,20 @@ export default function Dashboard() {
         }
 
         if (data.file[0].type === 'image/jpeg') {
-            const respUrl= await handleJpeg(data, setValue, setImageEdited);
-            void handleUploadOnMongoForClient(respUrl, setIsLoadingEdited);
+            const respUrl= await handleJpeg(data);
+            await handleUploadOnMongoForClient(respUrl, data.file[0].name, setIsLoadingEdited);
+            setValue('file', '');
+            setValue('prompt', '');
+            setImageEdited(respUrl ? respUrl : '');
             return;
         }
 
         if (data.file[0].type === 'image/png') {
-            const respUrl= await handlePng(data, setValue, setImageEdited);
-            void handleUploadOnMongoForClient(respUrl, setIsLoadingEdited);
+            const respUrl= await handlePng(data);
+            await handleUploadOnMongoForClient(respUrl, data.file[0].name , setIsLoadingEdited);
+            setValue('file', '');
+            setValue('prompt', '');
+            setImageEdited(respUrl ? respUrl : '');
         }
 
     }

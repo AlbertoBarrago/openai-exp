@@ -18,6 +18,5 @@ export async function POST(req) {
             success: false
         })
     }
-
 }
 

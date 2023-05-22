@@ -8,7 +8,7 @@ import {LoaderComponent} from "@/components/layout/loader";
 
 async function getData() {
     const res = await fetch(`${process.env.BASE_URL}/api/result`, {
-        next: { revalidate: 10 } // refresh every 10 second
+        next: {revalidate: 10} // refresh every 10 second
     });
     if (!res.ok) {
         throw new Error('Failed to fetch data');
@@ -24,7 +24,7 @@ export default function Result() {
             setData(data.responseImageList);
             setIsLoading(false);
         });
-    },[]);
+    }, []);
 
     return (
         <>
@@ -32,11 +32,11 @@ export default function Result() {
                 <Title title={'OpenAi'} subTitle={'results'}/>
                 <SubDescription description={'Stored creations'}/>
                 {/*{!isLoading && (<TableResult data={data}/>)}*/}
-                {isLoading && ( <LoaderComponent icon={`<i class="bi bi-arrow-clockwise"></i>`}/> )}
+                {isLoading && (<LoaderComponent icon={`<i class="bi bi-arrow-clockwise"></i>`}/>)}
                 {(!isLoading && data) && (
-                    <div className={`grid grid-cols-1 md:grid-cols-3 gap-3 mb-10`}>
-                        <CardList data={data} />
-                        </div>)}
+                    <div className={`grid grid-cols-1 md:grid-cols-3 gap-3 mt-10`}>
+                        <CardList data={data}/>
+                    </div>)}
             </main>
         </>)
 }

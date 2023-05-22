@@ -1,5 +1,6 @@
 import clientPromise from "../../../../mongo.conf";
 import {NextResponse} from "next/server";
+import {getAuth} from "@clerk/nextjs/server";
 
 const handleTimeStamp = (date) => {
     const dateformat = new Date(date);
@@ -13,15 +14,17 @@ const handleTimeStamp = (date) => {
     });
 }
 
-export async function GET() {
+export async function GET(req) {
     const client = await clientPromise;
+    const { userId } = getAuth(req);
     const collection = client.db('openai-exp').collection('images');
 
-    const data = await collection.find().toArray()
+    //get Image by userId
+    const data = await collection.find({userId:userId}).toArray();
 
     //order by alphabet
     data.sort((a, b) => {
-        if (a.title < b.title) {
+        if (a.creationDate > b.creationDate) {
             return -1;
         }
         return 1;

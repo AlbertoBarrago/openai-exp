@@ -99,16 +99,14 @@ export const editImageOpenai = async (file, mask, prompt, isJpeg) => {
  * @param file
  * @param mask
  * @param prompt
- * @param setEdit
  * @param isJpeg
  * @return string
  */
-export const editImage = async (file, mask, prompt, setEdit, isJpeg) => {
+export const editImage = async (file, mask, prompt, isJpeg) => {
     const urlImage = await editImageOpenai(file, mask, prompt, isJpeg);
     if (urlImage === '') {
         return null;
     } else {
-        setEdit(urlImage);
         return urlImage;
     }
 }
@@ -261,17 +259,14 @@ export const dataURLtoFile = (dataUrl, filename) => {
  * Handle jpeg
  * @param data
  * @param setValue
- * @param setImageEdited
  * @return {Promise<void>}
  */
-export const handleJpeg = async (data, setValue, setImageEdited) => {
+export const handleJpeg = async (data) => {
     await convertFileToType(data.file[0], 'image/png').then(
         (file) => {
             data.file = file;
-             editImage(data.file, data.mask, data.prompt, setImageEdited, true).then(
+             editImage(data.file, data.mask, data.prompt, true).then(
                 (respUrl) => {
-                    setValue('file', '');
-                    setValue('prompt', '');
                     return respUrl;
                 }
             )
@@ -281,14 +276,11 @@ export const handleJpeg = async (data, setValue, setImageEdited) => {
  * Handle png
  * @param data
  * @param setValue
- * @param setImageEdited
  * @return {Promise<void>}
  */
-export const handlePng = async (data, setValue, setImageEdited) => {
-    await editImage(data.file, data.mask, data.prompt, setImageEdited, false).then(
+export const handlePng = async (data) => {
+    await editImage(data.file, data.mask, data.prompt, false).then(
         (respUrl) => {
-            setValue('file', '');
-            setValue('prompt', '');
             return respUrl;
         }
     );
@@ -302,41 +294,4 @@ export const handlePng = async (data, setValue, setImageEdited) => {
 export const checkIfHasLessThan1000Chars = (prompt) => {
     return prompt.length < 1000;
 }
-export const uploadImage = async (imageUrl) => {
-    try {
-        const cloudinaryUrl = `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/upload`;
-        const cloudinaryApiKey = process.env.CLOUDINARY_API_KEY;
-        const cloudinaryUploadPreset = process.env.CLD_CLOUD_NAME;
-
-        // Make the fetch request to Cloudinary
-        const response = await fetch(cloudinaryUrl, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                file: imageUrl,
-                api_key: cloudinaryApiKey,
-                upload_preset: cloudinaryUploadPreset
-            }),
-        });
-
-        // Check the response from Cloudinary
-        if (response.ok) {
-            // console.log('Image uploaded successfully', data);
-
-            return await response.json();
-
-        } else {
-            console.log('Image upload failed', response);
-        }
-    } catch (e) {
-        console.log('Error uploading image', e);
-        new Response({
-            error: 500,
-            success: false
-        });
-    }
-}
-
 

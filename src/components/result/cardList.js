@@ -19,8 +19,8 @@ export const CardList = ({data}) => {
                                 src={item.image}/>
                         </figure>
                         <div className="card-body text-center m-auto">
-                            <h2 className="card-title">{capitalizeFirstLetter(item.type)}</h2>
-                            <p>{item.title ? item.title : "no desc"}</p>
+                            <h2 className={`text-xl`}>{capitalizeFirstLetter(item.type)}</h2>
+                            <p>{item.title ? capitalizeFirstLetter(item.title) : "no desc"}</p>
                             {/*<div className="card-actions m-auto">*/}
                             {/*    <button className="btn btn-primary">Zoom</button>*/}
                             {/*</div>*/}
