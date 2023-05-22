@@ -17,7 +17,7 @@ export const Uploader = ({handleSubmit, handleForm, register, errors, isLoading}
                             {/*</label>*/}
                             <input type="file"
                                    accept="image/png, image/jpeg"
-                                   className="file-input file-input-bordered [&::file-selector-button]:hidden p-2.5 text-secondary"
+                                   className="file-input w-full max-w-xs text-secondary"
                                    {...register('file', {required: true})}/>
 
                             <p className="mb-2">{errors.file && (
@@ -31,7 +31,7 @@ export const Uploader = ({handleSubmit, handleForm, register, errors, isLoading}
                             <input type="file"
                                    accept="image/png, image/jpeg"
                                    placeholder={"Mask"}
-                                   className="file-input file-input-bordered [&::file-selector-button]:hidden p-2.5 text-secondary"
+                                   className="file-input w-full max-w-xs text-secondary"
                                    {...register('mask', {required: true})}/>
 
                             <p className="mb-2">{errors.mask && (
