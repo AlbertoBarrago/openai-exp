@@ -343,10 +343,9 @@ export const uploadImage = async (imageUrl) => {
 
         // Check the response from Cloudinary
         if (response.ok) {
-            const data = await response.json();
             // console.log('Image uploaded successfully', data);
 
-            return data;
+            return await response.json();
 
         } else {
             console.log('Image upload failed', response);
