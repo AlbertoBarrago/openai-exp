@@ -1,4 +1,6 @@
 import Image from "next/image";
+import Zoom from 'react-medium-image-zoom'
+
 
 export const CardList = ({data}) => {
     const capitalizeFirstLetter = (string) => {
@@ -9,21 +11,20 @@ export const CardList = ({data}) => {
         <>
             {data.map((item) => {
                 return (
-                    <div key={item.id} className="card w-auto bg-neutral shadow-xl">
+                    <div key={item.id} className="card w-96 bg-neutral shadow-xl">
                         <figure>
-                            <Image
-                                key={item.id}
-                                alt={'openai-card'}
-                                width={350}
-                                height={350}
-                                src={item.image}/>
+                            <Zoom>
+                                <Image
+                                    key={item.id}
+                                    alt={'openai-card'}
+                                    width={450}
+                                    height={450}
+                                    src={item.image}/>
+                            </Zoom>
                         </figure>
                         <div className="card-body text-center m-auto">
                             <h2 className={`text-xl`}>{capitalizeFirstLetter(item.type)}</h2>
                             <p>{item.title ? capitalizeFirstLetter(item.title) : "no desc"}</p>
-                            {/*<div className="card-actions m-auto">*/}
-                            {/*    <button className="btn btn-primary">Zoom</button>*/}
-                            {/*</div>*/}
                         </div>
                     </div>
                 )

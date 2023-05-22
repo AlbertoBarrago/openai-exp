@@ -1,5 +1,6 @@
 import './globals.css'
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import 'react-medium-image-zoom/dist/styles.css'
 import {ClerkProvider} from "@clerk/nextjs";
 import Head from "next/head";
 import {Header} from "@/components/layout/header";
