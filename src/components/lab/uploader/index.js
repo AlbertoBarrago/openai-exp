@@ -5,6 +5,7 @@ export const Uploader = ({handleSubmit, handleForm, register, errors, isLoading}
         <>
             <form key={2} onSubmit={handleSubmit(handleForm)}>
                 <p className="mb-4 text-red-600 p-3 rounded">Upload: .png ＜ 4MB</p>
+                <p className={`m-auto w-[60%] mb-5 text-secondary`}> The mask allow to indicate a specific point where edit image.</p>
                 <div className={`grid grid-cols-1 gap-2 mb-2`}>
                     <div>
                         <small>Select file</small> <br/>
@@ -35,9 +36,7 @@ export const Uploader = ({handleSubmit, handleForm, register, errors, isLoading}
                     </div>
                 </div>
 
-                <p className={`m-auto w-5/6 mb-5`}> For create an accurate image give some instructions properly; like
-                    style, texture etc...</p>
-                <textarea placeholder="Less than 1000 chars"
+                <textarea placeholder="Less than 1000 chars mt-5"
                           className="textarea textarea-primary w-full max-w-xs mb-2 border-2 border-white"
                           {...register('prompt', {required: true})}/>
 

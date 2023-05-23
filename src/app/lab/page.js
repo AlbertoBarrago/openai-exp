@@ -106,20 +106,6 @@ export default function Dashboard() {
         }
     }
     /**
-     *
-     * @param respUrl
-     * @param fileName
-     * @param type
-     * @return {Promise<object>}
-     */
-    const handleUploadOnMongoForClient = async (respUrl, fileName, type) => {
-        if(!respUrl) {
-            showAlert('Error on upload image', setAlertSetUp);
-            return;
-        }
-        return await insertImageOnMongo(respUrl, fileName, type);
-    }
-    /**
      * Handle create image
      * @param data
      * @return {Promise<void>}
@@ -291,7 +277,6 @@ export default function Dashboard() {
                                               h4={'Here, we are testing:'}
                                               apiUrl={'POST .../v1/result/generations'}
                                               type={'create'}/>
-
                             {(imageCreated === '') && (
                                 <>
                                     <CreateImage registerCreate={registerCreate}
@@ -317,7 +302,6 @@ export default function Dashboard() {
                                               h4={'Upload an image to create a variation of it'}
                                               apiUrl={'.../v1/result/variation'}
                                               type={'create-variation'}/>
-
                             {imageVariation === '' && (
                                 <>
                                     <UploaderVariation
@@ -343,7 +327,6 @@ export default function Dashboard() {
                                               h4={'Upload a mask with specific area to edit your image'}
                                               apiUrl={'.../v1/result/edits'}
                                               type={'create-edit'}/>
-
                             {imageEdited === '' && (
                                 <>
                                     <Uploader
