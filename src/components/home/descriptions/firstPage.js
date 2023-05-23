@@ -5,7 +5,7 @@ export const DescriptionFirstPage = ({router}) => {
         <>
             <article className="prose lg:prose-xl m-auto mb-5 mt-4">
                 <Image
-                    className={`m-auto cursor-pointer hover:opacity-80 custom-parallax`}
+                    className={`m-auto cursor-pointer hover:opacity-80`}
                     width={280}
                     height={280}
                     onClick={() => {
