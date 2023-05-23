@@ -4,6 +4,7 @@ import {useRouter} from "next/navigation";
 import {Title} from "@/components/layout/title";
 import {DescriptionFirstPage} from "@/components/home/descriptions/firstPage";
 import {GoToLab} from "@/components/home/goToLab";
+import Head from "next/head";
 
 
 export default function Home() {

@@ -2,19 +2,25 @@ import './globals.css'
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'react-medium-image-zoom/dist/styles.css'
 import {ClerkProvider} from "@clerk/nextjs";
-import Head from "next/head";
 import {Header} from "@/components/layout/header";
 import {Footer} from "@/components/layout/footer";
 import Script from "next/script";
+
+export const metadata = {
+    title: 'Albz - OpenAi',
+    description: <meta name="description" content="OpenAi experiments"/>,
+};
 
 export default function RootLayout({children}) {
     return (
         <ClerkProvider>
             <html lang="en">
-            <Head>
-                <title>Albz - OpenAi</title>
-                <meta name="description" content="OpenAi experiments"/>
-            </Head>
+            <body className={`overflow-x-hidden min-h-screen`}>
+             <Header/>
+                {children}
+             <Footer/>
+            </body>
+            </html>
             <Script strategy="afterInteractive" src="https://www.googletagmanager.com/gtag/js?id=G-G8986MEGCD"/>
             <Script
                 id='google-analytics'
@@ -30,12 +36,6 @@ export default function RootLayout({children}) {
                         `,
                 }}
             />
-            <body className={`overflow-x-hidden min-h-screen`}>
-             <Header/>
-                {children}
-             <Footer/>
-            </body>
-            </html>
         </ClerkProvider>
     )
 }
