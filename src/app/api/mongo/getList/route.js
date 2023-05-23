@@ -9,7 +9,6 @@ export async function GET(req) {
     const pageSize = searchParams.get('pageSize') || 10;
     const pageNumber = searchParams.get('pageNumber') || 1;
     const q = searchParams.get('q') || '';
-    console.log("q -> ", q)
     const client = await clientPromise;
     const {userId} = getAuth(req);
     const collection = client.db('openai-exp').collection('images');

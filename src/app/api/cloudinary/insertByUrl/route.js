@@ -6,7 +6,6 @@ const cloudinaryUploadPreset = process.env.CLD_CLOUD_NAME;
 
 export async function POST(req) {
     const reqResp = await req.json()
-    console.log('imageUrl', reqResp.imageUrl);
     const response = await fetch(cloudinaryUrl, {
         method: 'POST',
         headers: {
