@@ -15,6 +15,29 @@ export const Header = () => {
         [audio, setAudio] = useState(null),
         [isActiveSound, setIsActiveSound] = useState(false),
         [modalIsOpen, setIsOpen] = useState(true);
+
+    const [isMobile, setIsMobile] = useState(false);
+    useEffect(() => {
+        window.addEventListener('resize', () => {
+            if (window.innerWidth < 768) {
+                setIsMobile(true);
+            }
+            if (window.innerWidth > 768) {
+                setIsMobile(false)
+            }
+        })
+        return () => {
+            window.removeEventListener('resize', () => {
+                if (window.innerWidth < 768) {
+                    setIsMobile(true);
+                }
+                if (window.innerWidth > 768) {
+                    setIsMobile(false);
+                }
+            })
+        }
+    }, [])
+
     /**
      * List of routes
      * @type {[{path: string, name: string, icon: JSX.Element},{path: string, name: string, icon: JSX.Element},{path: string, name: string, icon: JSX.Element}]}
@@ -102,7 +125,8 @@ export const Header = () => {
                 {(setupSwap && audio) && (<SoundPlayer args={setupSwap} handlePlayer={handleStartAndPause} />)}
             </div>
             <div className="flex-none gap-2 me-5">
-                <div className="flex-none">
+
+                {!isMobile &&  (<div className="flex-none">
                     <ul className="menu menu-horizontal px-1">
                         {routes.map((route, i) => (
                             <li className={`mb-3`} key={i}>
@@ -113,23 +137,24 @@ export const Header = () => {
                                 </Link>
                             </li>))}
                     </ul>
-                </div>
-                {/*Mobile Menu*/}
-                {/*<div className="dropdown dropdown-end me-4">*/}
-                {/*    <label tabIndex={0} className="btn btn-ghost btn-xs">*/}
-                {/*        Menù*/}
-                {/*    </label>*/}
-                {/*    <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52" >*/}
-                {/*        {routes.map((route, i) => (*/}
-                {/*            <li className={`mb-3`} key={i}>*/}
-                {/*                <Link href={route.path}*/}
-                {/*                      onClick={handleClick}*/}
-                {/*                      className={`btn btn-ghost text-secondary ${pathname === route.path ? 'btn-active' : ''}`}>*/}
-                {/*                    {route.icon} {route.name}*/}
-                {/*                </Link>*/}
-                {/*            </li>))}*/}
-                {/*    </ul>*/}
-                {/*</div>*/}
+                </div>)}
+
+                {isMobile && (<div className="dropdown dropdown-end me-4">
+                    <label tabIndex={0} className="btn btn-ghost btn-xs">
+                        Menù
+                    </label>
+                    <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52" >
+                        {routes.map((route, i) => (
+                            <li className={`mb-3`} key={i}>
+                                <Link href={route.path}
+                                      onClick={handleClick}
+                                      className={`btn btn-ghost text-secondary ${pathname === route.path ? 'btn-active' : ''}`}>
+                                    {route.icon} {route.name}
+                                </Link>
+                            </li>))}
+                    </ul>
+                </div> )}
+
                 <div className={`relative me-3 bottom-2`}><UserButton/></div>
             </div>
         </div>)}

@@ -3,7 +3,7 @@ import {Button, Modal} from "react-daisyui";
 export const AskModal = ({isOpen, setIsOpen, action, args}) => {
     return (
         <>
-            <div className="font-sans">
+            <div className="font-sans z-50">
                 <Modal {...args} open={isOpen}>
                     <Modal.Header className="font-bold">
                         {args.title}
