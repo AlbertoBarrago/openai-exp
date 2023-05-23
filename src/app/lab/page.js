@@ -99,8 +99,7 @@ export default function Dashboard() {
                 }
             });
             if (response.ok) {
-                const data = await response.json();
-                console.log('success uploaded on mongo', data)
+                return await response.json();
             }
         } catch (e) {
             console.error('error on get image on mongo', e)
@@ -110,14 +109,15 @@ export default function Dashboard() {
      *
      * @param respUrl
      * @param fileName
+     * @param type
      * @return {Promise<void>}
      */
-    const handleUploadOnMongoForClient = async (respUrl, fileName) => {
+    const handleUploadOnMongoForClient = async (respUrl, fileName, type) => {
         if(!respUrl) {
             showAlert('Error on upload image', setAlertSetUp);
             return;
         }
-        return await insertImageOnMongo(respUrl, fileName, 'edited');
+        return await insertImageOnMongo(respUrl, fileName, type);
     }
     /**
      * Handle create image
@@ -169,13 +169,14 @@ export default function Dashboard() {
         // Start process
         const respUrl = await produceImageVariations(data, userId);
         const urlFromCloudinary = await uploadOnCloudinary(respUrl)
-        const mongoResp = handleUploadOnMongoForClient(urlFromCloudinary.url, data.file[0].name);
+        const mongoResp = await handleUploadOnMongoForClient(urlFromCloudinary.url, data.file[0].name, 'variation');
         //check if success
         if (mongoResp) {
             //show success
             setIsLoadingVariation(false)
             setValue('file', '');
             setImageVariation(respUrl);
+            showConfettiForSeconds(7, setConfettiWidth, setConfettiHeight)
         } else {
             //show error
             showAlert('Error on upload image on mongo', setAlertSetUp);
@@ -191,7 +192,7 @@ export default function Dashboard() {
     const handleEditForm = async (data) => {
         setIsLoadingEdited(true);
         //check if file is png or jpeg
-        if (data.file[0].type !== 'image/png' && data.file[0].type !== 'image/jpeg') {
+        if (data.file[0].type !== 'image/png') {
             showAlert(`Type ${data.file[0].type} not allow`, setAlertSetUp);
             setValue('file', '');
             setIsLoadingEdited(false);
@@ -202,6 +203,7 @@ export default function Dashboard() {
             showAlert('Prompt must be less than 1000 chars', setAlertSetUp);
             setValue('prompt', '');
             setIsLoadingEdited(false);
+            showConfettiForSeconds(7, setConfettiWidth, setConfettiHeight)
             return;
         }
         //check if file is less than 4MB
@@ -209,13 +211,14 @@ export default function Dashboard() {
             showAlert('File is greater than 4MB', setAlertSetUp);
             setValue('file', '');
             setIsLoadingEdited(false);
+            showConfettiForSeconds(7, setConfettiWidth, setConfettiHeight)
             return;
         }
 
         //Start process
-        const respUrl = data.file[0].type !== 'image/jpeg' ? await handleJpeg(data) : await handlePng(data);
+        const respUrl = await handlePng(data);
         const urlFromCloudinary = await uploadOnCloudinary(respUrl)
-        const mongoResp = await handleUploadOnMongoForClient(urlFromCloudinary.url, data.file[0].name, setIsLoadingEdited);
+        const mongoResp = await handleUploadOnMongoForClient(urlFromCloudinary.url, data.file[0].name, 'edited');
         //check if success
         if (mongoResp) {
             //set success
@@ -223,6 +226,7 @@ export default function Dashboard() {
             setValue('prompt', '');
             setImageEdited(respUrl ? respUrl : null);
             setIsLoadingEdited(false);
+            showConfettiForSeconds(7, setConfettiWidth, setConfettiHeight);
         } else {
             //show error
             showAlert('Error on upload image on mongo', setAlertSetUp);

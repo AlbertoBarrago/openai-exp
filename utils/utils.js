@@ -244,7 +244,7 @@ export const convertFileToType = (file, type) => {
  * @return {File}
  */
 export const dataURLtoFile = (dataUrl, filename) => {
-    let arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+    let arr = dataUrl.split(','), mime = arr[0].match(/:(.*?);/)[1],
         bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
     while (n--) {
         u8arr[n] = bstr.charCodeAt(n);
@@ -279,7 +279,7 @@ export const handlePng = async (data) => {
      * @private
      * @return {Promise<string>}
      */
-    await editImage(data.file, data.mask, data.prompt, false).then(
+   return await editImage(data.file, data.mask, data.prompt, false).then(
         (respUrl) => {
             return respUrl;
         }
