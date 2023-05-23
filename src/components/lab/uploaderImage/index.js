@@ -1,14 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
 
-export const UploaderImage = ({imageEdited, setImageEdited, setValue, isLoading}) => {
+export const UploaderImage = ({imageEdited, setImageEdited, setValue}) => {
         return (
             <>
                 <div className="w-100 m-auto text-center mt-5">
                     {imageEdited !== '' && (
                         <Image className="shadow border-2 border-accent-focus mx-auto"
                                src={imageEdited}
-                               loader={isLoading}
                                width={300}
                                height={300} alt="AI"/>)}
                     <div className={`grid grid-cols-1`}></div>

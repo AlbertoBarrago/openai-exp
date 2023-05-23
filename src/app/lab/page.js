@@ -5,7 +5,6 @@ import {
     checkIfHasLessThan1000Chars,
     checkIfIsGreaterThan4MB,
     createImageOpenai,
-    handleJpeg,
     handlePng,
     produceImageVariations,
     showAlert,
@@ -80,7 +79,7 @@ export default function Dashboard() {
      * @param imageUrl
      * @param title
      * @param type
-     * @return {Promise<void>}
+     * @return {Promise<object>}
      */
     const insertImageOnMongo = async (imageUrl, title, type) => {
         let body = {
@@ -103,6 +102,7 @@ export default function Dashboard() {
             }
         } catch (e) {
             console.error('error on get image on mongo', e)
+            return null;
         }
     }
     /**
@@ -110,7 +110,7 @@ export default function Dashboard() {
      * @param respUrl
      * @param fileName
      * @param type
-     * @return {Promise<void>}
+     * @return {Promise<object>}
      */
     const handleUploadOnMongoForClient = async (respUrl, fileName, type) => {
         if(!respUrl) {
@@ -166,18 +166,26 @@ export default function Dashboard() {
             setIsLoadingVariation(false);
             return;
         }
-        // Start process
+        // Start openai variation
         const respUrl = await produceImageVariations(data, userId);
-        const urlFromCloudinary = await uploadOnCloudinary(respUrl)
-        const mongoResp = await handleUploadOnMongoForClient(urlFromCloudinary.url, data.file[0].name, 'variation');
-        //check if success
-        if (mongoResp) {
+        if(!respUrl) {
+            showAlert('Error on upload image', setAlertSetUp);
+            setValueVariation('file', '');
+            setIsLoadingVariation(false);
+            return;
+        }
+        //insert image on cloudinary
+        const urlFromCloudinary = await uploadOnCloudinary(respUrl);
+        //insert image on mongo
+        const mongoCall = await insertImageOnMongo(urlFromCloudinary.url, data.file[0].name, 'variation');
+        if (mongoCall.success) {
             //show success
             setIsLoadingVariation(false)
             setValue('file', '');
             setImageVariation(respUrl);
             showConfettiForSeconds(7, setConfettiWidth, setConfettiHeight)
-        } else {
+        }
+        if(!mongoCall.success) {
             //show error
             showAlert('Error on upload image on mongo', setAlertSetUp);
             setValue('file', '');
@@ -215,27 +223,34 @@ export default function Dashboard() {
             return;
         }
 
-        //Start process
+        //Start openai edit
         const respUrl = await handlePng(data);
+        if(!respUrl) {
+            showAlert('Error on edit image', setAlertSetUp);
+            setValueVariation('file', '');
+            setIsLoadingVariation(false);
+            return;
+        }
+        //insert image on cloudinary
         const urlFromCloudinary = await uploadOnCloudinary(respUrl)
-        const mongoResp = await handleUploadOnMongoForClient(urlFromCloudinary.url, data.prompt, 'edited');
+        //insert image on mongo
+        const mongoCall =  await insertImageOnMongo(urlFromCloudinary.url, data.prompt, 'edited');
         //check if success
-        if (mongoResp) {
+        if (mongoCall.success) {
             //set success
             setValue('file', '');
             setValue('prompt', '');
-            setImageEdited(respUrl ? respUrl : null);
+            setImageEdited(respUrl);
             setIsLoadingEdited(false);
             showConfettiForSeconds(7, setConfettiWidth, setConfettiHeight);
-        } else {
+        }
+        if(!mongoCall.success){
             //show error
             showAlert('Error on upload image on mongo', setAlertSetUp);
             setValue('file', '');
             setValue('prompt', '');
             setIsLoadingEdited(false);
         }
-
-
     }
     /**
      * Go to openai api

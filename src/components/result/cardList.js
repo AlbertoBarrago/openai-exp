@@ -9,9 +9,7 @@ export const CardList = ({data}) => {
 
     return (
         <>
-
             {data.map((item) => {
-                console.log(item)
                 return (
                     <div key={item.id} className="card bg-neutral shadow-xl">
                         <figure>

@@ -126,13 +126,10 @@ export const produceImageVariations = async (image, userId) => {
             'url',
             userId,
         );
-        if (returnUrl === null) {
-            return null
-        } else {
-            return returnUrl.data.data[0].url;
-        }
+        return returnUrl.data.data[0].url;
     } catch (error) {
         console.error(error);
+        return null;
     }
 
 }
@@ -171,72 +168,6 @@ export const showAlert = (message, setAlertSetUp) => {
         }, 5000);
 }
 /**
- * Convert file to type
- * @param file
- * @param type
- * @return {Promise<unknown>}
- */
-export const convertFileToType = (file, type) => {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-
-        reader.onload = function (event) {
-            const jpegDataUrl = event.target.result;
-
-            const image = new Image();
-
-            image.onload = function () {
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
-
-                // Set canvas dimensions to match the image
-                canvas.width = image.width;
-                canvas.height = image.height;
-
-                // Draw the image onto the canvas
-                ctx.drawImage(image, 0, 0);
-
-                // Get the RGBA pixel data
-                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-
-                // Manipulate the pixel data to remove the background
-                for (let i = 0; i < imageData.data.length; i += 4) {
-                    // Transform pixel to grayscale
-                    imageData.data[i + 3] = 0;
-                }
-
-                // Create a new canvas for RGBA data
-                const rgbaCanvas = document.createElement('canvas');
-                const rgbaCtx = rgbaCanvas.getContext('2d');
-
-                // Set RGBA canvas dimensions
-                rgbaCanvas.width = canvas.width;
-                rgbaCanvas.height = canvas.height;
-
-                // Set RGBA data
-                rgbaCtx.putImageData(imageData, 0, 0);
-
-                // Convert RGBA canvas to PNG data URL
-                const pngDataUrl = rgbaCanvas.toDataURL(type);
-
-                // Resolve the promise with the PNG data URL
-                resolve(pngDataUrl);
-            };
-
-            // Set the JPEG data URL
-            image.src = jpegDataUrl;
-        };
-
-        // Read the file as data URL
-        reader.readAsDataURL(file);
-
-        reader.onerror = function (event) {
-            // Reject the promise with the error event
-            reject(event);
-        };
-    });
-}
-/**
  * Convert data url to file
  * This function do what new File does not do!
  * @param dataUrl
@@ -250,22 +181,6 @@ export const dataURLtoFile = (dataUrl, filename) => {
         u8arr[n] = bstr.charCodeAt(n);
     }
     return new File([u8arr], filename, {type: mime});
-}
-/**
- * Handle jpeg
- * @param data
- * @return {Promise<void>}
- */
-export const handleJpeg = async (data) => {
-    await convertFileToType(data.file[0], 'image/png').then(
-        (file) => {
-            data.file = file;
-             editImage(data.file, data.mask, data.prompt, true).then(
-                (respUrl) => {
-                    return respUrl;
-                }
-            )
-        })
 }
 /**
  * Handle png

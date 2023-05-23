@@ -1,6 +1,6 @@
 export const LoaderComponent = () => {
     return (
-        <div className={`grid grid-cols-1 w-100 text-center m-auto mt-10`}>
+        <div className={`grid grid-cols-1 text-center m-auto`}>
             <i className="animate-spin bi bi-arrow-clockwise"></i>
         </div>
     )
