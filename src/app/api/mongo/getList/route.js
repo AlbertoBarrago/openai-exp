@@ -6,25 +6,27 @@ import {handleTimeStamp, orderDateBy} from "../../../../../utils/utils";
 export async function GET(req) {
     console.log("GET START: mongo/getList");
     const {searchParams} = new URL(req.url);
+    // Pagination and filter
     const pageSize = searchParams.get('pageSize') || 10;
     const pageNumber = searchParams.get('pageNumber') || 1;
     const q = searchParams.get('q') || '';
+
+    // Connect to MongoDB
     const client = await clientPromise;
     const {userId} = getAuth(req);
     const collection = client.db('openai-exp').collection('images');
 
+    // Setting options
     const options = {
         skip: (Number(pageNumber) - 1) * Number(pageSize),
         limit: Number(pageSize),
     };
-    // console.log("options -> ", options);
+    //get count by userId
     const query = {
         userId: userId,
         type: q.toString() ? q.toString() : {$exists: true}
     }
     const dataCount = await collection.countDocuments(query);
-    // console.log("DataCount -> ", dataCount)
-
     //get Image by userId
     const data = await collection.find(query, options).toArray();
     //order by creationDate
@@ -44,6 +46,7 @@ export async function GET(req) {
         });
 
     })
+
     console.log("GET END: mongo/getList");
     // Return the data or use it in your Next.js component
     return NextResponse.json({

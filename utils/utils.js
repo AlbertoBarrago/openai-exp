@@ -235,4 +235,9 @@ export const orderDateBy = (data, by) => {
         return 1;
     })
 }
-
+export const scrollToTop = () =>{
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+};

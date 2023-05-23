@@ -6,6 +6,7 @@ import {CardList} from "@/components/result/cardList";
 import {LoaderComponent} from "@/components/layout/loader";
 import {LoadMore} from "@/components/result/loadMore";
 import {FilterResult} from "@/components/result/filter";
+import {scrollToTop} from "../../../utils/utils";
 
 async function getData(pageSize, filter = '') {
     const pageNumber = 1;
@@ -37,8 +38,8 @@ export default function Result() {
         // check if limit is over
         if (limit <= pageSize) {
             return;
-        } else {
         }
+        scrollToTop();
         setIsLoadMore(true);
         // setData(null)
         let newSize = pageSize + 5;

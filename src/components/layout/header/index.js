@@ -2,14 +2,19 @@
 import Link from "next/link";
 import {UserButton} from "@clerk/nextjs";
 import {usePathname} from "next/navigation";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
+import SoundPlayer from "@/components/soundplayer/soundplayer";
+import {AskModal} from "@/components/commons/modal/ask";
 
 const privateRoutes = ['/', '/lab', '/result'];
+let counter = 0;
 
 export const Header = () => {
     const pathname = usePathname(),
-     [isPrivateView, setIsPrivateView] = useState(null);
-
+        [isPrivateView, setIsPrivateView] = useState(null),
+        [audio, setAudio] = useState(null),
+        [isActiveSound, setIsActiveSound] = useState(false),
+        [modalIsOpen, setIsOpen] = useState(true);
     /**
      * List of routes
      * @type {[{path: string, name: string, icon: JSX.Element},{path: string, name: string, icon: JSX.Element},{path: string, name: string, icon: JSX.Element}]}
@@ -22,15 +27,57 @@ export const Header = () => {
         name: 'Result', path: '/result', icon: <i className="bi bi-bucket-fill"></i>
     }]
 
+    const play = () => {
+        void audio.play();
+    }
+
+    const pause = () => {
+        void audio.pause();
+    }
+
     /**
      * Close daily dropdown when is clicked
+     * @deprecated
      */
     const handleClick = () => {
         const elem = document.activeElement;
-        if(elem){
+        if (elem) {
             elem?.blur();
         }
     };
+
+    const handleAuthForMusic = (value) => {
+        setIsActiveSound(value);
+        if(value === true) {
+            void play();
+        }
+    }
+
+    const handleStartAndPause = () => {
+        if(counter === 1) {
+            counter = 0;
+            return;
+        }
+        if(counter === 0 && isActiveSound) {
+            void pause();
+            counter++;
+            setIsActiveSound(false)
+            return;
+
+        }
+        if(counter === 0 && !isActiveSound) {
+            void play();
+            counter++;
+            setIsActiveSound(true)
+        }
+    }
+
+    let setupSwap = {
+        onElement: <i className="bi bi-music-player-fill"></i>,
+        offElement: <i className="bi bi-music-player"></i>,
+        active: isActiveSound,
+        flip: true,
+    }
 
     useEffect(() => {
         if (privateRoutes.includes(pathname)) {
@@ -38,6 +85,7 @@ export const Header = () => {
         } else {
             setIsPrivateView(false);
         }
+        setAudio(new Audio('/mp3/open-welcome3.mp3'));
     }, [pathname]);
 
     return (<>
@@ -51,13 +99,11 @@ export const Header = () => {
                         </path>
                     </svg>
                     <span className={`ms-2 text-secondary`}>Openai-Exp</span></Link>
+                {(setupSwap && audio) && (<SoundPlayer args={setupSwap} handlePlayer={handleStartAndPause} />)}
             </div>
             <div className="flex-none gap-2 me-5">
-                <div className="dropdown dropdown-end me-4">
-                    <label tabIndex={0} className="btn btn-ghost btn-xs">
-                        Menù
-                    </label>
-                    <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52" >
+                <div className="flex-none">
+                    <ul className="menu menu-horizontal px-1">
                         {routes.map((route, i) => (
                             <li className={`mb-3`} key={i}>
                                 <Link href={route.path}
@@ -68,8 +114,25 @@ export const Header = () => {
                             </li>))}
                     </ul>
                 </div>
-                <span className={`me-3`}><UserButton/></span>
+                {/*Mobile Menu*/}
+                {/*<div className="dropdown dropdown-end me-4">*/}
+                {/*    <label tabIndex={0} className="btn btn-ghost btn-xs">*/}
+                {/*        Menù*/}
+                {/*    </label>*/}
+                {/*    <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52" >*/}
+                {/*        {routes.map((route, i) => (*/}
+                {/*            <li className={`mb-3`} key={i}>*/}
+                {/*                <Link href={route.path}*/}
+                {/*                      onClick={handleClick}*/}
+                {/*                      className={`btn btn-ghost text-secondary ${pathname === route.path ? 'btn-active' : ''}`}>*/}
+                {/*                    {route.icon} {route.name}*/}
+                {/*                </Link>*/}
+                {/*            </li>))}*/}
+                {/*    </ul>*/}
+                {/*</div>*/}
+                <div className={`relative me-3 bottom-2`}><UserButton/></div>
             </div>
         </div>)}
+        <AskModal isOpen={modalIsOpen} setIsOpen={setIsOpen} action={handleAuthForMusic} args={{title: "Musica", description: "Do you want listen music?"}}/>
     </>)
 }

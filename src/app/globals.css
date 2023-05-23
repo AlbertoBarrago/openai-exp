@@ -15,6 +15,7 @@
     transform: perspective(400px) var(--_t,rotateY(var(--_a)));
     transition: .5s;
     cursor: pointer;
+    z-index: -1;
 }
 .custom-parallax:hover {
     clip-path: inset(0 0 0 var(--_f) round var(--r));

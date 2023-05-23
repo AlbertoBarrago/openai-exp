@@ -22,7 +22,7 @@ import {UploaderVariation} from "@/components/lab/variationUploader";
 import {SubDescription} from "@/components/lab/subDescription";
 
 
-export default function Dashboard() {
+export default function Lab() {
     const {isLoaded, isSignedIn, userId} = useAuth(),
         [isLoadingEdited, setIsLoadingEdited] = useState(false),
         [isLoadingCreate, setIsLoadingCreate] = useState(false),
@@ -51,6 +51,7 @@ export default function Dashboard() {
             handleSubmit: handleSubmitVariation,
             formState: {errors: errorsVariation}
         } = useForm();
+
     /**
      * Handle upload image on cloudinary
      * @param imageUrl
