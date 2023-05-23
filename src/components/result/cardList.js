@@ -9,7 +9,9 @@ export const CardList = ({data}) => {
 
     return (
         <>
+
             {data.map((item) => {
+                console.log(item)
                 return (
                     <div key={item.id} className="card bg-neutral shadow-xl">
                         <figure>
@@ -24,6 +26,7 @@ export const CardList = ({data}) => {
                         </figure>
                         <div className="card-body text-center m-auto">
                             <h2 className={`text-xl text-secondary`}>{capitalizeFirstLetter(item.type)}</h2>
+                            <small>{item.creationDate}</small>
                             <p className={`h-12 overflow-auto`}>{item.title ? capitalizeFirstLetter(item.title) : "no desc"}</p>
                         </div>
                     </div>
