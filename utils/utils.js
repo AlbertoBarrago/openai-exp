@@ -294,4 +294,30 @@ export const handlePng = async (data) => {
 export const checkIfHasLessThan1000Chars = (prompt) => {
     return prompt.length < 1000;
 }
+/**
+ * Handle timestamp
+ * @param date
+ * @return {string}
+ */
+export const handleTimeStamp = (date) => {
+    const dateformat = new Date(date);
+    return dateformat.toLocaleDateString("it-IT", {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric'
+    });
+}
+
+export const orderDateBy = (data, by) => {
+    //order by alphabet
+      return data.sort((a, b) => {
+        if (a[by] > b[by]) {
+            return -1;
+        }
+        return 1;
+    })
+}
 

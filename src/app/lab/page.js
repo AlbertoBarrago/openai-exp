@@ -113,6 +113,10 @@ export default function Dashboard() {
      * @return {Promise<void>}
      */
     const handleUploadOnMongoForClient = async (respUrl, fileName) => {
+        if(!respUrl) {
+            showAlert('Error on upload image', setAlertSetUp);
+            return;
+        }
         return await insertImageOnMongo(respUrl, fileName, 'edited');
     }
     /**
@@ -236,6 +240,10 @@ export default function Dashboard() {
     const goToOpenaiApi = (type) => {
         window.open(`//platform.openai.com/docs/api-reference/images/${type.toString()}`, '_blank');
     }
+    /**
+     * Check auth
+     * @return {JSX.Element}
+     */
     const checkAuth = () => {
         if (!isLoaded || !isSignedIn) {
             return <RedirectToSignIn/>;

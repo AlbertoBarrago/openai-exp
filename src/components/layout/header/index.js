@@ -7,8 +7,13 @@ import {useEffect, useState} from "react";
 const privateRoutes = ['/', '/lab', '/result'];
 
 export const Header = () => {
-    const pathname = usePathname();
-    const [isPrivateView, setIsPrivateView] = useState(null);
+    const pathname = usePathname(),
+     [isPrivateView, setIsPrivateView] = useState(null);
+
+    /**
+     * List of routes
+     * @type {[{path: string, name: string, icon: JSX.Element},{path: string, name: string, icon: JSX.Element},{path: string, name: string, icon: JSX.Element}]}
+     */
     const routes = [{
         name: 'Home', path: '/', icon: <i className="bi bi-house"></i>
     }, {
@@ -16,6 +21,16 @@ export const Header = () => {
     }, {
         name: 'Result', path: '/result', icon: <i className="bi bi-bucket-fill"></i>
     }]
+
+    /**
+     * Close daily dropdown when is clicked
+     */
+    const handleClick = () => {
+        const elem = document.activeElement;
+        if(elem){
+            elem?.blur();
+        }
+    };
 
     useEffect(() => {
         if (privateRoutes.includes(pathname)) {
@@ -41,16 +56,12 @@ export const Header = () => {
                 <div className="dropdown dropdown-end me-4">
                     <label tabIndex={0} className="btn btn-ghost btn-xs">
                         Menù
-                        {/*<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"*/}
-                        {/*     className="inline-block w-5 h-5 stroke-current">*/}
-                        {/*    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"*/}
-                        {/*          d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"></path>*/}
-                        {/*</svg>*/}
                     </label>
-                    <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+                    <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52" >
                         {routes.map((route, i) => (
                             <li className={`mb-3`} key={i}>
                                 <Link href={route.path}
+                                      onClick={handleClick}
                                       className={`btn btn-ghost text-secondary ${pathname === route.path ? 'btn-active' : ''}`}>
                                     {route.icon} {route.name}
                                 </Link>

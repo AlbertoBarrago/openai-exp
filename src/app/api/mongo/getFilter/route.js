@@ -1,35 +1,26 @@
 import clientPromise from "../../../../../mongo.conf";
 import {NextResponse} from "next/server";
-import {getAuth} from "@clerk/nextjs/server";
 import {handleTimeStamp, orderDateBy} from "../../../../../utils/utils";
 
 export async function GET(req) {
-    console.log("GET START: mongo/getList");
     const {searchParams} = new URL(req.url);
-    const pageSize = searchParams.get('pageSize') || 10;
-    const pageNumber = searchParams.get('pageNumber') || 1;
-    const q = searchParams.get('q') || '';
-    console.log("q -> ", q)
+    const q = searchParams.get('q') || 'created';
+    console.log(q);
+
     const client = await clientPromise;
-    const {userId} = getAuth(req);
     const collection = client.db('openai-exp').collection('images');
 
-    const options = {
-        skip: (Number(pageNumber) - 1) * Number(pageSize),
-        limit: Number(pageSize),
-    };
-    // console.log("options -> ", options);
     const query = {
-        userId: userId,
-        type: q.toString() ? q.toString() : {$exists: true}
+        type: q.toString()
     }
-    const dataCount = await collection.countDocuments(query);
-    // console.log("DataCount -> ", dataCount)
 
-    //get Image by userId
-    const data = await collection.find(query, options).toArray();
+    const dataCount = await collection.countDocuments(query);
+    const data = await collection.find(query).toArray();
+    console.log("DataCount -> ", dataCount)
+
     //order by creationDate
     const ordered = orderDateBy(data, 'creationDate');
+    console.log("ordered -> ", ordered)
     //prepare data for table
     let responseImageList = [];
     // Remove ID field from every document
@@ -37,7 +28,6 @@ export async function GET(req) {
         item.creationDate = handleTimeStamp(item.creationDate);
         responseImageList.push({
             id: item._id,
-            // userId: item.userId,
             type: item.type,
             title: item.title,
             creationDate: item.creationDate,
@@ -45,12 +35,10 @@ export async function GET(req) {
         });
 
     })
-    console.log("GET END: mongo/getList");
-    // Return the data or use it in your Next.js component
+
     return NextResponse.json({
         responseImageList,
-        dataCount,
-    })
+        dataCount
+    });
+
 }
-
-
