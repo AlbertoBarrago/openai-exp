@@ -16,7 +16,7 @@ export const Uploader = ({handleSubmit, handleForm, register, errors, isLoading}
                             {/*    <span className="btn me-1"> 📁</span>*/}
                             {/*</label>*/}
                             <input type="file"
-                                   accept="image/png, image/jpeg"
+                                   accept="image/png"
                                    className="file-input w-full max-w-xs text-secondary"
                                    {...register('file', {required: true})}/>
 
@@ -29,7 +29,7 @@ export const Uploader = ({handleSubmit, handleForm, register, errors, isLoading}
                             {/*    <span className="btn me-1">👺</span>*/}
                             {/*</label>*/}
                             <input type="file"
-                                   accept="image/png, image/jpeg"
+                                   accept="image/png"
                                    placeholder={"Mask"}
                                    className="file-input w-full max-w-xs text-secondary"
                                    {...register('mask', {required: true})}/>

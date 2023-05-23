@@ -218,7 +218,7 @@ export default function Dashboard() {
         //Start process
         const respUrl = await handlePng(data);
         const urlFromCloudinary = await uploadOnCloudinary(respUrl)
-        const mongoResp = await handleUploadOnMongoForClient(urlFromCloudinary.url, data.file[0].name, 'edited');
+        const mongoResp = await handleUploadOnMongoForClient(urlFromCloudinary.url, data.prompt, 'edited');
         //check if success
         if (mongoResp) {
             //set success
