@@ -20,7 +20,7 @@ export const Header = () => {
                             <li className={`mb-3`} key={i}>
                                 <Link href={route.path}
                                       onClick={handleClick}
-                                      className={`btn btn-ghost text-secondary ${pathname === route.path ? 'btn-active' : ''}`}>
+                                      className={`btn btn-ghost text-secondary me-2 ${pathname === route.path ? 'btn-active' : ''}`}>
                                     {route.icon} {route.name}
                                 </Link>
                             </li>))}

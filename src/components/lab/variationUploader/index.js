@@ -4,8 +4,9 @@ export const UploaderVariation = ({handleSubmit, handleForm, register, errors, i
     return (
         <>
             <form key={2} onSubmit={handleSubmit(handleForm)}>
-                <p className="mb-4 text-red-600 p-3 rounded">Upload: .png ＜ 4MB</p>
-                <p className={`m-auto w-[60%] mb-5 text-secondary`}> More the image is transparent more accurate is the result.</p>
+                <p className="mb-4 text-primary text-xl p-3 rounded">Limit: .png ＜ 4MB</p>
+                <p className={`m-auto w-full max-w-md mb-5`}>
+                    <i>{`The image variations endpoint allows you to generate a variation of a given image.`}</i></p>
                 <div className={`grid grid-cols-1 mb-2`}>
                     <div>
                         <small>Select file</small>

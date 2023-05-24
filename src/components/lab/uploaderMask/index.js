@@ -4,14 +4,14 @@ export const Uploader = ({handleSubmit, handleForm, register, errors, isLoading}
     return (
         <>
             <form key={2} onSubmit={handleSubmit(handleForm)}>
-                <p className="mb-4 text-red-600 p-3 rounded">Upload: .png ＜ 4MB</p>
-                <p className={`m-auto w-[60%] mb-5 text-secondary`}> The mask allow to indicate a specific point where edit image.</p>
+                <p className="mb-4 text-primary text-xl p-3 rounded">Limit: .png ＜ 4MB</p>
+                <p className={`m-auto w-full max-w-md mb-5`}>
+                    <i>{`The image edits endpoint allows you to edit and extend an image by uploading a mask. 
+                    The transparent areas of the mask indicate where the image should be edited, 
+                    and the prompt should describe the full new image, not just the erased area.`}</i></p>
                 <div className={`grid grid-cols-1 gap-2 mb-2`}>
                     <div>
                         <small>Select file</small> <br/>
-                        {/*<label>*/}
-                        {/*    <span className="btn me-1"> 📁</span>*/}
-                        {/*</label>*/}
                         <input type="file"
                                accept="image/png"
                                className="file-input w-full max-w-xs text-secondary"
@@ -22,9 +22,6 @@ export const Uploader = ({handleSubmit, handleForm, register, errors, isLoading}
                     </div>
                     <div>
                         <small>Choose mask</small> <br/>
-                        {/*<label>*/}
-                        {/*    <span className="btn me-1">👺</span>*/}
-                        {/*</label>*/}
                         <input type="file"
                                accept="image/png"
                                placeholder={"Mask"}
@@ -36,8 +33,8 @@ export const Uploader = ({handleSubmit, handleForm, register, errors, isLoading}
                     </div>
                 </div>
 
-                <textarea placeholder="Less than 1000 chars mt-5"
-                          className="textarea textarea-primary w-full max-w-xs mb-2 border-2 border-white"
+                <textarea placeholder="Less than 1000 chars"
+                          className="textarea textarea-primary w-full max-w-md h-36 mb-2 border-2 border-primary mt-5"
                           {...register('prompt', {required: true})}/>
 
                 <p className="mb-2">{errors.prompt && (

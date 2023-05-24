@@ -12,7 +12,7 @@ import {
 } from "../../../utils/utils";
 import {AlertComponent} from "@/components/shared/alert";
 import Confetti from "react-confetti";
-import {Uploader} from "@/components/lab/uploader";
+import {Uploader} from "@/components/lab/uploaderMask";
 import {UploaderImage} from "@/components/lab/uploaderImage";
 import {useState} from "react";
 import {Title} from "@/components/layout/title";
@@ -250,17 +250,17 @@ export default function Lab() {
      * Check auth
      * @return {JSX.Element}
      */
-    const checkAuth = () => {
+    const useLabTemplate = () => {
         if (!isLoaded || !isSignedIn) {
             return <RedirectToSignIn/>;
         }
         return (
             <>
                 <main className="container mx-auto text-center w-100 p-2">
+                    <Confetti width={confettiWidth} height={confettiHeight} numberOfPieces={100}/>
                     <div className={`grid grid-cols-1 text-center`}>
-                        <Confetti width={confettiWidth} height={confettiHeight} numberOfPieces={100}/>
                         <Title title={'OpenAi'} subTitle={'Lab'}/>
-                        <SubDescription description={'Here you can test the OpenAi API'}/>
+                        <SubDescription description={'Here you can test the Image generation API'}/>
                         {alertSetUp.show && (
                             <>
                                 <div className={`w-auto m-auto mb-10`}>
@@ -273,29 +273,32 @@ export default function Lab() {
                     </div>
                     <div className={`grid grid-cols-1 xl:grid-cols-2 text-center`}>
                         <div className="p-3 bg-neutral rounded m-5">
-                            <DescriptionTitle goToOpenaiApi={goToOpenaiApi}
-                                              h3={'Create Image'}
-                                              h4={'Here, we are testing:'}
-                                              apiUrl={'POST .../v1/result/generations'}
-                                              type={'create'}/>
-                            {(imageCreated === '') && (
-                                <>
-                                    <CreateImage registerCreate={registerCreate}
-                                                 handleCreateForm={handleCreateForm}
-                                                 errorsCreate={errorsCreate}
-                                                 handleSubmitCreate={handleSubmitCreate}
-                                                 isLoadingCreate={isLoadingCreate}/>
-                                </>
-                            )}
-                            {(imageCreated !== '') && (
-                                <>
-                                    <UploaderImage
-                                        isLoading={isLoadingCreate}
-                                        imageEdited={imageCreated}
-                                        setValue={setValueCreate}
-                                        setImageEdited={setImageCreated}/>
-                                </>
-                            )}
+                                <DescriptionTitle goToOpenaiApi={goToOpenaiApi}
+                                                  h3={'Create Image'}
+                                                  h4={'Here, we are testing:'}
+                                                  apiUrl={'POST .../v1/result/generations'}
+                                                  type={'create'}/>
+
+                                {(imageCreated === '') && (
+                                    <>
+                                        <CreateImage registerCreate={registerCreate}
+                                                     handleCreateForm={handleCreateForm}
+                                                     errorsCreate={errorsCreate}
+                                                     handleSubmitCreate={handleSubmitCreate}
+                                                     isLoadingCreate={isLoadingCreate}/>
+                                    </>
+                                )}
+                                {(imageCreated !== '') && (
+                                    <>
+                                        <UploaderImage
+                                            isLoading={isLoadingCreate}
+                                            imageEdited={imageCreated}
+                                            setValue={setValueCreate}
+                                            setImageEdited={setImageCreated}/>
+                                    </>
+                                )}
+
+
                         </div>
                         <div className="p-3 bg-neutral rounded m-5">
                             <DescriptionTitle goToOpenaiApi={goToOpenaiApi}
@@ -355,7 +358,7 @@ export default function Lab() {
 
     return (
         <>
-            {checkAuth()}
+            {useLabTemplate()}
         </>
     )
 }

@@ -4,10 +4,13 @@ export const CreateImage =({handleSubmitCreate, handleCreateForm, registerCreate
     return (
         <>
             <form key={1} onSubmit={handleSubmitCreate(handleCreateForm)}>
-                <p className="mb-4 text-red-600 p-3 rounded">Insert description: ＜ 1000 chars </p>
-                <p className={`m-auto w-[60%] mb-5`}> For create an accurate image give some instructions properly; like style, texture etc...</p>
+                <p className="mb-4 text-primary text-xl p-3 rounded">Limit: ＜ 1000 chars </p>
+                <p className={`m-auto w-full max-w-md mb-5`}>
+                    <i>{`The more detailed the description, 
+                    the more likely you are to get the result that you want.`}</i>
+                   </p>
                 <textarea placeholder="Less than 1000 chars"
-                       className="textarea textarea-primary w-full max-w-xs mb-2 border-2 border-white"
+                       className="textarea textarea-primary w-full max-w-md h-36 mb-2 border-2 border-primary"
                        {...registerCreate('createDescription', {required: true})}/>
 
                 <p className="mb-2">{errorsCreate.createDescription && (

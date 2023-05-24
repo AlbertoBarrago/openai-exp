@@ -1,7 +1,7 @@
 export const DescriptionTitle = ({goToOpenaiApi, h3, h4, apiUrl, type}) => {
     return (
         <>
-            <h3 className={`text-[2rem]`}>{h3}</h3>
+            <h3 className={`text-[2rem] text-primary`}>{h3}</h3>
             <article className="m-auto w-100 mb-3">
                 <h4>{h4}
                     <br/>
