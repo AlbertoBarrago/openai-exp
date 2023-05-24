@@ -13,8 +13,7 @@ export const Header = () => {
     const pathname = usePathname(),
         [isPrivateView, setIsPrivateView] = useState(null),
         [audio, setAudio] = useState(null),
-        [isActiveSound, setIsActiveSound] = useState(false),
-        [modalIsOpen, setIsOpen] = useState(true);
+        [isActiveSound, setIsActiveSound] = useState(false);
 
     const [isMobile, setIsMobile] = useState(false);
     useEffect(() => {
@@ -60,7 +59,6 @@ export const Header = () => {
 
     /**
      * Close daily dropdown when is clicked
-     * @deprecated
      */
     const handleClick = () => {
         const elem = document.activeElement;
@@ -71,24 +69,24 @@ export const Header = () => {
 
     const handleAuthForMusic = (value) => {
         setIsActiveSound(value);
-        if(value === true) {
+        if (value === true) {
             void play();
         }
     }
 
     const handleStartAndPause = () => {
-        if(counter === 1) {
+        if (counter === 1) {
             counter = 0;
             return;
         }
-        if(counter === 0 && isActiveSound) {
+        if (counter === 0 && isActiveSound) {
             void pause();
             counter++;
             setIsActiveSound(false)
             return;
 
         }
-        if(counter === 0 && !isActiveSound) {
+        if (counter === 0 && !isActiveSound) {
             void play();
             counter++;
             setIsActiveSound(true)
@@ -122,11 +120,11 @@ export const Header = () => {
                         </path>
                     </svg>
                     <span className={`ms-2 text-secondary`}>Openai-Exp</span></Link>
-                {(setupSwap && audio) && (<SoundPlayer args={setupSwap} handlePlayer={handleStartAndPause} />)}
+                {/*{(setupSwap && audio) && (<SoundPlayer args={setupSwap} handlePlayer={handleStartAndPause}/>)}*/}
             </div>
             <div className="flex-none gap-2 me-5">
 
-                {!isMobile &&  (<div className="flex-none">
+                {!isMobile && (<div className="flex-none">
                     <ul className="menu menu-horizontal px-1">
                         {routes.map((route, i) => (
                             <li className={`mb-3`} key={i}>
@@ -143,7 +141,7 @@ export const Header = () => {
                     <label tabIndex={0} className="btn btn-ghost btn-xs">
                         Menù
                     </label>
-                    <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52" >
+                    <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
                         {routes.map((route, i) => (
                             <li className={`mb-3`} key={i}>
                                 <Link href={route.path}
@@ -153,11 +151,11 @@ export const Header = () => {
                                 </Link>
                             </li>))}
                     </ul>
-                </div> )}
+                </div>)}
 
                 <div className={`relative me-3 bottom-2`}><UserButton/></div>
             </div>
         </div>)}
-        <AskModal isOpen={modalIsOpen} setIsOpen={setIsOpen} action={handleAuthForMusic} args={{title: "Musica", description: "Do you want listen music?"}}/>
+        {/*<AskModal isOpen={modalIsOpen} setIsOpen={setIsOpen} action={handleAuthForMusic} args={{title: "Musica", description: "Do you want listen music?"}}/>*/}
     </>)
 }
