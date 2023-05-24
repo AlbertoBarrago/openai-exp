@@ -324,7 +324,7 @@ export default function LabPage() {
                         <div className="p-3 bg-neutral rounded m-5">
                             <DescriptionTitle goToOpenaiApi={goToOpenaiApi}
                                               h3={'Create Variation'}
-                                              h4={'Upload an image to create a variation of it'}
+                                              h4={'Upload an image to create a variation of it:'}
                                               apiUrl={'.../v1/result/variation'}
                                               type={'create-variation'}/>
                             {imageVariation === '' && (
@@ -352,7 +352,7 @@ export default function LabPage() {
                         <div className="p-3 bg-neutral rounded m-5">
                             <DescriptionTitle goToOpenaiApi={goToOpenaiApi}
                                               h3={'Edit Image'}
-                                              h4={'Upload a mask with specific area to edit your image'}
+                                              h4={'Produce a mask and start to edit your image:'}
                                               apiUrl={'.../v1/result/edits'}
                                               type={'create-edit'}/>
                             {imageEdited === '' && (
