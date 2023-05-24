@@ -7,29 +7,55 @@ import {handleClick} from "../../../../utils/utils";
 import {AppContext} from "@/app/Context/AppContext";
 
 
-const privateRoutes = ['/', '/lab', '/result'];
-const routes = [{
-    name: 'Home', path: '/', icon: <i className="bi bi-house"></i>
-}, {
-    name: 'Openai', path: '/lab', icon: <i className="bi bi-lightning"></i>
-}, {
-    name: 'Result', path: '/result', icon: <i className="bi bi-bucket-fill"></i>
-}]
-
 export const Header = () => {
     const pathname = usePathname(),
         [isPrivateView, setIsPrivateView] = useState(null),
         {appState, setAppState} = useContext(AppContext);
+    const renderMenu = () => {
+        if (!appState.isMobile) {
+            return (
+                <div className="flex-none">
+                    <ul className="menu menu-horizontal px-1">
+                        {appState.routes.map((route, i) => (
+                            <li className={`mb-3`} key={i}>
+                                <Link href={route.path}
+                                      onClick={handleClick}
+                                      className={`btn btn-ghost text-secondary ${pathname === route.path ? 'btn-active' : ''}`}>
+                                    {route.icon} {route.name}
+                                </Link>
+                            </li>))}
+                    </ul>
+                </div>
+            )
+        }
+        if (appState.isMobile) {
+            return (
+                <div className="dropdown dropdown-end me-4">
+                    <label tabIndex={0} className="btn btn-ghost btn-xs">
+                        Menù
+                    </label>
+                    <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
+                        {appState.routes.map((route, i) => (
+                            <li className={`mb-3`} key={i}>
+                                <Link href={route.path}
+                                      onClick={handleClick}
+                                      className={`btn btn-ghost text-secondary ${pathname === route.path ? 'btn-active' : ''}`}>
+                                    {route.icon} {route.name}
+                                </Link>
+                            </li>))}
+                    </ul>
+                </div>
+            )
+        }
+
+    }
 
     useEffect(() => {
-        if (privateRoutes.includes(pathname)) {
+        if (appState.privateRoutes.includes(pathname)) {
             setIsPrivateView(true);
         } else {
             setIsPrivateView(false);
         }
-    }, [pathname]);
-
-    useEffect(() => {
         window.addEventListener('resize', () => {
             if (window.innerWidth < 768) {
                 setAppState({...appState, isMobile: true})
@@ -50,8 +76,7 @@ export const Header = () => {
                 }
             })
         }
-
-    }, [])
+    }, [pathname]);
 
     return (<>
         {isPrivateView && (<div className="navbar">
@@ -66,36 +91,7 @@ export const Header = () => {
                     <span className={`ms-2 text-secondary`}>Openai-Exp</span></Link>
             </div>
             <div className="flex-none gap-2 me-5">
-
-                {!appState.isMobile && (<div className="flex-none">
-                    <ul className="menu menu-horizontal px-1">
-                        {routes.map((route, i) => (
-                            <li className={`mb-3`} key={i}>
-                                <Link href={route.path}
-                                      onClick={handleClick}
-                                      className={`btn btn-ghost text-secondary ${pathname === route.path ? 'btn-active' : ''}`}>
-                                    {route.icon} {route.name}
-                                </Link>
-                            </li>))}
-                    </ul>
-                </div>)}
-
-                {appState.isMobile && (<div className="dropdown dropdown-end me-4">
-                    <label tabIndex={0} className="btn btn-ghost btn-xs">
-                        Menù
-                    </label>
-                    <ul tabIndex={0} className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-52">
-                        {routes.map((route, i) => (
-                            <li className={`mb-3`} key={i}>
-                                <Link href={route.path}
-                                      onClick={handleClick}
-                                      className={`btn btn-ghost text-secondary ${pathname === route.path ? 'btn-active' : ''}`}>
-                                    {route.icon} {route.name}
-                                </Link>
-                            </li>))}
-                    </ul>
-                </div>)}
-
+                {renderMenu()}
                 <div className={`relative me-3 ${!appState.isMobile ? 'bottom-2' : ''}`}><UserButton/></div>
             </div>
         </div>)}
