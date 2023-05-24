@@ -89,6 +89,10 @@ export default function LabPage() {
      * @return {Promise<object>}
      */
     const insertImageOnMongo = async (imageUrl, title, type) => {
+        if(!imageUrl) {
+            showAlert('Image url is required', setAlertSetUp);
+            return;
+        }
         let body = {
             urlImage: imageUrl,
             userId: userId,
@@ -133,12 +137,21 @@ export default function LabPage() {
         //get image
         const urlFromCloudinary = await uploadOnCloudinary(urlImageByOpenai)
         //insert image on mongo
-        void insertImageOnMongo(urlFromCloudinary?.url, data.createDescription, 'created')
-        //set image
-        setImageCreated(urlImageByOpenai)
-        setIsLoadingCreate(false);
-        //show confetti
-        showConfettiForSeconds(7, setConfettiWidth, setConfettiHeight);
+        const mongoCall = await insertImageOnMongo(urlFromCloudinary?.url, data.createDescription, 'created')
+        if (mongoCall.success) {
+            //set image
+            setImageCreated(urlImageByOpenai)
+            setIsLoadingCreate(false);
+            //show confetti
+            showConfettiForSeconds(7, setConfettiWidth, setConfettiHeight);
+        }
+        if (!mongoCall.success) {
+            //show error
+            showAlert('Error on upload image on mongo', setAlertSetUp);
+            resetCreate();
+            setIsLoadingCreate(false);
+        }
+
     }
     /**
      * Handle variation image
@@ -281,7 +294,7 @@ export default function LabPage() {
                             </>
                         )}
                     </div>
-                    <div className={`grid grid-cols-1 xl:grid-cols-2 text-center`}>
+                    <div className={`grid grid-cols-1 xl:grid-cols-3 text-center`}>
                         {/*Create ----------*/}
                         <div className="p-3 bg-neutral rounded m-5">
                             <DescriptionTitle goToOpenaiApi={goToOpenaiApi}

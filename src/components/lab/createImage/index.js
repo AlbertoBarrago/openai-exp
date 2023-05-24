@@ -10,7 +10,7 @@ export const CreateImage =({handleSubmitCreate, handleCreateForm, registerCreate
                     the more likely you are to get the result that you want.`}</i>
                    </p>
                 <textarea placeholder="Less than 1000 chars"
-                       className="textarea textarea-primary w-full max-w-md h-36 mb-2 border-2 border-primary"
+                       className="textarea textarea-primary w-full max-w-md h-24 mb-2 border-2 border-primary"
                        {...registerCreate('createDescription', {required: true})}/>
 
                 <p className="mb-2">{errorsCreate.createDescription && (
