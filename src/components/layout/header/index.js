@@ -96,7 +96,7 @@ export const Header = () => {
                     </ul>
                 </div>)}
 
-                <div className={`relative me-3 bottom-2`}><UserButton/></div>
+                <div className={`relative me-3 ${!appState.isMobile ? 'bottom-2' : ''}`}><UserButton/></div>
             </div>
         </div>)}
     </>)
