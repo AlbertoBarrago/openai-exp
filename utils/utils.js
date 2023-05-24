@@ -235,9 +235,21 @@ export const orderDateBy = (data, by) => {
         return 1;
     })
 }
+/**
+ * Scroll to top
+ */
 export const scrollToTop = () =>{
     window.scrollTo({
         top: 0,
         behavior: 'smooth'
     });
+};
+/**
+ * Close daisy dialog
+ */
+export const handleClick = () => {
+    const elem = document.activeElement;
+    if (elem) {
+        elem?.blur();
+    }
 };

@@ -2,103 +2,24 @@
 import Link from "next/link";
 import {UserButton} from "@clerk/nextjs";
 import {usePathname} from "next/navigation";
-import {useEffect, useRef, useState} from "react";
-import SoundPlayer from "@/components/soundplayer/soundplayer";
-import {AskModal} from "@/components/commons/modal/ask";
+import {useContext, useEffect, useState} from "react";
+import {handleClick} from "../../../../utils/utils";
+import {AppContext} from "@/app/Context/AppContext";
+
 
 const privateRoutes = ['/', '/lab', '/result'];
-let counter = 0;
+const routes = [{
+    name: 'Home', path: '/', icon: <i className="bi bi-house"></i>
+}, {
+    name: 'Openai', path: '/lab', icon: <i className="bi bi-lightning"></i>
+}, {
+    name: 'Result', path: '/result', icon: <i className="bi bi-bucket-fill"></i>
+}]
 
 export const Header = () => {
     const pathname = usePathname(),
         [isPrivateView, setIsPrivateView] = useState(null),
-        [audio, setAudio] = useState(null),
-        [isActiveSound, setIsActiveSound] = useState(false);
-
-    const [isMobile, setIsMobile] = useState(false);
-    useEffect(() => {
-        window.addEventListener('resize', () => {
-            if (window.innerWidth < 768) {
-                setIsMobile(true);
-            }
-            if (window.innerWidth > 768) {
-                setIsMobile(false)
-            }
-        })
-        return () => {
-            window.removeEventListener('resize', () => {
-                if (window.innerWidth < 768) {
-                    setIsMobile(true);
-                }
-                if (window.innerWidth > 768) {
-                    setIsMobile(false);
-                }
-            })
-        }
-    }, [])
-
-    /**
-     * List of routes
-     * @type {[{path: string, name: string, icon: JSX.Element},{path: string, name: string, icon: JSX.Element},{path: string, name: string, icon: JSX.Element}]}
-     */
-    const routes = [{
-        name: 'Home', path: '/', icon: <i className="bi bi-house"></i>
-    }, {
-        name: 'Openai', path: '/lab', icon: <i className="bi bi-lightning"></i>
-    }, {
-        name: 'Result', path: '/result', icon: <i className="bi bi-bucket-fill"></i>
-    }]
-
-    const play = () => {
-        void audio.play();
-    }
-
-    const pause = () => {
-        void audio.pause();
-    }
-
-    /**
-     * Close daily dropdown when is clicked
-     */
-    const handleClick = () => {
-        const elem = document.activeElement;
-        if (elem) {
-            elem?.blur();
-        }
-    };
-
-    const handleAuthForMusic = (value) => {
-        setIsActiveSound(value);
-        if (value === true) {
-            void play();
-        }
-    }
-
-    const handleStartAndPause = () => {
-        if (counter === 1) {
-            counter = 0;
-            return;
-        }
-        if (counter === 0 && isActiveSound) {
-            void pause();
-            counter++;
-            setIsActiveSound(false)
-            return;
-
-        }
-        if (counter === 0 && !isActiveSound) {
-            void play();
-            counter++;
-            setIsActiveSound(true)
-        }
-    }
-
-    let setupSwap = {
-        onElement: <i className="bi bi-music-player-fill"></i>,
-        offElement: <i className="bi bi-music-player"></i>,
-        active: isActiveSound,
-        flip: true,
-    }
+        {appState, setAppState} = useContext(AppContext);
 
     useEffect(() => {
         if (privateRoutes.includes(pathname)) {
@@ -106,8 +27,31 @@ export const Header = () => {
         } else {
             setIsPrivateView(false);
         }
-        setAudio(new Audio('/mp3/open-welcome3.mp3'));
     }, [pathname]);
+
+    useEffect(() => {
+        window.addEventListener('resize', () => {
+            if (window.innerWidth < 768) {
+                setAppState({...appState, isMobile: true})
+
+            }
+            if (window.innerWidth > 768) {
+                setAppState({...appState, isMobile: false})
+            }
+
+        })
+        return () => {
+            window.removeEventListener('resize', () => {
+                if (window.innerWidth < 768) {
+                    setAppState({...appState, isMobile: true})
+                }
+                if (window.innerWidth > 768) {
+                    setAppState({...appState, isMobile: false})
+                }
+            })
+        }
+
+    }, [])
 
     return (<>
         {isPrivateView && (<div className="navbar">
@@ -120,11 +64,10 @@ export const Header = () => {
                         </path>
                     </svg>
                     <span className={`ms-2 text-secondary`}>Openai-Exp</span></Link>
-                {/*{(setupSwap && audio) && (<SoundPlayer args={setupSwap} handlePlayer={handleStartAndPause}/>)}*/}
             </div>
             <div className="flex-none gap-2 me-5">
 
-                {!isMobile && (<div className="flex-none">
+                {!appState.isMobile && (<div className="flex-none">
                     <ul className="menu menu-horizontal px-1">
                         {routes.map((route, i) => (
                             <li className={`mb-3`} key={i}>
@@ -137,7 +80,7 @@ export const Header = () => {
                     </ul>
                 </div>)}
 
-                {isMobile && (<div className="dropdown dropdown-end me-4">
+                {appState.isMobile && (<div className="dropdown dropdown-end me-4">
                     <label tabIndex={0} className="btn btn-ghost btn-xs">
                         Menù
                     </label>
@@ -156,6 +99,5 @@ export const Header = () => {
                 <div className={`relative me-3 bottom-2`}><UserButton/></div>
             </div>
         </div>)}
-        {/*<AskModal isOpen={modalIsOpen} setIsOpen={setIsOpen} action={handleAuthForMusic} args={{title: "Musica", description: "Do you want listen music?"}}/>*/}
     </>)
 }
