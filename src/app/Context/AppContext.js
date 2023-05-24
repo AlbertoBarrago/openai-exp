@@ -1,19 +1,23 @@
 'use client'
-import {createContext, useContext, useState} from "react";
+import {createContext, useState} from "react";
+
 export const AppContext = createContext({});
-export function AppContextProvider({ children }) {
+
+export function AppContextProvider({children}) {
     const [appState, setAppState] = useState({
         isMobile: false,
         routes: [
             {
                 name: 'Home', path: '/', icon: <i className="bi bi-house"></i>
+            },
+            {
+                name: 'Images', path: '/lab', icon: <i className="bi bi-images"></i>
             }, {
-                name: 'Openai', path: '/lab', icon: <i className="bi bi-lightning"></i>
-            }, {
-                name: 'Result', path: '/result', icon: <i className="bi bi-bucket-fill"></i>
-            }
+                name: 'Result', path: '/result', icon: <i className="bi bi-cone"></i>
+            },
+
         ],
-        privateRoutes: ['/', '/lab', '/result']
+        privateRoutes: ['/', '/lab', '/result', '/text']
     });
 
 

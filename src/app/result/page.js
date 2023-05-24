@@ -8,6 +8,12 @@ import {LoadMore} from "@/components/result/loadMore";
 import {FilterResult} from "@/components/result/filter";
 import {scrollToElement} from "../../../utils/utils";
 
+/**
+ * Get data from server
+ * @param pageSize
+ * @param filter
+ * @return {Promise<any>}
+ */
 async function getData(pageSize, filter = '') {
     const pageNumber = 1;
     if (filter === 'all') {
@@ -24,7 +30,7 @@ async function getData(pageSize, filter = '') {
     return res.json();
 }
 
-export default function Result() {
+export default function ResultPage() {
     const [data, setData] = useState(null), [pageSize, setPageSize] = useState(10),
         [limit, setLimit] = useState(0),
         [isLoading, setIsLoading] = useState(true),

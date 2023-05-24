@@ -6,7 +6,7 @@ import {
     checkIfIsGreaterThan4MB,
     createImageOpenai,
     handlePng,
-    produceImageVariations,
+    produceImageVariations, scrollToTop,
     showAlert,
     showConfettiForSeconds
 } from "../../../utils/utils";
@@ -21,8 +21,7 @@ import {DescriptionTitle} from "@/components/lab/title";
 import {UploaderVariation} from "@/components/lab/variationUploader";
 import {SubDescription} from "@/components/lab/subDescription";
 
-
-export default function Lab() {
+export default function LabPage() {
     const {isLoaded, isSignedIn, userId} = useAuth(),
         [isLoadingEdited, setIsLoadingEdited] = useState(false),
         [isLoadingCreate, setIsLoadingCreate] = useState(false),
@@ -39,22 +38,24 @@ export default function Lab() {
             variation: {}
         }),
         {
-            setValue,
-            register,
-            handleSubmit,
-            formState: {errors}
-        } = useForm(),
-        {
             setValue: setValueCreate,
+            reset: resetCreate,
             register: registerCreate,
             handleSubmit: handleSubmitCreate,
             formState: {errors: errorsCreate}
         } = useForm(),
         {
             setValue: setValueVariation,
+            reset: resetVariation,
             register: registerVariation,
             handleSubmit: handleSubmitVariation,
             formState: {errors: errorsVariation}
+        } = useForm(), {
+            setValue: setValueEdit,
+            reset: resetEdit,
+            register: registerEdit,
+            handleSubmit: handleSubmitEdit,
+            formState: {errors: errorsEdit}
         } = useForm();
 
     /**
@@ -162,7 +163,7 @@ export default function Lab() {
         }
         // Start openai variation
         const respUrl = await produceImageVariations(data, userId);
-        if(!respUrl) {
+        if (!respUrl) {
             showAlert('Error on upload image', setAlertSetUp);
             setValueVariation('file', '');
             setIsLoadingVariation(false);
@@ -177,14 +178,14 @@ export default function Lab() {
         if (mongoCall.success) {
             //show success
             setIsLoadingVariation(false)
-            setValue('file', '');
+            setValueVariation('file', '');
             setImageVariation(respUrl);
             showConfettiForSeconds(7, setConfettiWidth, setConfettiHeight)
         }
-        if(!mongoCall.success) {
+        if (!mongoCall.success) {
             //show error
             showAlert('Error on upload image on mongo', setAlertSetUp);
-            setValue('file', '');
+            setValueVariation('file', '');
             setIsLoadingVariation(false);
         }
     }
@@ -198,14 +199,14 @@ export default function Lab() {
         //check if file is png or jpeg
         if (data.file[0].type !== 'image/png') {
             showAlert(`Type ${data.file[0].type} not allow`, setAlertSetUp);
-            setValue('file', '');
+            setValueEdit('file', '');
             setIsLoadingEdited(false);
             return;
         }
         //check if prompt is less than 1000 chars
         if (!checkIfHasLessThan1000Chars(data.prompt)) {
             showAlert('Prompt must be less than 1000 chars', setAlertSetUp);
-            setValue('prompt', '');
+            setValueEdit('prompt', '');
             setIsLoadingEdited(false);
             showConfettiForSeconds(7, setConfettiWidth, setConfettiHeight)
             return;
@@ -213,7 +214,7 @@ export default function Lab() {
         //check if file is less than 4MB
         if (checkIfIsGreaterThan4MB(data.file)) {
             showAlert('File is greater than 4MB', setAlertSetUp);
-            setValue('file', '');
+            setValueEdit('file', '');
             setIsLoadingEdited(false);
             showConfettiForSeconds(7, setConfettiWidth, setConfettiHeight)
             return;
@@ -222,30 +223,29 @@ export default function Lab() {
         setDataFromForm({...dataFromForm, edit: data});
         //Start openai edit
         const respUrl = await handlePng(data);
-        if(!respUrl) {
+        if (!respUrl) {
+            scrollToTop();
             showAlert('Error on edit image', setAlertSetUp);
-            setValueVariation('file', '');
+            resetEdit()
             setIsLoadingVariation(false);
             return;
         }
         //insert image on cloudinary
         const urlFromCloudinary = await uploadOnCloudinary(respUrl)
         //insert image on mongo
-        const mongoCall =  await insertImageOnMongo(urlFromCloudinary.url, data.prompt, 'edited');
+        const mongoCall = await insertImageOnMongo(urlFromCloudinary.url, data.prompt, 'edited');
         //check if success
         if (mongoCall.success) {
             //set success
-            setValue('file', '');
-            setValue('prompt', '');
+            resetEdit();
             setImageEdited(respUrl);
             setIsLoadingEdited(false);
             showConfettiForSeconds(7, setConfettiWidth, setConfettiHeight);
         }
-        if(!mongoCall.success){
+        if (!mongoCall.success) {
             //show error
             showAlert('Error on upload image on mongo', setAlertSetUp);
-            setValue('file', '');
-            setValue('prompt', '');
+            resetEdit();
             setIsLoadingEdited(false);
         }
     }
@@ -284,27 +284,27 @@ export default function Lab() {
                     <div className={`grid grid-cols-1 xl:grid-cols-2 text-center`}>
                         {/*Create ----------*/}
                         <div className="p-3 bg-neutral rounded m-5">
-                                <DescriptionTitle goToOpenaiApi={goToOpenaiApi}
-                                                  h3={'Create Image'}
-                                                  h4={'Here, we are testing:'}
-                                                  apiUrl={'POST .../v1/result/generations'}
-                                                  type={'create'}/>
+                            <DescriptionTitle goToOpenaiApi={goToOpenaiApi}
+                                              h3={'Create Image'}
+                                              h4={'Here, we are testing:'}
+                                              apiUrl={'POST .../v1/result/generations'}
+                                              type={'create'}/>
 
-                                {(imageCreated === '') && (
-                                    <CreateImage registerCreate={registerCreate}
-                                                 handleCreateForm={handleCreateForm}
-                                                 errorsCreate={errorsCreate}
-                                                 handleSubmitCreate={handleSubmitCreate}
-                                                 isLoadingCreate={isLoadingCreate}/>
-                                )}
-                                {(imageCreated !== '') && (
-                                    <UploaderImage
-                                        isLoading={isLoadingCreate}
-                                        imageEdited={imageCreated}
-                                        setValue={setValueCreate}
-                                        setImageEdited={setImageCreated}
-                                        data={dataFromForm.create}/>
-                                )}
+                            {(imageCreated === '') && (
+                                <CreateImage registerCreate={registerCreate}
+                                             handleCreateForm={handleCreateForm}
+                                             errorsCreate={errorsCreate}
+                                             handleSubmitCreate={handleSubmitCreate}
+                                             isLoadingCreate={isLoadingCreate}/>
+                            )}
+                            {(imageCreated !== '') && (
+                                <UploaderImage
+                                    isLoading={isLoadingCreate}
+                                    imageEdited={imageCreated}
+                                    reset={resetCreate}
+                                    setImageEdited={setImageCreated}
+                                    data={dataFromForm.create}/>
+                            )}
 
                         </div>
                         {/*Variation ----------*/}
@@ -329,7 +329,9 @@ export default function Lab() {
                                     <UploaderImage
                                         isLoading={isLoadingVariation}
                                         imageEdited={imageVariation}
-                                        setImageEdited={setImageVariation}/>
+                                        reset={resetVariation}
+                                        setImageEdited={setImageVariation}
+                                        data={dataFromForm.variation}/>
                                 </>
                             )}
                         </div>
@@ -343,10 +345,10 @@ export default function Lab() {
                             {imageEdited === '' && (
                                 <>
                                     <Uploader
-                                        errors={errors}
+                                        errors={errorsEdit}
                                         handleForm={handleEditForm}
-                                        handleSubmit={handleSubmit}
-                                        register={register}
+                                        handleSubmit={handleSubmitEdit}
+                                        register={registerEdit}
                                         isLoading={isLoadingEdited}/>
                                 </>
                             )}
@@ -355,7 +357,9 @@ export default function Lab() {
                                     <UploaderImage
                                         isLoading={isLoadingEdited}
                                         imageEdited={imageEdited}
-                                        setImageEdited={setImageEdited}/>
+                                        reset={resetEdit}
+                                        setImageEdited={setImageEdited}
+                                        data={dataFromForm.edit}/>
                                 </>
                             )}
                         </div>

@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 
-export const UploaderImage = ({imageEdited, setImageEdited, setValue, data}) => {
+export const UploaderImage = ({imageEdited, setImageEdited, data, reset}) => {
+    console.log(data);
         return (
             <>
                 <div className="w-100 m-auto text-center mt-5">
@@ -11,14 +12,15 @@ export const UploaderImage = ({imageEdited, setImageEdited, setValue, data}) => 
                                width={300}
                                height={300} alt="AI"/>)}
                     <div className={`grid grid-cols-1 w-full capitalize m-auto max-w-md mt-6 mb-3 text-secondary`}>
-                        {data.createDescription}
+                        {data?.createDescription}
+                        {data?.prompt}
                     </div>
                     <div className={`grid grid-cols-1 md:grid-cols-2 gap-4`}>
                         <div>
                             <button className="mt-3 w-full btn btn-primary"
                                     onClick={() => {
                                         setImageEdited('')
-                                        setValue('createDescription', '')
+                                        reset()
                                     }
                                     }>
                                 Clean
