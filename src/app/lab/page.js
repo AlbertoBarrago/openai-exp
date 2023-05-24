@@ -33,6 +33,11 @@ export default function Lab() {
         [imageEdited, setImageEdited] = useState(''),
         [imageCreated, setImageCreated] = useState(''),
         [imageVariation, setImageVariation] = useState(''),
+        [dataFromForm, setDataFromForm] = useState({
+            create: {},
+            edit: {},
+            variation: {}
+        }),
         {
             setValue,
             register,
@@ -118,6 +123,8 @@ export default function Lab() {
             setValueCreate('createDescription', '');
             return;
         }
+        //set data form
+        setDataFromForm({...dataFromForm, create: data});
         //loader
         setIsLoadingCreate(true);
         //create image
@@ -161,6 +168,8 @@ export default function Lab() {
             setIsLoadingVariation(false);
             return;
         }
+        //set data form
+        setDataFromForm({...dataFromForm, variation: data});
         //insert image on cloudinary
         const urlFromCloudinary = await uploadOnCloudinary(respUrl);
         //insert image on mongo
@@ -209,7 +218,8 @@ export default function Lab() {
             showConfettiForSeconds(7, setConfettiWidth, setConfettiHeight)
             return;
         }
-
+        //set data form
+        setDataFromForm({...dataFromForm, edit: data});
         //Start openai edit
         const respUrl = await handlePng(data);
         if(!respUrl) {
@@ -272,6 +282,7 @@ export default function Lab() {
                         )}
                     </div>
                     <div className={`grid grid-cols-1 xl:grid-cols-2 text-center`}>
+                        {/*Create ----------*/}
                         <div className="p-3 bg-neutral rounded m-5">
                                 <DescriptionTitle goToOpenaiApi={goToOpenaiApi}
                                                   h3={'Create Image'}
@@ -280,26 +291,23 @@ export default function Lab() {
                                                   type={'create'}/>
 
                                 {(imageCreated === '') && (
-                                    <>
-                                        <CreateImage registerCreate={registerCreate}
-                                                     handleCreateForm={handleCreateForm}
-                                                     errorsCreate={errorsCreate}
-                                                     handleSubmitCreate={handleSubmitCreate}
-                                                     isLoadingCreate={isLoadingCreate}/>
-                                    </>
+                                    <CreateImage registerCreate={registerCreate}
+                                                 handleCreateForm={handleCreateForm}
+                                                 errorsCreate={errorsCreate}
+                                                 handleSubmitCreate={handleSubmitCreate}
+                                                 isLoadingCreate={isLoadingCreate}/>
                                 )}
                                 {(imageCreated !== '') && (
-                                    <>
-                                        <UploaderImage
-                                            isLoading={isLoadingCreate}
-                                            imageEdited={imageCreated}
-                                            setValue={setValueCreate}
-                                            setImageEdited={setImageCreated}/>
-                                    </>
+                                    <UploaderImage
+                                        isLoading={isLoadingCreate}
+                                        imageEdited={imageCreated}
+                                        setValue={setValueCreate}
+                                        setImageEdited={setImageCreated}
+                                        data={dataFromForm.create}/>
                                 )}
 
-
                         </div>
+                        {/*Variation ----------*/}
                         <div className="p-3 bg-neutral rounded m-5">
                             <DescriptionTitle goToOpenaiApi={goToOpenaiApi}
                                               h3={'Create Variation'}
@@ -325,6 +333,7 @@ export default function Lab() {
                                 </>
                             )}
                         </div>
+                        {/*Edit ----------*/}
                         <div className="p-3 bg-neutral rounded m-5">
                             <DescriptionTitle goToOpenaiApi={goToOpenaiApi}
                                               h3={'Edit Image'}

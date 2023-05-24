@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-export const UploaderImage = ({imageEdited, setImageEdited, setValue}) => {
+export const UploaderImage = ({imageEdited, setImageEdited, setValue, data}) => {
         return (
             <>
                 <div className="w-100 m-auto text-center mt-5">
@@ -10,10 +10,12 @@ export const UploaderImage = ({imageEdited, setImageEdited, setValue}) => {
                                src={imageEdited}
                                width={300}
                                height={300} alt="AI"/>)}
-                    <div className={`grid grid-cols-1`}></div>
-                    <div className={`grid grid-cols-1 md:grid-cols-2`}>
+                    <div className={`grid grid-cols-1 w-full capitalize m-auto max-w-md mt-6 mb-3 text-secondary`}>
+                        {data.createDescription}
+                    </div>
+                    <div className={`grid grid-cols-1 md:grid-cols-2 gap-4`}>
                         <div>
-                            <button className="mt-3 mb-5 m-auto btn btn-wide"
+                            <button className="mt-3 w-full btn btn-primary"
                                     onClick={() => {
                                         setImageEdited('')
                                         setValue('createDescription', '')
@@ -25,7 +27,7 @@ export const UploaderImage = ({imageEdited, setImageEdited, setValue}) => {
                         <div>
                             <Link
                                 href={'/result'}
-                                className={"mt-3 mb-5 m-auto btn btn-wide"}>
+                                className={"mt-3 mb-5 w-full  btn btn-primary btn-active"}>
                                Go to results
                             </Link>
                         </div>

@@ -244,6 +244,13 @@ export const scrollToTop = () =>{
         behavior: 'smooth'
     });
 };
+
+export const scrollToElement = (id) =>{
+    const element = document.getElementById(id);
+    element.scrollIntoView({
+        behavior: 'smooth'
+    });
+}
 /**
  * Close daisy dialog
  */

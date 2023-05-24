@@ -6,7 +6,7 @@ import {CardList} from "@/components/result/cardList";
 import {LoaderComponent} from "@/components/layout/loader";
 import {LoadMore} from "@/components/result/loadMore";
 import {FilterResult} from "@/components/result/filter";
-import {scrollToTop} from "../../../utils/utils";
+import {scrollToElement} from "../../../utils/utils";
 
 async function getData(pageSize, filter = '') {
     const pageNumber = 1;
@@ -39,7 +39,8 @@ export default function Result() {
         if (limit <= pageSize) {
             return;
         }
-        scrollToTop();
+        // scrollToTop()
+        scrollToElement('result');
         setIsLoadMore(true);
         // setData(null)
         let newSize = pageSize + 5;
@@ -82,7 +83,7 @@ export default function Result() {
 
 
     return (<>
-        <main className={`container mx-auto text-center w-100 p-2`}>
+        <main id={'result'} className={`container mx-auto text-center w-100 p-2`}>
             {isLoading && (<LoaderComponent icon={`<i class="bi bi-arrow-clockwise"></i>`}/>)}
             {(!isLoading && data) && (<>
                 <Title title={'OpenAi'} subTitle={'results'}/>
