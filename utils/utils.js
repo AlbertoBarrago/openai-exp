@@ -24,28 +24,6 @@ delete configuration.baseOptions.headers['User-Agent'];
  */
 export const openai = new OpenAIApi(configuration);
 /**
- * Get openai message for thank you
- * @param postText
- */
-export const thankYouOpenAi = async (postText) => {
-    let message = '';
-    try {
-        const response = await openai.createCompletion(
-            {
-                model: 'text-davinci-003',
-                prompt: `${postText}`,
-                temperature: 0.7,
-                max_tokens: 44,
-                best_of: 1,
-            }
-        )
-        message = `${response?.data?.choices[0].text.trim()}...`;
-    } catch (error) {
-        console.error(error);
-    }
-    return message;
-}
-/**
  * Generate image from openai
  * @param prompt
  */
@@ -73,17 +51,13 @@ export const createImageOpenai = async (prompt) => {
  * @param prompt
  * @param isJpeg
  */
-export const editImageOpenai = async (file, mask, prompt, isJpeg) => {
+export const editImageOpenai = async (file, mask, prompt) => {
     let urlImage;
-    let correctFile;
-    if (isJpeg) {
-        correctFile = dataURLtoFile(file, 'image/png');
-    }
     const fileForm = new File([file[0]], file.name, {type: 'image/png'});
     const fileMask = new File([mask[0]], mask.name, {type: 'image/png'});
     try {
         const imageResp = await openai.createImageEdit(
-            isJpeg ? correctFile : fileForm,
+            fileForm,
             `${prompt.toString()}`, fileMask, 1, "1024x1024"
         )
         urlImage = imageResp?.data.data[0].url;

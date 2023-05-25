@@ -30,8 +30,6 @@ export default async function TextPage() {
                         </div>
                     )
                 }))}
-                {data?.base_experience}
-                <LoaderComponent/>
             </main>
         </>
     )

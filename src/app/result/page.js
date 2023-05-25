@@ -6,7 +6,6 @@ import {CardList} from "@/components/result/cardList";
 import {LoaderComponent} from "@/components/layout/loader";
 import {LoadMore} from "@/components/result/loadMore";
 import {FilterResult} from "@/components/result/filter";
-import {ScrollToTop} from "@/components/commons/scrollToTop";
 
 /**
  * Get data from server

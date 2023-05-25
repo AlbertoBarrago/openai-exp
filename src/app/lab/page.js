@@ -118,7 +118,7 @@ export default function LabPage() {
     }
     /**
      * Handle create image
-     * @param data
+     * @param data: {createDescription: string}
      * @return {Promise<void>}
      */
     const handleCreateForm = async (data) => {
@@ -133,14 +133,30 @@ export default function LabPage() {
         //loader
         setIsLoadingCreate(true);
         //create image
-        const urlImageByOpenai = await createImageOpenai(data.createDescription)
+        // const urlImageByOpenai = await createImageOpenai(data.createDescription)
+        const urlImageByOpenai = await fetch('api/openai/images/create', {
+            method: 'POST',
+            body: JSON.stringify({
+                description: data.createDescription
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        const urlImageData = await urlImageByOpenai.json();
+        if (!urlImageByOpenai.ok) {
+            //show error
+            showAlert('Error on upload openai', setAlertSetUp);
+            resetCreate();
+            setIsLoadingCreate(false);
+        }
         //get image
-        const urlFromCloudinary = await uploadOnCloudinary(urlImageByOpenai)
+        const urlFromCloudinary = await uploadOnCloudinary(urlImageData.imageList)
         //insert image on mongo
         const mongoCall = await insertImageOnMongo(urlFromCloudinary?.url, data.createDescription, 'created')
         if (mongoCall.success) {
             //set image
-            setImageCreated(urlImageByOpenai)
+            setImageCreated(urlImageData.imageList)
             setIsLoadingCreate(false);
             //show confetti
             showConfettiForSeconds(7, setConfettiWidth, setConfettiHeight);
