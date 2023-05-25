@@ -6,7 +6,7 @@ import {CardList} from "@/components/result/cardList";
 import {LoaderComponent} from "@/components/layout/loader";
 import {LoadMore} from "@/components/result/loadMore";
 import {FilterResult} from "@/components/result/filter";
-import {scrollToElement} from "../../../utils/utils";
+import {ScrollToTop} from "@/components/commons/scrollToTop";
 
 /**
  * Get data from server
@@ -56,8 +56,6 @@ export default function ResultPage() {
             setData(data.responseImageList);
             setIsLoadMore(false);
             setLimit(data.dataCount);
-            // scrollToTop()
-            // scrollToElement('result');
             if(data.dataCount <= newSize){
                 setNoMoreData(true);
             } else {

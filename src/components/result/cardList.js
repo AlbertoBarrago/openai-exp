@@ -19,6 +19,7 @@ export const CardList = ({data}) => {
                                     alt={'openai-card'}
                                     width={450}
                                     height={450}
+                                    priority={true}
                                     src={item.image}/>
                             </Zoom>
                         </figure>

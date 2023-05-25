@@ -1,12 +1,12 @@
 'use client';
- import {useEffect, useState} from "react";
 import Link from "next/link";
-import {useRouter} from "next/navigation";
+import {ScrollToTop} from "@/components/commons/scrollToTop";
 
 export const Footer = () => {
     return (
         <>
             {(<footer className="sticky top-[100vh]">
+                <ScrollToTop/>
                 <div className="text-center m-auto w-52 pb-5">
                     <Link className={`btn btn-ghost  text-primary mb-1`}
                           target={'_blank'}
