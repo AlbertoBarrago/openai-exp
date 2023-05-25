@@ -31,7 +31,8 @@ async function getData(pageSize, filter = '') {
 }
 
 export default function ResultPage() {
-    const [data, setData] = useState(null), [pageSize, setPageSize] = useState(10),
+    const [data, setData] = useState(null),
+        [pageSize, setPageSize] = useState(10),
         [limit, setLimit] = useState(0),
         [isLoading, setIsLoading] = useState(true),
         [isLoadMore, setIsLoadMore] = useState(false),
@@ -45,8 +46,7 @@ export default function ResultPage() {
         if (limit <= pageSize) {
             return;
         }
-        // scrollToTop()
-        scrollToElement('result');
+
         setIsLoadMore(true);
         // setData(null)
         let newSize = pageSize + 5;
@@ -56,6 +56,8 @@ export default function ResultPage() {
             setData(data.responseImageList);
             setIsLoadMore(false);
             setLimit(data.dataCount);
+            // scrollToTop()
+            // scrollToElement('result');
             if(data.dataCount <= newSize){
                 setNoMoreData(true);
             } else {
@@ -91,11 +93,11 @@ export default function ResultPage() {
     return (<>
         <main id={'result'} className={`container mx-auto text-center w-100 p-2`}>
             {isLoading && (<LoaderComponent icon={`<i class="bi bi-arrow-clockwise"></i>`}/>)}
-            {(!isLoading && data) && (<>
+            {data && (<>
                 <Title title={'OpenAi'} subTitle={'results'}/>
                 <SubDescription description={'Stored creations'} limit={limit} dataLength={data.length}/>
                 <FilterResult handleFilter={handleFilter}/>
-                {!data.length && (
+                {(isLoading && !data.length) && (
                     <>
                         <p className={`w-100 text-center mt-12`}>
                             <i className="bi bi-triangle"></i>

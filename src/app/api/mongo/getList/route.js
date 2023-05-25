@@ -54,5 +54,3 @@ export async function GET(req) {
         dataCount,
     })
 }
-
-

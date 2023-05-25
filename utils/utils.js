@@ -229,7 +229,7 @@ export const handleTimeStamp = (date) => {
 export const orderDateBy = (data, by) => {
     //order by alphabet
       return data.sort((a, b) => {
-        if (a[by] > b[by]) {
+        if (a[by] < b[by]) {
             return -1;
         }
         return 1;

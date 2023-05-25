@@ -5,7 +5,7 @@ export const AppContext = createContext({});
 
 export function AppContextProvider({children}) {
     const [appState, setAppState] = useState({
-        isMobile: false,
+        isMobile: window.innerWidth < 768,
         routes: [
             {
                 name: 'Home', path: '/', icon: <i className="bi bi-house"></i>
