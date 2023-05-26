@@ -50,12 +50,7 @@ export const Header = () => {
 
     }
 
-    useEffect(() => {
-        if (appState.privateRoutes.includes(pathname)) {
-            setIsPrivateView(true);
-        } else {
-            setIsPrivateView(false);
-        }
+    const eventResize = () => {
         window.addEventListener('resize', () => {
             if (window.innerWidth < 768) {
                 setAppState({...appState, isMobile: true})
@@ -64,7 +59,6 @@ export const Header = () => {
             if (window.innerWidth > 768) {
                 setAppState({...appState, isMobile: false})
             }
-
         })
         return () => {
             window.removeEventListener('resize', () => {
@@ -76,6 +70,41 @@ export const Header = () => {
                 }
             })
         }
+    }
+
+    const eventLoad = () => {
+        window.addEventListener('load', () => {
+            if (window.innerWidth < 768) {
+                setAppState({...appState, isMobile: true})
+
+            }
+            if (window.innerWidth > 768) {
+                setAppState({...appState, isMobile: false})
+            }
+        });
+        return () => {
+            window.removeEventListener('load', () => {
+                if (window.innerWidth < 768) {
+                    setAppState({...appState, isMobile: true})
+                }
+                if (window.innerWidth > 768) {
+                    setAppState({...appState, isMobile: false})
+                }
+            })
+        }
+    }
+    const checkRoutes = () => {
+        if (appState.privateRoutes.includes(pathname)) {
+            setIsPrivateView(true);
+        } else {
+            setIsPrivateView(false);
+        }
+    }
+
+    useEffect(() => {
+        checkRoutes();
+        eventLoad();
+        eventResize();
     }, [pathname]);
 
     return (<>

@@ -23,27 +23,7 @@ delete configuration.baseOptions.headers['User-Agent'];
  * @type {OpenAIApi}
  */
 export const openai = new OpenAIApi(configuration);
-/**
- * Generate image from openai
- * @param prompt
- */
-export const createImageOpenai = async (prompt) => {
-    let urlImage = '';
-    try {
-        const imageResp = await openai.createImage(
-            {
-                prompt: `${prompt}`,
-                n: 1,
-                size: "1024x1024",
-            }
-        )
-        urlImage = imageResp?.data.data[0].url;
-    } catch (error) {
-        console.error(error);
-    }
 
-    return urlImage;
-}
 /**
  * Edit image from openai
  * @param file
@@ -58,7 +38,10 @@ export const editImageOpenai = async (file, mask, prompt) => {
     try {
         const imageResp = await openai.createImageEdit(
             fileForm,
-            `${prompt.toString()}`, fileMask, 1, "1024x1024"
+            `${prompt.toString()}`,
+            fileMask,
+            1,
+            "1024x1024"
         )
         urlImage = imageResp?.data.data[0].url;
     } catch (error) {
@@ -76,8 +59,8 @@ export const editImageOpenai = async (file, mask, prompt) => {
  * @param isJpeg
  * @return Promise<string|null>
  */
-export const editImage = async (file, mask, prompt, isJpeg) => {
-    const urlImage = await editImageOpenai(file, mask, prompt, isJpeg);
+export const editImage = async (file, mask, prompt) => {
+    const urlImage = await editImageOpenai(file, mask, prompt);
     if (urlImage === '') {
         return null;
     } else {
@@ -168,7 +151,7 @@ export const handlePng = async (data) => {
      * @private
      * @return {Promise<string>}
      */
-   return await editImage(data.file, data.mask, data.prompt, false).then(
+   return await editImage(data.file, data.mask, data.prompt).then(
         (respUrl) => {
             return respUrl;
         }

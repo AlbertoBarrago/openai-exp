@@ -4,7 +4,6 @@ import {useForm} from "react-hook-form";
 import {
     checkIfHasLessThan1000Chars,
     checkIfIsGreaterThan4MB,
-    createImageOpenai,
     handlePng,
     produceImageVariations, scrollToTop,
     showAlert,
@@ -133,7 +132,6 @@ export default function LabPage() {
         //loader
         setIsLoadingCreate(true);
         //create image
-        // const urlImageByOpenai = await createImageOpenai(data.createDescription)
         const urlImageByOpenai = await fetch('api/openai/images/create', {
             method: 'POST',
             body: JSON.stringify({
@@ -167,7 +165,6 @@ export default function LabPage() {
             resetCreate();
             setIsLoadingCreate(false);
         }
-
     }
     /**
      * Handle variation image
@@ -260,14 +257,14 @@ export default function LabPage() {
             return;
         }
         //insert image on cloudinary
-        const urlFromCloudinary = await uploadOnCloudinary(respUrl)
+        const urlFromCloudinary = await uploadOnCloudinary(dataResp.imageList)
         //insert image on mongo
         const mongoCall = await insertImageOnMongo(urlFromCloudinary.url, data.prompt, 'edited');
         //check if success
         if (mongoCall.success) {
             //set success
             resetEdit();
-            setImageEdited(respUrl);
+            setImageEdited(dataResp.imageList);
             setIsLoadingEdited(false);
             showConfettiForSeconds(7, setConfettiWidth, setConfettiHeight);
         }
