@@ -257,14 +257,14 @@ export default function LabPage() {
             return;
         }
         //insert image on cloudinary
-        const urlFromCloudinary = await uploadOnCloudinary(dataResp.imageList)
+        const urlFromCloudinary = await uploadOnCloudinary(respUrl)
         //insert image on mongo
         const mongoCall = await insertImageOnMongo(urlFromCloudinary.url, data.prompt, 'edited');
         //check if success
         if (mongoCall.success) {
             //set success
             resetEdit();
-            setImageEdited(dataResp.imageList);
+            setImageEdited(respUrl);
             setIsLoadingEdited(false);
             showConfettiForSeconds(7, setConfettiWidth, setConfettiHeight);
         }
