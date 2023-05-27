@@ -11,10 +11,14 @@ export function AppContextProvider({children}) {
                 name: 'Home', path: '/', icon: <i className="bi bi-house"></i>
             },
             {
-                name: 'Images', path: '/lab', icon: <i className="bi bi-images"></i>
-            }, {
-                name: 'Result', path: '/result', icon: <i className="bi bi-cone"></i>
+                name: 'Images', path: '/lab', icon: <i className="bi bi-images"></i>, hasSubRoutes: true,
+                subRoutes: [
+                    { name: 'Result', path: '/result', icon: <i className="bi bi-book"></i> },
+                ]
             },
+            {
+                name: 'Text', path: '/text', icon: <i className="bi bi-fonts"></i>
+            }
 
         ],
         privateRoutes: ['/', '/lab', '/result', '/text'],

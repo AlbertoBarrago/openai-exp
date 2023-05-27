@@ -5,9 +5,9 @@ export const DescriptionFirstPage = ({router, appState}) => {
         <>
             <article className="prose lg:prose-xl m-auto mb-5 mt-5 md:mt-22">
                 <Image
-                    className={`m-auto cursor-pointer hover:opacity-80 ${!appState.isMobile ? 'custom-parallax' : 'rounded-full'}`}
-                    width={280}
-                    height={280}
+                    className={`m-auto cursor-pointer hover:opacity-80  animate__animated  ${!appState.isMobile ? 'aspect-square' : 'rounded-full animate__rollIn'}`}
+                    width={230}
+                    height={230}
                     onClick={() => {
                         void router.push('https://albz.dev');
                     }}

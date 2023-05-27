@@ -24,7 +24,7 @@ export default function Home() {
         }
         return (
             <>
-                <main className={`container mx-auto text-center w-100 p-2`}>
+                <main className={`container mx-auto text-center w-100 p-2 animate__animated animate__fadeIn`}>
                     <Title title={'OpenAi'} subTitle={'Testing Project'}/>
                     <DescriptionFirstPage router={router} appState={appState}/>
                     <GoToLab goToDashboard={goToDashboard}/>

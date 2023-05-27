@@ -1,6 +1,7 @@
 import './globals.css'
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'react-medium-image-zoom/dist/styles.css'
+import 'animate.css';
 import {ClerkProvider} from "@clerk/nextjs";
 import {Header} from "@/components/layout/header";
 import {Footer} from "@/components/layout/footer";
