@@ -114,9 +114,9 @@ export const Header = () => {
                                     {route.hasSubRoutes && (
                                         <>
                                             <Menu.Item className={`mb-3`} key={i * 2} tabIndex={0}>
-                                                <Link href={route.path} className={`btn btn-ghost text-secondary ${pathname === route.path ? 'btn-active' : ''}`}>
+                                                <a className={`btn btn-ghost text-secondary`}>
                                                     {route.icon} {route.name}
-                                                </Link>
+                                                </a>
                                                 <Menu className="" key={i * 3}>
                                                     {route.subRoutes.map((subRoute, i) => (
                                                         <Menu.Item className={`mb-3`} key={i}>

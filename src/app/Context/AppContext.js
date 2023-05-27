@@ -11,8 +11,9 @@ export function AppContextProvider({children}) {
                 name: 'Home', path: '/', icon: <i className="bi bi-house"></i>
             },
             {
-                name: 'Images', path: '/lab', icon: <i className="bi bi-images"></i>, hasSubRoutes: true,
+                name: 'Images', icon: <i className="bi bi-images"></i>, hasSubRoutes: true,
                 subRoutes: [
+                    { name: 'Lab', path: '/lab', icon: <i className="bi bi-flask"></i> },
                     { name: 'Result', path: '/result', icon: <i className="bi bi-book"></i> },
                 ]
             },
