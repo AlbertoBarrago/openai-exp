@@ -16,14 +16,10 @@ module.exports = {
             },
         },
     },
-    darkMode: 'class',
     daisyui: {
         themes: [
+            "night",
             "light",
-            "dark",
-            "cupcake",
-            "fantasy",
-            "night"
         ],
     },
     plugins: [
