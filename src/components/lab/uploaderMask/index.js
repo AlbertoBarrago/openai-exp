@@ -7,7 +7,7 @@ export const Uploader = ({handleSubmit, handleForm, register, errors, isLoading}
                 <p className="mb-4 text-primary text-xl p-3 rounded">Limit: .png ＜ 4MB</p>
                 <p className={`m-auto w-full max-w-md mb-5`}>
                     <i>{`The image edits endpoint allows you to edit and extend an image by uploading a mask.`}</i></p>
-                <div className={`grid grid-cols-2 gap-2 mb-2`}>
+                <div className={`grid grid-cols-1 gap-2 mb-2`}>
                     <div>
                         <small>Select file</small> <br/>
                         <input type="file"

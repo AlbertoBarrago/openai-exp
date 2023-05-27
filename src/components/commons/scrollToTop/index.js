@@ -1,4 +1,4 @@
-import {scrollToTop} from "../../../../utils/utils";
+import {scrollToTop} from "../../../../modules/utils";
 import {useEffect, useState} from "react";
 
 export const ScrollToTop = () => {

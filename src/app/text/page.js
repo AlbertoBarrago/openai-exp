@@ -1,4 +1,4 @@
-import {handleClick} from "../../../utils/utils";
+import {handleClick} from "../../../modules/utils";
 import {LoaderComponent} from "@/components/layout/loader";
 
 /**

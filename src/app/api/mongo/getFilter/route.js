@@ -1,6 +1,6 @@
 import clientPromise from "../../../../../mongo.conf";
 import {NextResponse} from "next/server";
-import {handleTimeStamp, orderDateBy} from "../../../../../utils/utils";
+import {handleTimeStamp, orderDateBy} from "../../../../../modules/utils";
 
 export async function GET(req) {
     const {searchParams} = new URL(req.url);

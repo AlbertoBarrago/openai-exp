@@ -4,24 +4,28 @@ import {useForm} from "react-hook-form";
 import {
     checkIfHasLessThan1000Chars,
     checkIfIsGreaterThan4MB,
-    handlePng,
-    produceImageVariations, scrollToTop,
+    scrollToTop,
     showAlert,
     showConfettiForSeconds
-} from "../../../utils/utils";
+} from "../../../modules/utils";
 import {AlertComponent} from "@/components/shared/alert";
 import Confetti from "react-confetti";
 import {Uploader} from "@/components/lab/uploaderMask";
 import {UploaderImage} from "@/components/lab/uploaderImage";
-import {useState} from "react";
+import {useContext, useState} from "react";
 import {Title} from "@/components/layout/title";
 import {CreateImage} from "@/components/lab/createImage";
 import {DescriptionTitle} from "@/components/lab/title";
 import {UploaderVariation} from "@/components/lab/variationUploader";
 import {SubDescription} from "@/components/lab/subDescription";
+import {createImageOpenai, editImageOpenai, produceImageVariations} from "@/lib/openai-api";
+import {AppContext} from "@/app/Context/AppContext";
+
+const confettiDuration = 5;
 
 export default function LabPage() {
     const {isLoaded, isSignedIn, userId} = useAuth(),
+        {appState, setAppState} = useContext(AppContext),
         [isLoadingEdited, setIsLoadingEdited] = useState(false),
         [isLoadingCreate, setIsLoadingCreate] = useState(false),
         [isLoadingVariation, setIsLoadingVariation] = useState(false),
@@ -117,7 +121,7 @@ export default function LabPage() {
     }
     /**
      * Handle create image
-     * @param data: {createDescription: string}
+     * @param data
      * @return {Promise<void>}
      */
     const handleCreateForm = async (data) => {
@@ -132,32 +136,26 @@ export default function LabPage() {
         //loader
         setIsLoadingCreate(true);
         //create image
-        const urlImageByOpenai = await fetch('api/openai/images/create', {
-            method: 'POST',
-            body: JSON.stringify({
-                description: data.createDescription
-            }),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        const urlImageData = await urlImageByOpenai.json();
-        if (!urlImageByOpenai.ok) {
+        const urlImageByOpenai = await createImageOpenai(data.createDescription);
+        if (!urlImageByOpenai) {
             //show error
+            scrollToTop();
             showAlert('Error on upload openai', setAlertSetUp);
             resetCreate();
             setIsLoadingCreate(false);
         }
         //get image
-        const urlFromCloudinary = await uploadOnCloudinary(urlImageData.imageList)
+        const urlFromCloudinary = await uploadOnCloudinary(urlImageByOpenai);
         //insert image on mongo
         const mongoCall = await insertImageOnMongo(urlFromCloudinary?.url, data.createDescription, 'created')
         if (mongoCall.success) {
             //set image
-            setImageCreated(urlImageData.imageList)
+            setImageCreated(urlFromCloudinary?.url)
             setIsLoadingCreate(false);
             //show confetti
-            showConfettiForSeconds(7, setConfettiWidth, setConfettiHeight);
+            if(!appState.isMobile) {
+                showConfettiForSeconds(confettiDuration, setConfettiWidth, setConfettiHeight)
+            }
         }
         if (!mongoCall.success) {
             //show error
@@ -206,7 +204,7 @@ export default function LabPage() {
             setIsLoadingVariation(false)
             setValueVariation('file', '');
             setImageVariation(respUrl);
-            showConfettiForSeconds(7, setConfettiWidth, setConfettiHeight)
+            if(!appState.isMobile) showConfettiForSeconds(confettiDuration, setConfettiWidth, setConfettiHeight)
         }
         if (!mongoCall.success) {
             //show error
@@ -234,7 +232,7 @@ export default function LabPage() {
             showAlert('Prompt must be less than 1000 chars', setAlertSetUp);
             setValueEdit('prompt', '');
             setIsLoadingEdited(false);
-            showConfettiForSeconds(7, setConfettiWidth, setConfettiHeight)
+            if(!appState.isMobile) showConfettiForSeconds(confettiDuration, setConfettiWidth, setConfettiHeight)
             return;
         }
         //check if file is less than 4MB
@@ -242,13 +240,13 @@ export default function LabPage() {
             showAlert('File is greater than 4MB', setAlertSetUp);
             setValueEdit('file', '');
             setIsLoadingEdited(false);
-            showConfettiForSeconds(7, setConfettiWidth, setConfettiHeight)
+            if(!appState.isMobile) showConfettiForSeconds(confettiDuration, setConfettiWidth, setConfettiHeight)
             return;
         }
         //set data form
         setDataFromForm({...dataFromForm, edit: data});
         //Start openai edit
-        const respUrl = await handlePng(data);
+        const respUrl = await editImageOpenai(data);
         if (!respUrl) {
             scrollToTop();
             showAlert('Error on edit image', setAlertSetUp);
@@ -266,7 +264,7 @@ export default function LabPage() {
             resetEdit();
             setImageEdited(respUrl);
             setIsLoadingEdited(false);
-            showConfettiForSeconds(7, setConfettiWidth, setConfettiHeight);
+            if(!appState.isMobile) showConfettiForSeconds(confettiDuration, setConfettiWidth, setConfettiHeight)
         }
         if (!mongoCall.success) {
             //show error
@@ -309,7 +307,7 @@ export default function LabPage() {
                     </div>
                     <div className={`grid grid-cols-1 xl:grid-cols-3 text-center`}>
                         {/*Create ----------*/}
-                        <div className="p-3 bg-neutral rounded m-5">
+                        <div className="p-3 rounded m-5">
                             <DescriptionTitle goToOpenaiApi={goToOpenaiApi}
                                               h3={'Create Image'}
                                               h4={'Here, we are testing:'}
@@ -333,36 +331,8 @@ export default function LabPage() {
                             )}
 
                         </div>
-                        {/*Variation ----------*/}
-                        <div className="p-3 bg-neutral rounded m-5">
-                            <DescriptionTitle goToOpenaiApi={goToOpenaiApi}
-                                              h3={'Create Variation'}
-                                              h4={'Upload an image to create a variation of it:'}
-                                              apiUrl={'.../v1/result/variation'}
-                                              type={'create-variation'}/>
-                            {imageVariation === '' && (
-                                <>
-                                    <UploaderVariation
-                                        errors={errorsVariation}
-                                        handleForm={handleVariationForm}
-                                        handleSubmit={handleSubmitVariation}
-                                        register={registerVariation}
-                                        isLoading={isLoadingVariation}/>
-                                </>
-                            )}
-                            {imageVariation !== '' && (
-                                <>
-                                    <UploaderImage
-                                        isLoading={isLoadingVariation}
-                                        imageEdited={imageVariation}
-                                        reset={resetVariation}
-                                        setImageEdited={setImageVariation}
-                                        data={dataFromForm.variation}/>
-                                </>
-                            )}
-                        </div>
                         {/*Edit ----------*/}
-                        <div className="p-3 bg-neutral rounded m-5">
+                        <div className="p-3 rounded m-5">
                             <DescriptionTitle goToOpenaiApi={goToOpenaiApi}
                                               h3={'Edit Image'}
                                               h4={'Produce a mask and start to edit your image:'}
@@ -389,6 +359,35 @@ export default function LabPage() {
                                 </>
                             )}
                         </div>
+                        {/*Variation ----------*/}
+                        <div className="p-3 rounded m-5">
+                            <DescriptionTitle goToOpenaiApi={goToOpenaiApi}
+                                              h3={'Create Variation'}
+                                              h4={'Upload an image to create a variation of it:'}
+                                              apiUrl={'.../v1/result/variation'}
+                                              type={'create-variation'}/>
+                            {imageVariation === '' && (
+                                <>
+                                    <UploaderVariation
+                                        errors={errorsVariation}
+                                        handleForm={handleVariationForm}
+                                        handleSubmit={handleSubmitVariation}
+                                        register={registerVariation}
+                                        isLoading={isLoadingVariation}/>
+                                </>
+                            )}
+                            {imageVariation !== '' && (
+                                <>
+                                    <UploaderImage
+                                        isLoading={isLoadingVariation}
+                                        imageEdited={imageVariation}
+                                        reset={resetVariation}
+                                        setImageEdited={setImageVariation}
+                                        data={dataFromForm.variation}/>
+                                </>
+                            )}
+                        </div>
+
                     </div>
                 </main>
             </>

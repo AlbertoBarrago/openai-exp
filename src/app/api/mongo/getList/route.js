@@ -1,7 +1,7 @@
 import clientPromise from "../../../../../mongo.conf";
 import {NextResponse} from "next/server";
 import {getAuth} from "@clerk/nextjs/server";
-import {handleTimeStamp, orderDateBy} from "../../../../../utils/utils";
+import {handleTimeStamp, orderDateBy} from "../../../../../modules/utils";
 
 export async function GET(req) {
     console.log("GET START: mongo/getList");

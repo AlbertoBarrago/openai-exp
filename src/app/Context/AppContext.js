@@ -17,7 +17,8 @@ export function AppContextProvider({children}) {
             },
 
         ],
-        privateRoutes: ['/', '/lab', '/result', '/text']
+        privateRoutes: ['/', '/lab', '/result', '/text'],
+        theme: 'night',
     });
 
 

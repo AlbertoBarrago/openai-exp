@@ -3,14 +3,30 @@ import Link from "next/link";
 import {UserButton} from "@clerk/nextjs";
 import {usePathname} from "next/navigation";
 import {useContext, useEffect, useState} from "react";
-import {handleClick} from "../../../../utils/utils";
+import {handleClick} from "../../../../modules/utils";
 import {AppContext} from "@/app/Context/AppContext";
+import {Swap} from "react-daisyui";
 
-
+let preventDoubleCb = 0;
 export const Header = () => {
     const pathname = usePathname(),
         [isPrivateView, setIsPrivateView] = useState(null),
         {appState, setAppState} = useContext(AppContext);
+
+    const toggleTheme = () => {
+        if(preventDoubleCb === 0) setAppState({...appState, theme: appState.theme === 'night' ? 'light' : 'night'});
+        document.querySelector('html').setAttribute('data-theme', appState.theme);
+        preventDoubleCb++;
+        setTimeout(() => preventDoubleCb = 0, 0);
+    }
+
+    const swampConfig = {
+        onElement:  (<i className="bi bi-sun-fill"></i>),
+        offElement: (<i className="bi bi-moon-fill"></i>),
+        flip: true,
+    }
+
+
     const renderMenu = () => {
         if (!appState.isMobile) {
             return (
@@ -118,6 +134,7 @@ export const Header = () => {
                         </path>
                     </svg>
                     <span className={`ms-2 text-secondary`}>Openai-Exp</span></Link>
+                <Swap onClick={toggleTheme} {...swampConfig}/>
             </div>
             <div className="flex-none gap-2 me-5">
                 {renderMenu()}

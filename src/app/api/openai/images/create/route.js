@@ -1,4 +1,4 @@
-import {openai} from "../../../../../../utils/utils";
+import {openai} from "../../../../../../modules/utils";
 import {NextResponse} from "next/server";
 
 export async function POST(req) {
