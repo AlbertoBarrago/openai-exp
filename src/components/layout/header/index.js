@@ -31,22 +31,9 @@ export const Header = () => {
             <div className="navbar">
                 <div className="navbar-start">
                     <div className="dropdown">
-                        <Button color="ghost" tabIndex={0} className="lg:hidden">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-5 w-5"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M4 6h16M4 12h8m-8 6h16"
-                                />
-                            </svg>
-                        </Button>
+                        <label tabIndex={0} className="btn btn-ghost lg:hidden">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
+                        </label>
                         <ul tabIndex={0} className="menu-compact dropdown-content shadow roundex-box mt-3">
                             {appState.mobileRoutes.map((route, i) => (
                                 <li className={`w-72 mb-1 bg-auto`} key={route.index}>
