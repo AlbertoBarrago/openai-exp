@@ -20,6 +20,8 @@ async function getData(pageSize, filter = '') {
         pageSize = 10;
     }
 
+    console.log(filter);
+
     const res = await fetch(`${process.env.BASE_URL}/api/mongo/getList/?pageSize=${pageSize}&pageNumber=${pageNumber}&q=${filter}`, {
         next: {revalidate: 10} // refresh every 10 second
     });
@@ -34,6 +36,7 @@ export default function ResultPage() {
         [pageSize, setPageSize] = useState(10),
         [limit, setLimit] = useState(0),
         [isLoading, setIsLoading] = useState(true),
+        [filter, setFilter] = useState(''),
         [isLoadMore, setIsLoadMore] = useState(false),
         [noMoreData, setNoMoreData] = useState(false);
     /**
@@ -51,7 +54,7 @@ export default function ResultPage() {
         let newSize = pageSize + 5;
         setPageSize(newSize);
         // get data
-        await getData(newSize).then(data => {
+        await getData(newSize, filter).then(data => {
             setData(data.responseImageList);
             setIsLoadMore(false);
             setLimit(data.dataCount);
@@ -64,6 +67,7 @@ export default function ResultPage() {
     }
     const handleFilter = async (filter) => {
         setIsLoadMore(true);
+        setFilter(filter);
         let newSize = 10;
         await getData(newSize, filter).then(data => {
             setData(data.responseImageList);
