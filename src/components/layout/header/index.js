@@ -34,9 +34,9 @@ export const Header = () => {
                         <label tabIndex={0} className="btn btn-ghost lg:hidden">
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
                         </label>
-                        <ul tabIndex={0} className="menu-compact dropdown-content shadow roundex-box mt-3">
+                        <ul tabIndex={0} className="menu-compact dropdown-content bg-[#0e172a] w-32 roundex-box mt-3">
                             {appState.mobileRoutes.map((route, i) => (
-                                <li className={`w-72 mb-1 bg-auto`} key={route.index}>
+                                <li className={`w-72 pb-1 bg-auto`} key={route.index}>
                                     <Link href={route.path}
                                           onClick={handleClick}
                                           className={`btn btn-ghost text-secondary ${route.isSubRoute ? 'ms-3' : ''} ${pathname === route.path ? 'btn-active' : ''}`}>
