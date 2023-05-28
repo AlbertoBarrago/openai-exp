@@ -53,7 +53,7 @@ export const Header = () => {
                                     <>
                                         {!route.hasSubRoutes && (
                                             <>
-                                                <Dropdown.Item className={`mb-3`} key={i}>
+                                                <Dropdown.Item className={`mb-3`} key={route.index}>
                                                     <Link href={route.path}
                                                           onClick={handleClick}
                                                           className={`text-secondary`}>
@@ -64,15 +64,15 @@ export const Header = () => {
                                         )}
                                         {route.hasSubRoutes && (
                                             <>
-                                                <li className={`mb-3`} key={i * 2} tabIndex={0}>
+                                                <li className={`mb-3`} key={route.index} tabIndex={0}>
                                                     <a className={`text-secondary`}>
                                                         {route.icon} {route.name}
                                                     </a>
-                                                    <ul key={i + 1}>
+                                                    <ul>
                                                         {route.subRoutes.map((subRoute, j) => (
-                                                            <li key={j}>
+                                                            <li className="bg-[#0e172a]" key={subRoute.index}>
                                                                 <Link href={subRoute.path}
-                                                                      className={`w-auto relative bottom-2 text-secondary`}
+                                                                      className={`bg-[#0e172a] hover:bg-neutral w-auto relative bottom-2 text-secondary`}
                                                                       onClick={handleClick}>
                                                                     {subRoute.icon} {subRoute.name}
                                                                 </Link>
@@ -94,48 +94,51 @@ export const Header = () => {
                                 </path>
                             </svg>
                             <span className={`ms-2 text-secondary`}>Openai-Exp</span></Link>
-                        <Swap onClick={toggleTheme} {...swampConfig}/>
+                        <Swap className={`ms-2`} onClick={toggleTheme} {...swampConfig}/>
                     </Navbar.Start>
                     <Navbar.Center className="hidden lg:flex">
-                        <Menu horizontal className="p-0">
-                            {appState.routes.map((route, i) => (
-                                <>
-                                    {!route.hasSubRoutes && (
-                                        <>
-                                            <Menu.Item className={`mb-3`} key={i}>
-                                                <Link href={route.path}
-                                                      onClick={handleClick}
-                                                      className={`btn btn-ghost text-secondary me-2 ${pathname === route.path ? 'btn-active' : ''}`}>
-                                                    {route.icon} {route.name}
-                                                </Link>
-                                            </Menu.Item>
-                                        </>
-                                    )}
-                                    {route.hasSubRoutes && (
-                                        <>
-                                            <Menu.Item className={`mb-3`} key={i * 2} tabIndex={0}>
-                                                <a className={`btn btn-ghost text-secondary`}>
-                                                    {route.icon} {route.name}
-                                                </a>
-                                                <Menu className="" key={i * 3}>
-                                                    {route.subRoutes.map((subRoute, i) => (
-                                                        <Menu.Item className={`mb-3`} key={i}>
-                                                            <Link href={subRoute.path}
-                                                                  className={`mt-1 btn btn-ghost text-secondary ${pathname === subRoute.path ? 'btn-active' : ''}`}
-                                                                  onClick={handleClick}>
-                                                                {subRoute.icon} {subRoute.name}
-                                                            </Link>
-                                                        </Menu.Item>
-                                                    ))}
-                                                </Menu>
-                                            </Menu.Item>
-                                        </>
-                                    )}
-                                </>
-                            ))}
-                        </Menu>
+
                     </Navbar.Center>
                     <Navbar.End>
+                        <div className="hidden lg:flex">
+                            <Menu horizontal className="p-0">
+                                {appState.routes.map((route, i) => (
+                                    <>
+                                        {!route.hasSubRoutes && (
+                                            <>
+                                                <Menu.Item className={`mb-3`} key={route.index}>
+                                                    <Link href={route.path}
+                                                          onClick={handleClick}
+                                                          className={`btn btn-ghost rounded-none text-secondary me-2 ${pathname === route.path ? 'btn-active' : ''}`}>
+                                                        {route.icon} {route.name}
+                                                    </Link>
+                                                </Menu.Item>
+                                            </>
+                                        )}
+                                        {route.hasSubRoutes && (
+                                            <>
+                                                <Menu.Item className={`mb-3`} key={route.index} tabIndex={0}>
+                                                    <a className={`btn btn-ghost rounded-none text-secondary`}>
+                                                        {route.icon} {route.name}
+                                                    </a>
+                                                    <Menu>
+                                                        {route.subRoutes.map((subRoute, j) => (
+                                                            <Menu.Item className={`pt-1 z-[100]`} key={subRoute.index}>
+                                                                <Link href={subRoute.path}
+                                                                      className={`btn btn-ghost bg-[#0e172a] text-secondary ${pathname === subRoute.path ? 'btn-active' : ''}`}
+                                                                      onClick={handleClick}>
+                                                                    {subRoute.icon} {subRoute.name}
+                                                                </Link>
+                                                            </Menu.Item>
+                                                        ))}
+                                                    </Menu>
+                                                </Menu.Item>
+                                            </>
+                                        )}
+                                    </>
+                                ))}
+                            </Menu>
+                        </div>
                         <div className={`relative me-3 ${!appState.isMobile ? 'bottom-2' : ''}`}><UserButton/></div>
                     </Navbar.End>
                 </Navbar>

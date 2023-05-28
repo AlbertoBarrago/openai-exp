@@ -8,18 +8,19 @@ export function AppContextProvider({children}) {
         isMobile: Boolean,
         routes: [
             {
-                name: 'Home', path: '/', icon: <i className="bi bi-house"></i>
+                index: 0, name: 'Home', path: '/', icon: <i className="bi bi-house"></i>
+            },
+
+            {
+                index:3, name: 'Text', path: '/text', icon: <i className="bi bi-fonts"></i>
             },
             {
-                name: 'Images', icon: <i className="bi bi-images"></i>, hasSubRoutes: true,
+                index: 1, name: 'Images', icon: <i className="bi bi-caret-down"></i>, hasSubRoutes: true,
                 subRoutes: [
-                    { name: 'Lab', path: '/lab', icon: <i className="bi bi-flask"></i> },
-                    { name: 'Result', path: '/result', icon: <i className="bi bi-book"></i> },
+                    { index: 1_1, name: 'Lab', path: '/lab', icon: <i className="bi bi-images"></i> },
+                    { index: 1_2, name: 'Result', path: '/result', icon: <i className="bi bi-book"></i> },
                 ]
             },
-            {
-                name: 'Text', path: '/text', icon: <i className="bi bi-fonts"></i>
-            }
 
         ],
         privateRoutes: ['/', '/lab', '/result', '/text'],
