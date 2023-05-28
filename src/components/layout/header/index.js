@@ -2,10 +2,10 @@
 import Link from "next/link";
 import {UserButton} from "@clerk/nextjs";
 import {usePathname} from "next/navigation";
-import {StrictMode, useContext, useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {handleClick} from "../../../../modules/utils";
 import {AppContext} from "@/app/Context/AppContext";
-import {Button, Dropdown, Menu, Navbar, Swap} from "react-daisyui";
+import {Swap} from "react-daisyui";
 
 let preventDoubleCb = 0;
 export const Header = () => {
