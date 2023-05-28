@@ -8,6 +8,7 @@ export const DescriptionFirstPage = ({router, appState}) => {
                     className={`m-auto cursor-pointer hover:opacity-80  animate__animated  ${!appState.isMobile ? 'aspect-square' : 'rounded-full animate__rollIn'}`}
                     width={230}
                     height={230}
+                    priority={true}
                     onClick={() => {
                         void router.push('https://albz.dev');
                     }}
