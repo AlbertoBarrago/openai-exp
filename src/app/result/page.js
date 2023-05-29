@@ -6,6 +6,7 @@ import {CardList} from "@/components/result/cardList";
 import {LoaderComponent} from "@/components/layout/loader";
 import {LoadMore} from "@/components/result/loadMore";
 import {FilterResult} from "@/components/result/filter";
+import Confetti from "react-confetti";
 
 /**
  * Get data from server
@@ -36,6 +37,8 @@ export default function ResultPage() {
         [pageSize, setPageSize] = useState(10),
         [limit, setLimit] = useState(0),
         [isLoading, setIsLoading] = useState(true),
+        [confettiWidth, setConfettiWidth] = useState(0),
+        [confettiHeight, setConfettiHeight] = useState(0),
         [filter, setFilter] = useState(''),
         [isLoadMore, setIsLoadMore] = useState(false),
         [noMoreData, setNoMoreData] = useState(false);
@@ -93,6 +96,7 @@ export default function ResultPage() {
 
     return (<>
         <main id={'result'} className={`container mx-auto text-center w-100 p-2`}>
+            <Confetti width={confettiWidth} height={confettiHeight} numberOfPieces={100}/>
             {isLoading && (<LoaderComponent icon={`<i class="bi bi-arrow-clockwise"></i>`}/>)}
             {data && (<>
                 <Title title={'OpenAi'} subTitle={'results'}/>

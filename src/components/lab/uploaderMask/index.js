@@ -16,7 +16,8 @@ export const Uploader = ({handleSubmit, handleForm, register, errors, isLoading}
                                {...register('file', {required: true})}/>
 
                         <p className="mb-2">{errors.file && (
-                            <span className="text-red-600">This File is required</span>)}</p>
+                            <span className="text-red-600">This File is required</span>)}
+                        </p>
                     </div>
                     <div>
                         <small>Choose mask</small> <br/>

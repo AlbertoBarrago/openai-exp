@@ -95,6 +95,7 @@ export const Header = () => {
         )
     }
 
+
     const eventResize = () => {
         window.addEventListener('resize', () => {
             if (window.innerWidth < 768) {

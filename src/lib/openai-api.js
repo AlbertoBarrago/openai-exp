@@ -27,16 +27,19 @@ export const openai = new OpenAIApi(configuration);
  * Get openai message for thank you
  * @param postText
  */
-export const thankYouOpenAi = async (postText) => {
+export const getText = async (postText) => {
     let message = '';
     try {
         const response = await openai.createCompletion(
             {
-                model: 'text-davinci-003',
+                model: 'text-davinci-001',
                 prompt: `${postText}`,
                 temperature: 0.7,
                 max_tokens: 44,
+                top_p: 1,
                 best_of: 1,
+                frequency_penalty: 0.5,
+                presence_penalty: 0,
             }
         )
         message = `${response?.data?.choices[0].text.trim()}...`;
