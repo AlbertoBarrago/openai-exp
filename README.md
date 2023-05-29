@@ -1,6 +1,19 @@
 # Openai-Exp with Next.js@latest
 ![pepe](https://www.icegif.com/wp-content/uploads/2023/01/icegif-804.gif)
 
+## Version
+#### 0.9.0
+![GitHub](https://img.shields.io/github/license/AlbertoBarrago/openai-exp?style=for-the-badge)
+![GitHub last commit](https://img.shields.io/github/last-commit/AlbertoBarrago/openai-exp?style=for-the-badge)
+![GitHub repo size](https://img.shields.io/github/repo-size/AlbertoBarrago/openai-exp?style=for-the-badge)
+![GitHub issues](https://img.shields.io/github/issues/AlbertoBarrago/openai-exp?style=for-the-badge)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/AlbertoBarrago/openai-exp?style=for-the-badge)
+![GitHub forks](https://img.shields.io/github/forks/AlbertoBarrago/openai-exp?style=for-the-badge)
+![GitHub Repo stars](https://img.shields.io/github/stars/AlbertoBarrago/openai-exp?style=for-the-badge)
+![GitHub watchers](https://img.shields.io/github/watchers/AlbertoBarrago/openai-exp?style=for-the-badge)
+
+
+
 ## Info
 This is a side project to test the OpenAI API. The idea is to create a web app where you can create images with the help of the OpenAI API.
 And also, I want to test the [Clerk](https://clerk.dev/) authentication system.
@@ -9,17 +22,31 @@ And also, I want to test the [Clerk](https://clerk.dev/) authentication system.
 ## Structure of the project
 ```
 
-.
-├── app
+.├── app
+│   ├── [...not-found]
+│   │   └── page.js
 │   ├── api
 │   │   ├── cloudinary
 │   │   │   └── insertByUrl
 │   │   │       └── route.js
 │   │   ├── mongo
+│   │   │   ├── getFilter
+│   │   │   │   └── route.js
+│   │   │   ├── getList
+│   │   │   │   └── route.js
 │   │   │   └── insert
-│   │   │       └── route.js
-│   │   └── result
-│   │       └── route.js
+│   │   │       ├── images
+│   │   │       │   └── route.js
+│   │   │       └── texts
+│   │   │           └── route.js
+│   │   └── openai
+│   │       ├── images
+│   │       │   └── create
+│   │       │       └── route.js
+│   │       └── text
+│   │           └── route.js
+│   ├── context
+│   │   └── AppContext.js
 │   ├── favicon.ico
 │   ├── globals.css
 │   ├── lab
@@ -36,27 +63,36 @@ And also, I want to test the [Clerk](https://clerk.dev/) authentication system.
 │   ├── sign-in
 │   │   └── [[...sign-in]]
 │   │       └── page.js
-│   └── sign-up
-│       └── [[...sign-up]]
-│           └── page.js
+│   ├── sign-up
+│   │   └── [[...sign-up]]
+│   │       └── page.js
+│   └── text
+│       ├── error.js
+│       ├── loading.js
+│       └── page.js
 ├── components
-│   ├── dashboard
+│   ├── commons
+│   │   ├── modal
+│   │   │   └── ask.js
+│   │   └── scrollToTop
+│   │       └── index.js
+│   ├── home
+│   │   ├── descriptions
+│   │   │   └── firstPage.js
+│   │   └── goToLab
+│   │       └── index.js
+│   ├── lab
 │   │   ├── createImage
 │   │   │   └── index.js
 │   │   ├── subDescription
 │   │   │   └── index.js
 │   │   ├── title
 │   │   │   └── index.js
-│   │   ├── uploader
-│   │   │   └── index.js
 │   │   ├── uploaderImage
 │   │   │   └── index.js
+│   │   ├── uploaderMask
+│   │   │   └── index.js
 │   │   └── variationUploader
-│   │       └── index.js
-│   ├── home
-│   │   ├── descriptions
-│   │   │   └── firstPage.js
-│   │   └── goToLab
 │   │       └── index.js
 │   ├── layout
 │   │   ├── footer
@@ -69,11 +105,19 @@ And also, I want to test the [Clerk](https://clerk.dev/) authentication system.
 │   │       └── index.js
 │   ├── result
 │   │   ├── cardList.js
+│   │   ├── filter.js
+│   │   ├── loadMore.js
 │   │   └── table.js
-│   └── shared
-│       └── alert
-│           └── index.js
+│   ├── shared
+│   │   └── alert
+│   │       └── index.js
+│   └── soundplayer
+│       └── soundplayer.js
+├── lib
+│   └── openai-api.js
 └── middleware.js
+
+48 directories, 47 files
 ```
 
 33 directories, 32 files
@@ -84,12 +128,14 @@ And also, I want to test the [Clerk](https://clerk.dev/) authentication system.
 - [x] OpenAI API
 - [x] Create image
 - [x] Edit image (conversion for *jpeg* implemented)
-- [ ] Handling errors (started...)
-- [ ] e2e tests
+- [x] Handling errors (started...)
 - [x] Variations of the image
 - [x] MongoDb Added for handling storage
 - [x] Save image on cloudinary (prepare setup for integration)
-
+- [x] Text integration with OpenAI API
+- [x] Store image onMongo
+- [ ] Retrive test from Mongo and show it
+- [ ] e2e tests 
 
 ## Installation
 _If you want to test it, you need to create a .env file with the following variables:_

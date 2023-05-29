@@ -151,7 +151,7 @@ export const Header = () => {
         checkRoutes();
         eventLoad();
         eventResize();
-    });
+    })
 
     return (<>
         {isPrivateView && (
