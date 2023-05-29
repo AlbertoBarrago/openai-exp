@@ -19,13 +19,13 @@ import {DescriptionTitle} from "@/components/lab/title";
 import {UploaderVariation} from "@/components/lab/variationUploader";
 import {SubDescription} from "@/components/lab/subDescription";
 import {createImageOpenai, editImageOpenai, produceImageVariations} from "@/lib/openai-api";
-import {AppContext} from "@/app/Context/AppContext";
+import {AppContext} from "@/app/context/AppContext";
 
 const confettiDuration = 5;
 
 export default function LabPage() {
     const {isLoaded, isSignedIn, userId} = useAuth(),
-        {appState, setAppState} = useContext(AppContext),
+        {appState} = useContext(AppContext),
         [isLoadingEdited, setIsLoadingEdited] = useState(false),
         [isLoadingCreate, setIsLoadingCreate] = useState(false),
         [isLoadingVariation, setIsLoadingVariation] = useState(false),
@@ -104,7 +104,7 @@ export default function LabPage() {
             type,
         };
         try {
-            const response = await fetch('api/mongo/insert', {
+            const response = await fetch('api/mongo/insert/images', {
                 method: 'POST',
                 body: JSON.stringify(body),
                 headers: {

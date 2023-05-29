@@ -34,8 +34,8 @@ export const getText = async (postText) => {
             {
                 model: 'text-davinci-001',
                 prompt: `${postText}`,
-                temperature: 0.7,
-                max_tokens: 44,
+                temperature: 0.9,
+                max_tokens: 450,
                 top_p: 1,
                 best_of: 1,
                 frequency_penalty: 0.5,

@@ -4,7 +4,7 @@ import {UserButton} from "@clerk/nextjs";
 import {usePathname} from "next/navigation";
 import {useContext, useEffect, useState} from "react";
 import {handleClick} from "../../../../modules/utils";
-import {AppContext} from "@/app/Context/AppContext";
+import {AppContext} from "@/app/context/AppContext";
 import {Swap} from "react-daisyui";
 
 let preventDoubleCb = 0;
@@ -35,7 +35,7 @@ export const Header = () => {
                             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
                         </label>
                         <ul tabIndex={0} className="menu-compact dropdown-content bg-[#0e172a] w-32 roundex-box mt-3">
-                            {appState.mobileRoutes.map((route, i) => (
+                            {appState.mobileRoutes.map((route) => (
                                 <li className={`w-72 pb-1 bg-auto`} key={route.index}>
                                     <Link href={route.path}
                                           onClick={handleClick}
@@ -59,7 +59,7 @@ export const Header = () => {
                 <div className="navbar-end">
                     <div className="hidden lg:flex">
                         <ul className="menu menu-horizontal p-0">
-                            {appState.routes.map((route, i) => (
+                            {appState.routes.map((route) => (
                                 <li className={`mb-3`} key={route.index} tabIndex={route.hasSubRoutes ? 0 : ''}>
                                     {route.hasSubRoutes && (
                                         <>
@@ -67,7 +67,7 @@ export const Header = () => {
                                             {route.icon} {route.name}
                                             </span>
                                             <ul className="p-0">
-                                                {route.subRoutes.map((subRoute, j) => (
+                                                {route.subRoutes.map((subRoute) => (
                                                     <li className={`pt-1 z-[100]`} key={subRoute.index}>
                                                         <Link href={subRoute.path}
                                                               className={`btn btn-ghost bg-[#0e172a] text-secondary ${pathname === subRoute.path ? 'btn-active' : ''}`}
@@ -151,7 +151,7 @@ export const Header = () => {
         checkRoutes();
         eventLoad();
         eventResize();
-    }, [pathname]);
+    });
 
     return (<>
         {isPrivateView && (
