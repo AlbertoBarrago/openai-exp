@@ -6,11 +6,6 @@
 ![GitHub](https://img.shields.io/github/license/AlbertoBarrago/openai-exp?style=for-the-badge)
 ![GitHub last commit](https://img.shields.io/github/last-commit/AlbertoBarrago/openai-exp?style=for-the-badge)
 ![GitHub repo size](https://img.shields.io/github/repo-size/AlbertoBarrago/openai-exp?style=for-the-badge)
-![GitHub issues](https://img.shields.io/github/issues/AlbertoBarrago/openai-exp?style=for-the-badge)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/AlbertoBarrago/openai-exp?style=for-the-badge)
-![GitHub forks](https://img.shields.io/github/forks/AlbertoBarrago/openai-exp?style=for-the-badge)
-![GitHub Repo stars](https://img.shields.io/github/stars/AlbertoBarrago/openai-exp?style=for-the-badge)
-![GitHub watchers](https://img.shields.io/github/watchers/AlbertoBarrago/openai-exp?style=for-the-badge)
 
 
 
