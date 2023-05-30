@@ -6,7 +6,6 @@ import { Textarea } from "react-daisyui";
 import { Title } from "@/components/layout/title";
 import { SubDescription } from "@/components/lab/subDescription";
 import Confetti from "react-confetti";
-import { showConfettiForSeconds } from "../../../modules/utils";
 import { useAuth } from "@clerk/nextjs";
 import { LoaderComponent } from "@/components/layout/loader";
 

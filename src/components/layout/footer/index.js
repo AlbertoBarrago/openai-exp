@@ -1,5 +1,4 @@
 "use client";
-import Link from "next/link";
 import { ScrollToTop } from "@/components/commons/scrollToTop";
 
 export const Footer = () => {
