@@ -8,24 +8,30 @@ import { SubDescription } from "@/components/lab/subDescription";
 import Confetti from "react-confetti";
 import { showConfettiForSeconds } from "../../../modules/utils";
 import { useAuth } from "@clerk/nextjs";
+import { LoaderComponent } from "@/components/layout/loader";
 
 export default function TextPage() {
-  const { userId } = useAuth();
-  const [confettiHeight, setConfettiHeight] = useState(0);
-  const [confettiWidth, setConfettiWidth] = useState(0);
-  const [showSuccess, setShowSuccess] = useState(false);
-  const [openaiResponse, setOpenaiResponse] = useState("");
-  const {
-    setValue,
-    reset,
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    defaultValues: {
-      text: "",
-    },
-  });
+  const { userId } = useAuth(),
+    [confettiSetup, setConfettiSetup] = useState({
+      width: 0,
+      height: 0,
+    }),
+    [showSuccess, setShowSuccess] = useState(false),
+    [showConfetti, setShowConfetti] = useState(false),
+    [openaiResponse, setOpenaiResponse] = useState(""),
+    [isLoading, setIsLoading] = useState(false),
+    {
+      setValue,
+      reset,
+      register,
+      handleSubmit,
+      formState: { errors },
+    } = useForm({
+      defaultValues: {
+        text: "",
+      },
+    });
+
   const insertData = async (data) => {
     let request = {
       text: data.text,
@@ -45,11 +51,20 @@ export default function TextPage() {
     return res.json();
   };
   const getTextFromOpenAi = async (data) => {
+    setIsLoading(true);
     getText(data.text).then((resp) => {
-      showConfettiForSeconds(5, setConfettiHeight, setConfettiWidth);
       setValue("textFromOpenai", resp);
       setOpenaiResponse(resp);
+      setIsLoading(false);
       setShowSuccess(true);
+      setConfettiSetup({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+      setShowConfetti(true);
+      setTimeout(() => {
+        setShowConfetti(false);
+      }, 3000);
     });
   };
   const cleanForm = (e) => {
@@ -69,20 +84,22 @@ export default function TextPage() {
 
   return (
     <>
+      {showConfetti && (
+        <Confetti
+          width={confettiSetup.width}
+          height={confettiSetup.height}
+          numberOfPieces={100}
+        />
+      )}
       <main
         className={`container mx-auto text-center w-100 p-2 animate__animated animate__fadeIn`}
       >
-        <Confetti
-          width={confettiWidth}
-          height={confettiHeight}
-          numberOfPieces={100}
-        />
         <Title title={"OpenAi"} subTitle={"text"} />
         <SubDescription
           description={"Here you can test the Text generation API"}
         />
         <div className={`flex flex-col justify-center items-center`}>
-          <form className={`w-8/12`} onSubmit={handleSubmit(getTextFromOpenAi)}>
+          <form className={`w-6/12`} onSubmit={handleSubmit(getTextFromOpenAi)}>
             <label className={`label`}>
               <span className={`label-text`}>
                 Make it clear what you want...
@@ -101,7 +118,7 @@ export default function TextPage() {
             </button>
           </form>
         </div>
-        {showSuccess && (
+        {showSuccess && !isLoading && (
           <div
             className={`flex mt-20 flex-col justify-center items-center animate__animated animate__fadeIn`}
           >
@@ -115,6 +132,7 @@ export default function TextPage() {
             />
           </div>
         )}
+        {!isLoading && <LoaderComponent />}
       </main>
     </>
   );

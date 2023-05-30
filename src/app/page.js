@@ -1,36 +1,35 @@
 "use client";
-import { RedirectToSignIn, useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { Title } from "@/components/layout/title";
 import { DescriptionFirstPage } from "@/components/home/descriptions/firstPage";
 import { GoToLab } from "@/components/home/goToLab";
 import { AppContext } from "@/app/context/AppContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 export default function Home() {
-  const { isLoaded, isSignedIn } = useAuth(),
-    router = useRouter(),
+  const router = useRouter(),
+    [loading, setLoading] = useState(setTimeout(() => setLoading(false), 300)),
     { appState } = useContext(AppContext);
 
-  const goToDashboard = () => {
-    void router.push("/lab");
+  const goTo = (route) => {
+    void router.push(route);
   };
+
+  const goToImage = () => {
+    void router.push("/text");
+  };
+
   const checkAuth = () => {
-    if (!isLoaded || !isSignedIn) {
-      return <RedirectToSignIn />;
-    }
     return (
-      <>
-        <main
-          className={`container mx-auto text-center w-100 p-2 animate__animated animate__fadeIn`}
-        >
-          <Title title={"OpenAi"} subTitle={"Testing Project"} />
-          <DescriptionFirstPage router={router} appState={appState} />
-          <GoToLab goToDashboard={goToDashboard} />
-        </main>
-      </>
+      <main
+        className={`container mx-auto text-center w-100 p-2 animate__animated animate__fadeIn`}
+      >
+        <Title title={"OpenAi"} subTitle={"Testing Project"} />
+        <DescriptionFirstPage router={router} appState={appState} />
+        <GoToLab goTo={goTo} goToImage={goToImage} />
+      </main>
     );
   };
 
-  return <>{checkAuth()}</>;
+  return <>{!loading && checkAuth()}</>;
 }
