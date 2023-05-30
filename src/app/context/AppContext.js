@@ -62,12 +62,12 @@ export function AppContextProvider({ children }) {
       {
         index: 9,
         name: "Result",
-        path: "/result",
+        path: "/textTable",
         icon: <i className="bi bi-images"></i>,
         isSubRoute: true,
       },
     ],
-    privateRoutes: ["/", "/lab", "/result", "/text"],
+    privateRoutes: ["/", "/lab", "/textTable", "/text"],
     theme: "night",
   });
 

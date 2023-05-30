@@ -363,7 +363,7 @@ export default function LabPage() {
                 goToOpenaiApi={goToOpenaiApi}
                 h3={"Create Image"}
                 h4={"Here, we are testing:"}
-                apiUrl={"POST .../v1/result/generations"}
+                apiUrl={"POST .../v1/textTable/generations"}
                 type={"create"}
               />
 
@@ -392,7 +392,7 @@ export default function LabPage() {
                 goToOpenaiApi={goToOpenaiApi}
                 h3={"Edit Image"}
                 h4={"Produce a mask and start to edit your image:"}
-                apiUrl={".../v1/result/edits"}
+                apiUrl={".../v1/textTable/edits"}
                 type={"create-edit"}
               />
               {imageEdited === "" && (
@@ -424,7 +424,7 @@ export default function LabPage() {
                 goToOpenaiApi={goToOpenaiApi}
                 h3={"Create Variation"}
                 h4={"Upload an image to create a variation of it:"}
-                apiUrl={".../v1/result/variation"}
+                apiUrl={".../v1/textTable/variation"}
                 type={"create-variation"}
               />
               {imageVariation === "" && (

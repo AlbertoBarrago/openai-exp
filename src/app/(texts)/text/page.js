@@ -8,6 +8,7 @@ import { SubDescription } from "@/components/lab/subDescription";
 import Confetti from "react-confetti";
 import { useAuth } from "@clerk/nextjs";
 import { LoaderComponent } from "@/components/layout/loader";
+import Link from "next/link";
 
 export default function TextPage() {
   const { userId } = useAuth(),
@@ -21,6 +22,7 @@ export default function TextPage() {
     [isLoading, setIsLoading] = useState(false),
     {
       setValue,
+      getValues,
       reset,
       register,
       handleSubmit,
@@ -33,8 +35,10 @@ export default function TextPage() {
 
   const insertData = async (data) => {
     let request = {
-      text: data.text,
+      response: data.text.replace("/n", "").trim(),
+      answer: getValues("text"),
       userId: userId,
+      creationDate: new Date().getTime(),
     };
     const res = await fetch(`${process.env.BASE_URL}/api/mongo/insert/texts`, {
       method: "POST",
@@ -130,7 +134,7 @@ export default function TextPage() {
         </div>
         {showSuccess && !isLoading && (
           <div
-            className={`flex mt-20 flex-col justify-center items-center animate__animated animate__fadeIn`}
+            className={`flex mt-14 flex-col justify-center items-center animate__animated animate__fadeIn`}
           >
             <label className={`label`}>
               <span className={`label-text`}>And this is the response...</span>
@@ -140,6 +144,9 @@ export default function TextPage() {
               className={`textarea-lg w-8/12 arial h-[15rem]`}
               disabled={true}
             />
+            <Link href={"textTable"} className={`mt-2 btn btn-primary`}>
+              Go To Table
+            </Link>
           </div>
         )}
         {isLoading && <LoaderComponent />}

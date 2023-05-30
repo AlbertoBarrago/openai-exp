@@ -89,14 +89,14 @@ export const Header = () => {
             <Menu horizontal className="p-0">
               {appState.routes.map((route) => (
                 <Menu.Item
-                  className={`mb-3`}
+                  className={``}
                   key={route.index}
                   tabIndex={route.hasSubRoutes ? 0 : ""}
                 >
                   {route.hasSubRoutes && (
                     <>
                       <div
-                        className={`btn btn-ghost rounded-none text-secondary z-[500]`}
+                        className={`btn btn-ghost rounded-none text-secondary`}
                       >
                         {route.icon} {route.name}
                       </div>
@@ -104,12 +104,12 @@ export const Header = () => {
                         {route.subRoutes.map((subRoute) => (
                           <Menu.Item
                             tabIndex={0}
-                            className={`pt-1 z-[500]`}
+                            className={`z-[500]`}
                             key={subRoute.index}
                           >
                             <Link
                               href={subRoute.path}
-                              className={`btn btn-ghost bg-[#0e172a] text-secondary ${
+                              className={`btn btn-ghost text-secondary ${
                                 pathname === subRoute.path ? "btn-active" : ""
                               }`}
                               onClick={handleClick}
