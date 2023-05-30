@@ -1,6 +1,6 @@
 "use client";
 import { useEffect } from "react";
-import { renderErrorMessage } from "../../../modules/errors";
+import { renderErrorMessage } from "../../../../modules/errors";
 
 export default function Error({ error, reset }) {
   useEffect(() => {

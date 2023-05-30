@@ -7,7 +7,7 @@ import {
   scrollToTop,
   showAlert,
   showConfettiForSeconds,
-} from "../../../modules/utils";
+} from "../../../../modules/utils";
 import { AlertComponent } from "@/components/shared/alert";
 import Confetti from "react-confetti";
 import { Uploader } from "@/components/lab/uploaderMask";

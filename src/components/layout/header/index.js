@@ -32,7 +32,7 @@ export const Header = () => {
 
   const responsiveMenu = () => {
     return (
-      <div className="navbar pe-10 ps-10">
+      <div className="navbar pe-0 ps-0 md:pe-10 md:ps-10 xl:pe-20 xl:ps-20">
         <div className="navbar-start">
           <div className="dropdown">
             <label tabIndex={0} className="btn btn-ghost lg:hidden">

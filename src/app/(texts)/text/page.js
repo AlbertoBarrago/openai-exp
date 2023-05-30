@@ -97,6 +97,17 @@ export default function TextPage() {
         <SubDescription
           description={"Here you can test the Text generation API"}
         />
+        <p className={`text-secondary italic mb-10`}>
+          * The API is based on the GPT-3 model. You can read more about it
+          <a
+            href={`https://platform.openai.com/docs/guides/completion`}
+            target={`_blank`}
+            className={`text-primary`}
+          >
+            {" "}
+            here
+          </a>
+        </p>
         <div className={`flex flex-col justify-center items-center`}>
           <form className={`w-6/12`} onSubmit={handleSubmit(getTextFromOpenAi)}>
             <label className={`label`}>
