@@ -26,7 +26,7 @@ export default function Home() {
       >
         <Title title={"OpenAi"} subTitle={"Testing Project"} />
         <DescriptionFirstPage router={router} appState={appState} />
-        <GoToLab goTo={goTo} goToImage={goToImage} />
+        <GoToLab goTo={goTo} />
       </main>
     );
   };
