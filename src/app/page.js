@@ -15,10 +15,6 @@ export default function Home() {
     void router.push(route);
   };
 
-  const goToImage = () => {
-    void router.push("/text");
-  };
-
   const checkAuth = () => {
     return (
       <main

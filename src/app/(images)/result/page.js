@@ -6,7 +6,6 @@ import { CardList } from "@/components/result/cardList";
 import { LoaderComponent } from "@/components/layout/loader";
 import { LoadMore } from "@/components/result/loadMore";
 import { FilterResult } from "@/components/result/filter";
-import Confetti from "react-confetti";
 
 async function getData(pageSize, filter = "") {
   const pageNumber = 1;
