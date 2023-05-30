@@ -63,7 +63,7 @@ export default function TextPage() {
       setShowConfetti(true);
       setTimeout(() => {
         setShowConfetti(false);
-      }, 3000);
+      }, 7000);
     });
   };
   const cleanForm = (e) => {
@@ -76,7 +76,7 @@ export default function TextPage() {
   useEffect(() => {
     if (openaiResponse) {
       insertData({ text: openaiResponse }).then((resp) => {
-        console.log(resp);
+        // console.log(resp);
       });
     }
   }, [openaiResponse]);
@@ -131,7 +131,7 @@ export default function TextPage() {
             />
           </div>
         )}
-        {!isLoading && <LoaderComponent />}
+        {isLoading && <LoaderComponent />}
       </main>
     </>
   );

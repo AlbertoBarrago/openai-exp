@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import { handleClick } from "../../../../modules/utils";
 import { AppContext } from "@/app/context/AppContext";
-import { Swap } from "react-daisyui";
+import { Menu, Swap } from "react-daisyui";
 
 let preventDoubleCb = 0;
 export const Header = () => {
@@ -32,7 +32,7 @@ export const Header = () => {
 
   const responsiveMenu = () => {
     return (
-      <div className="navbar animate__animated animate__fadeIn ">
+      <div className="navbar pe-10 ps-10">
         <div className="navbar-start">
           <div className="dropdown">
             <label tabIndex={0} className="btn btn-ghost lg:hidden">
@@ -86,23 +86,27 @@ export const Header = () => {
         </div>
         <div className="navbar-end">
           <div className="hidden lg:flex">
-            <ul className="menu menu-horizontal p-0">
+            <Menu horizontal className="p-0">
               {appState.routes.map((route) => (
-                <li
+                <Menu.Item
                   className={`mb-3`}
                   key={route.index}
                   tabIndex={route.hasSubRoutes ? 0 : ""}
                 >
                   {route.hasSubRoutes && (
                     <>
-                      <span
-                        className={`btn btn-ghost rounded-none text-secondary`}
+                      <div
+                        className={`btn btn-ghost rounded-none text-secondary z-[500]`}
                       >
                         {route.icon} {route.name}
-                      </span>
-                      <ul className="p-0 z-[500]">
+                      </div>
+                      <Menu className="p-0">
                         {route.subRoutes.map((subRoute) => (
-                          <li className={`pt-1 z-[100]`} key={subRoute.index}>
+                          <Menu.Item
+                            tabIndex={0}
+                            className={`pt-1 z-[500]`}
+                            key={subRoute.index}
+                          >
                             <Link
                               href={subRoute.path}
                               className={`btn btn-ghost bg-[#0e172a] text-secondary ${
@@ -112,9 +116,9 @@ export const Header = () => {
                             >
                               {subRoute.icon} {subRoute.name}
                             </Link>
-                          </li>
+                          </Menu.Item>
                         ))}
-                      </ul>
+                      </Menu>
                     </>
                   )}
                   {!route.hasSubRoutes && (
@@ -128,9 +132,9 @@ export const Header = () => {
                       {route.icon} {route.name}
                     </Link>
                   )}
-                </li>
+                </Menu.Item>
               ))}
-            </ul>
+            </Menu>
           </div>
           <div
             className={`relative ms-3 me-3 ${
