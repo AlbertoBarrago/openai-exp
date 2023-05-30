@@ -26,11 +26,10 @@ async function getTextData(pageSize, filter = "") {
   return res.json();
 }
 
-export default function textTable() {
+export default function TextTable() {
   const [dataText, setDataText] = useState([]),
     { appState } = useContext(AppContext),
     [pageSize, setPageSize] = useState(10),
-    [limit, setLimit] = useState(0),
     [setupTable, setSetupTable] = useState({
       dataTheme: appState.theme,
       compact: appState.isMobile,
