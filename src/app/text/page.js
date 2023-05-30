@@ -52,7 +52,6 @@ export default function TextPage() {
       setShowSuccess(true);
     });
   };
-
   const cleanForm = (e) => {
     e.preventDefault();
     setShowSuccess(false);

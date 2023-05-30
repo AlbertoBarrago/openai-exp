@@ -13,32 +13,31 @@ export function AppContextProvider({ children }) {
         path: "/",
         icon: <i className="bi bi-house"></i>,
       },
-
       {
         index: 2,
-        name: "Text",
-        path: "/text",
-        icon: <i className="bi bi-fonts"></i>,
-      },
-      {
-        index: 3,
         name: "Images",
         icon: <i className="bi bi-caret-down"></i>,
         hasSubRoutes: true,
         subRoutes: [
           {
-            index: 4,
+            index: 2_1,
             name: "Labo...",
             path: "/lab",
             icon: <i className="bi bi-images"></i>,
           },
           {
-            index: 5,
+            index: 2_2,
             name: "Result",
             path: "/result",
             icon: <i className="bi bi-book"></i>,
           },
         ],
+      },
+      {
+        index: 3,
+        name: "Text",
+        path: "/text",
+        icon: <i className="bi bi-fonts"></i>,
       },
     ],
     mobileRoutes: [
