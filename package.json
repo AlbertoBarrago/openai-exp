@@ -37,6 +37,7 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "encoding": "^0.1.13"
+    "encoding": "^0.1.13",
+    "prettier": "^2.8.8"
   }
 }

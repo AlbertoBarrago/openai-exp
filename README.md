@@ -1,5 +1,8 @@
-# Openai-Exp with Next.js@latest
-![pepe](https://www.icegif.com/wp-content/uploads/2023/01/icegif-804.gif)
+<div align="center">
+<h1> Openai-Exp with Next.js@latest </h1>
+<img src="https://gifdb.com/images/high/pepe-frog-meme-fancy-gentleman-winking-kqev0mndunc9yms2.gif" width="250" height="250"/>
+</div>
+
 
 ## Version
 #### 0.9.0
