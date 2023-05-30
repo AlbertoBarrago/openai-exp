@@ -127,7 +127,11 @@ export default function TextPage() {
             <button className={`btn btn-default mt-2 me-2`} onClick={cleanForm}>
               Clean
             </button>
-            <button className={`btn btn-primary mt-2`} type={"submit"}>
+            <button
+              disabled={showSuccess}
+              className={`btn btn-primary mt-2`}
+              type={"submit"}
+            >
               Send
             </button>
           </form>

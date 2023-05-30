@@ -4,6 +4,7 @@ import { SubDescription } from "@/components/lab/subDescription";
 import { useContext, useEffect, useState } from "react";
 import { TableText } from "@/components/commons/table";
 import { AppContext } from "@/app/context/AppContext";
+import { LoaderComponent } from "@/components/layout/loader";
 
 async function getTextData(pageSize, filter = "") {
   const pageNumber = 1;
@@ -58,6 +59,7 @@ export default function textTable() {
       <SubDescription
         description={"Here you can test the Text generation API"}
       />
+      {!dataText?.responseTextList && <LoaderComponent />}
       {dataText?.responseTextList && (
         <TableText args={setupTable} data={dataText.responseTextList} />
       )}
