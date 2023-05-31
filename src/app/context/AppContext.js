@@ -22,13 +22,13 @@ export function AppContextProvider({ children }) {
           {
             index: 2_1,
             name: "Labo...",
-            path: "/lab",
+            path: "/image",
             icon: <i className="bi bi-images"></i>,
           },
           {
             index: 2_2,
             name: "Result",
-            path: "/result",
+            path: "/imageResult",
             icon: <i className="bi bi-book"></i>,
           },
         ],
@@ -56,18 +56,18 @@ export function AppContextProvider({ children }) {
       {
         index: 8,
         name: "Image",
-        path: "/lab",
+        path: "/image",
         icon: <i className="bi bi-caret-down"></i>,
       },
       {
         index: 9,
         name: "Result",
-        path: "/textTable",
+        path: "/imageResult",
         icon: <i className="bi bi-images"></i>,
         isSubRoute: true,
       },
     ],
-    privateRoutes: ["/", "/lab", "/textTable", "/text"],
+    privateRoutes: ["/", "/image", "/textResult", "/text"],
     theme: "night",
   });
 

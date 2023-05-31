@@ -27,7 +27,7 @@ import { AppContext } from "@/app/context/AppContext";
 
 const confettiDuration = 5;
 
-export default function LabPage() {
+export default function LabImage() {
   const { isLoaded, isSignedIn, userId } = useAuth(),
     { appState } = useContext(AppContext),
     [isLoadingEdited, setIsLoadingEdited] = useState(false),
@@ -363,7 +363,7 @@ export default function LabPage() {
                 goToOpenaiApi={goToOpenaiApi}
                 h3={"Create Image"}
                 h4={"Here, we are testing:"}
-                apiUrl={"POST .../v1/textTable/generations"}
+                apiUrl={"POST .../v1/textResult/generations"}
                 type={"create"}
               />
 
@@ -392,7 +392,7 @@ export default function LabPage() {
                 goToOpenaiApi={goToOpenaiApi}
                 h3={"Edit Image"}
                 h4={"Produce a mask and start to edit your image:"}
-                apiUrl={".../v1/textTable/edits"}
+                apiUrl={".../v1/textResult/edits"}
                 type={"create-edit"}
               />
               {imageEdited === "" && (
@@ -424,7 +424,7 @@ export default function LabPage() {
                 goToOpenaiApi={goToOpenaiApi}
                 h3={"Create Variation"}
                 h4={"Upload an image to create a variation of it:"}
-                apiUrl={".../v1/textTable/variation"}
+                apiUrl={".../v1/textResult/variation"}
                 type={"create-variation"}
               />
               {imageVariation === "" && (

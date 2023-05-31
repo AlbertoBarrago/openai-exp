@@ -35,7 +35,7 @@ export const UploaderImage = ({ imageEdited, setImageEdited, data, reset }) => {
           </div>
           <div>
             <Link
-              href={"/textTable"}
+              href={"/imageResult"}
               className={"mt-3 mb-5 w-full  btn btn-primary btn-active"}
             >
               Go to results

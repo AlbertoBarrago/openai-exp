@@ -14,8 +14,6 @@ async function getData(pageSize, filter = "") {
     pageSize = 10;
   }
 
-  console.log(filter);
-
   const res = await fetch(
     `${process.env.BASE_URL}/api/mongo/getList/?pageSize=${pageSize}&pageNumber=${pageNumber}&q=${filter}`,
     {
@@ -28,7 +26,7 @@ async function getData(pageSize, filter = "") {
   return res.json();
 }
 
-export default function ResultPage() {
+export default function LabImageResult() {
   const [data, setData] = useState(null),
     [pageSize, setPageSize] = useState(10),
     [limit, setLimit] = useState(0),

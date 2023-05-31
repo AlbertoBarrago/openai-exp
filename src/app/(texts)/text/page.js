@@ -148,7 +148,7 @@ export default function TextPage() {
               className={`textarea-lg w-8/12 arial h-[15rem]`}
               disabled={true}
             />
-            <Link href={"textTable"} className={`mt-2 btn btn-primary`}>
+            <Link href={"textResult"} className={`mt-2 btn btn-primary`}>
               Go To Table
             </Link>
           </div>

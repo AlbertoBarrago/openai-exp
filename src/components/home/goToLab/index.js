@@ -5,7 +5,7 @@ export const GoToLab = ({ goTo }) => {
         <div>
           <button
             onClick={() => {
-              goTo("/lab");
+              goTo("/image");
             }}
             className={`btn btn-btn-secondary`}
           >

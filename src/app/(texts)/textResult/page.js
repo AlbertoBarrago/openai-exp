@@ -26,7 +26,7 @@ async function getTextData(pageSize, filter = "") {
   return res.json();
 }
 
-export default function TextTable() {
+export default function TextResult() {
   const [dataText, setDataText] = useState([]),
     { appState } = useContext(AppContext),
     [pageSize, setPageSize] = useState(10),

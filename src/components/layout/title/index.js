@@ -1,6 +1,6 @@
 import { usePathname, useRouter } from "next/navigation";
 
-const listBackButtonView = ["/textTable"];
+const listBackButtonView = ["/textResult"];
 export const Title = ({ title, subTitle }) => {
   const pathName = usePathname();
   const router = useRouter();
