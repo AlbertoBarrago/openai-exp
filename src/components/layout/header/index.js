@@ -7,21 +7,16 @@ import { handleClick } from "../../../../modules/utils";
 import { AppContext } from "@/app/context/AppContext";
 import { Menu, Swap } from "react-daisyui";
 
-let preventDoubleCb = 0;
 export const Header = () => {
   const pathname = usePathname(),
     [isPrivateView, setIsPrivateView] = useState(null),
     { appState, setAppState } = useContext(AppContext);
 
   const toggleTheme = () => {
-    if (preventDoubleCb === 0)
-      setAppState({
-        ...appState,
-        theme: appState.theme === "night" ? "light" : "night",
-      });
-    document.querySelector("html").setAttribute("data-theme", appState.theme);
-    preventDoubleCb++;
-    setTimeout(() => (preventDoubleCb = 0), 0);
+    setAppState({
+      ...appState,
+      theme: appState.theme === "night" ? "light" : "night",
+    });
   };
 
   const swampConfig = {
@@ -29,6 +24,10 @@ export const Header = () => {
     offElement: <i className="bi bi-moon-fill"></i>,
     flip: true,
   };
+
+  useEffect(() => {
+    document.querySelector("html").setAttribute("data-theme", appState.theme);
+  }, [appState.theme]);
 
   const responsiveMenu = () => {
     return (
@@ -82,7 +81,7 @@ export const Header = () => {
             </svg>
             <span className={`ms-2 text-secondary`}>Openai-Exp</span>
           </Link>
-          <Swap className={`ms-2`} onClick={toggleTheme} {...swampConfig} />
+          <Swap className={`ms-2`} onChange={toggleTheme} {...swampConfig} />
         </div>
         <div className="navbar-end">
           <div className="hidden lg:flex">
