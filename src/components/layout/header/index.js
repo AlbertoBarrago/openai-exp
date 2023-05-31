@@ -140,7 +140,9 @@ export const Header = () => {
               !appState.isMobile ? "bottom-2" : ""
             }`}
           >
-            <UserButton />
+            <span className={`relative top-1`}>
+              <UserButton />
+            </span>
           </div>
         </div>
       </div>

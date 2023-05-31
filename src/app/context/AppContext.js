@@ -67,7 +67,7 @@ export function AppContextProvider({ children }) {
         isSubRoute: true,
       },
     ],
-    privateRoutes: ["/", "/image", "/textResult", "/text"],
+    privateRoutes: ["/", "/image", "/textResult", "/text", "/chat"],
     theme: "night",
   });
 

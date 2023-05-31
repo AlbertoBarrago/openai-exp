@@ -61,6 +61,20 @@ const handleTimeStamp = (date) => {
   });
 };
 
+/**
+ * Handle timestamp for chat
+ * @param date
+ * @return {string}
+ */
+const handleChatTimeStamp = (date) => {
+  const dateformat = new Date(date);
+  return dateformat.toLocaleDateString("it-IT", {
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+  });
+};
+
 const orderDateBy = (data, by) => {
   //order by alphabet
   return data.sort((a, b) => {
@@ -121,4 +135,5 @@ export {
   scrollToElement,
   handleClick,
   handleNameByMongoId,
+  handleChatTimeStamp,
 };
