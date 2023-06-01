@@ -9,12 +9,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ChatForm } from "@/components/chat/form";
 import { LoaderComponent } from "@/components/layout/loader";
-import {
-  captureBackButtonBrowser,
-  scrollBottom,
-  scrollDown,
-  scrollToElement,
-} from "../../../../modules/utils";
+import { scrollBottom } from "../../../../modules/utils";
 
 async function getTextData(pageSize, filter = "") {
   const pageNumber = 1;
