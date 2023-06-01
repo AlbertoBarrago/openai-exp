@@ -9,6 +9,12 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ChatForm } from "@/components/chat/form";
 import { LoaderComponent } from "@/components/layout/loader";
+import {
+  captureBackButtonBrowser,
+  scrollBottom,
+  scrollDown,
+  scrollToElement,
+} from "../../../../modules/utils";
 
 async function getTextData(pageSize, filter = "") {
   const pageNumber = 1;
@@ -85,14 +91,19 @@ export default function ChatPage() {
       router.push("/sign-in");
       return;
     }
-    setPreviousMessage(data?.text);
     void getChatBotMessage(data.text);
     reset();
   };
 
   const getChatBotMessage = async (text) => {
     const message = await chatBot("user", text);
-    if (message.success) setNewMessage(message.content);
+    console.log("MESSAGE ---> ", message);
+    if (!message.success) {
+      new Error("Failed to fetch data");
+      return;
+    }
+    setPreviousMessage(text);
+    setNewMessage(message.content);
   };
 
   const handleKeyDown = (event) => {
@@ -130,6 +141,9 @@ export default function ChatPage() {
     void getTextData(10, "").then((data) => {
       setMessagesList(data?.responseChatList);
       setIsLoading(false);
+      setTimeout(() => {
+        scrollBottom(document.getElementById("chat-container"));
+      }, 1000);
     });
   }, []);
 
@@ -167,11 +181,14 @@ export default function ChatPage() {
     >
       <Title title={"OpenAi"} subTitle={"chat"} />
       <SubDescription description={"Here you can test the Chat"} />
-      <div className={`chat-container h-[75vh] p-10`}>
+      <div className={`h-[75vh] p-10`}>
         {isLoading && <LoaderComponent />}
         {!isLoading && (
           <>
-            <div className={`h-[50vh] pe-20 ps-20 overflow-auto`}>
+            <div
+              id={`chat-container`}
+              className={`h-[50vh] pe-20 ps-20 overflow-auto`}
+            >
               {!messagesList.length && (
                 <p className={`text-accent text-xl animate-bounce`}>
                   Start to talking...

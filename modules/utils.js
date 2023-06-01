@@ -89,6 +89,13 @@ const scrollToTop = () => {
     behavior: "smooth",
   });
 };
+/**
+ * Scroll to bottom
+ * @param obj
+ */
+const scrollBottom = (obj) => {
+  obj.scrollTop = obj.scrollHeight;
+};
 
 const scrollToElement = (id) => {
   const element = document.getElementById(id);
@@ -128,6 +135,7 @@ export {
   handleTimeStamp,
   orderDateBy,
   scrollToTop,
+  scrollBottom,
   scrollToElement,
   handleClick,
   handleNameByMongoId,
