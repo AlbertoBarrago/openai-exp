@@ -39,6 +39,12 @@ export function AppContextProvider({ children }) {
         path: "/text",
         icon: <i className="bi bi-fonts"></i>,
       },
+      {
+        index: 4,
+        name: "Chat",
+        path: "/chat",
+        icon: <i className="bi bi-chat"></i>,
+      },
     ],
     mobileRoutes: [
       {

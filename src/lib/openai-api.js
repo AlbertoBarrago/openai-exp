@@ -1,5 +1,4 @@
 import { Configuration, OpenAIApi } from "openai";
-
 /**
  * Get openai message for post
  */
@@ -114,4 +113,29 @@ export const produceImageVariations = async (image, userId) => {
     console.error(error);
     return null;
   }
+};
+
+/**
+ * Get openai message for chat bot
+ * @param role
+ * @param message
+ * @return {Promise<*>}
+ */
+export const chatBot = async (role, message) => {
+  let chatMsg = "";
+  try {
+    const response = await openai.createChatCompletion({
+      model: "gpt-3.5-turbo",
+      messages: [{ role: role, content: message }],
+    });
+    chatMsg = response?.data?.choices[0].message;
+  } catch (error) {
+    console.error(error);
+    return {
+      error,
+      success: false,
+    };
+  }
+  console.log("CHAT MSG ---> ", chatMsg);
+  return { chatMsg, success: true };
 };

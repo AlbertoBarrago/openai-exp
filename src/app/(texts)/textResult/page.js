@@ -19,7 +19,6 @@ async function getTextData(pageSize, filter = "") {
       next: { revalidate: 10 }, // refresh every 10 second
     }
   );
-  console.log(res);
   if (!res.ok) {
     throw new Error("Failed to fetch data");
   }

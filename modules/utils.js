@@ -68,11 +68,7 @@ const handleTimeStamp = (date) => {
  */
 const handleChatTimeStamp = (date) => {
   const dateformat = new Date(date);
-  return dateformat.toLocaleDateString("it-IT", {
-    hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
-  });
+  return dateformat.toLocaleTimeString("it-IT");
 };
 
 const orderDateBy = (data, by) => {
