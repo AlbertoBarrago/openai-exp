@@ -28,7 +28,7 @@ async function getTextData(pageSize, filter = "") {
 export default function TextResult() {
   const [dataText, setDataText] = useState([]),
     { appState } = useContext(AppContext),
-    [pageSize, setPageSize] = useState(10),
+    [pageSize] = useState(10),
     [setupTable, setSetupTable] = useState({
       dataTheme: appState.theme,
       compact: appState.isMobile,

@@ -2,8 +2,7 @@
 import { useUser } from "@clerk/nextjs";
 import { Title } from "@/components/layout/title";
 import { SubDescription } from "@/components/lab/subDescription";
-import { ChatBubble, Textarea } from "react-daisyui";
-import { handleChatTimeStamp } from "../../../../modules/utils";
+import { ChatBubble } from "react-daisyui";
 import { useForm } from "react-hook-form";
 import { chatBot } from "@/lib/openai-api";
 import { useEffect, useState } from "react";
@@ -103,7 +102,7 @@ export default function ChatPage() {
     }
   };
 
-  function bubble(author, header, time, avatar, footer, side, message, seen) {
+  function bubble(author, header, time, avatar, footer, side, message) {
     return (
       <ChatBubble end={side === "end"}>
         {header && (
