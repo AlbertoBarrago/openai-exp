@@ -1,18 +1,8 @@
 import { Textarea } from "react-daisyui";
 
-export const ChatForm = ({
-  handleKeyDown,
-  cleanForm,
-  handleSubmit,
-  onSubmit,
-  register,
-}) => {
+export const ChatForm = ({ handleKeyDown, cleanForm, onSubmit, register }) => {
   return (
-    <form
-      className={`w-full`}
-      onSubmit={handleSubmit(onSubmit)}
-      onKeyDown={handleKeyDown}
-    >
+    <form className={`w-full`} onSubmit={onSubmit} onKeyDown={handleKeyDown}>
       <label className={`label`}>
         <span className={`label-text`}>Be kind</span>
       </label>

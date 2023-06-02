@@ -121,7 +121,11 @@ const handleClick = () => {
  */
 const handleNameByMongoId = (id) => {
   switch (id) {
-    case "user_2Pst07HiOUviTIfzlJHg8ZoaZrY": //hide me :P
+    case process.env.MONGO_ADMIN_ID: //hide me :P
+      return "alBz";
+    case "bot":
+      return "Bot";
+    case "alBz":
       return "alBz";
     default:
       return "User Anonimo";

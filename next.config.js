@@ -22,6 +22,7 @@ const nextConfig = {
     CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
     CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET,
     CLD_CLOUD_NAME: process.env.CLD_CLOUD_NAME,
+    MONGO_ADMIN_ID: process.env.MONGO_ADMIN_ID,
   },
   images: {
     remotePatterns: [

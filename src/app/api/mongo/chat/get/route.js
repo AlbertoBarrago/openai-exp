@@ -26,7 +26,6 @@ export async function GET(req) {
   };
 
   const query = {
-    userId: userId,
     message: q.toString() ? q.toString() : { $exists: true },
   };
 
@@ -42,7 +41,7 @@ export async function GET(req) {
   // Remove ID field from every document
   ordered.forEach((item) => {
     responseChatList.push({
-      userId: handleNameByMongoId(item.userId),
+      author: handleNameByMongoId(item.userId),
       creationDate: handleChatTimeStamp(item.creationDate),
       message: item.message,
       avatar: item.avatar,

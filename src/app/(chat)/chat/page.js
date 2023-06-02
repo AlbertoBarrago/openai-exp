@@ -4,12 +4,17 @@ import { Title } from "@/components/layout/title";
 import { SubDescription } from "@/components/lab/subDescription";
 import { ChatBubble } from "react-daisyui";
 import { useForm } from "react-hook-form";
-import { chatFreeOpenai } from "@/lib/openai-api";
+import { chatBot, chatFreeOpenai } from "@/lib/openai-api";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ChatForm } from "@/components/chat/form";
 import { LoaderComponent } from "@/components/layout/loader";
-import { scrollBottom } from "../../../../modules/utils";
+import {
+  handleChatTimeStamp,
+  handleNameByMongoId,
+  handleTimeStamp,
+  scrollBottom,
+} from "../../../../modules/utils";
 
 async function getTextData(pageSize, filter = "") {
   const pageNumber = 1;
@@ -61,9 +66,12 @@ export default function ChatPage() {
   };
 
   const postOnMongo = async (data) => {
-    if (!data.message) return;
+    if (!data.message) {
+      console.error("Message is empty");
+      return;
+    }
     let request = {
-      userId: user?.id,
+      userId: data.author,
       creationDate: new Date().getTime(),
       message: data?.message,
       avatar: data.avatar,
@@ -86,19 +94,19 @@ export default function ChatPage() {
       router.push("/sign-in");
       return;
     }
-    void getChatBotMessage(data.text);
+    setPreviousMessage(data?.text);
+    void getChatBotMessage(data?.text);
     reset();
   };
 
   const getChatBotMessage = async (text) => {
-    const message = await chatFreeOpenai("admin", text);
+    const message = await chatBot("user", text);
     console.log("MESSAGE ---> ", message);
     if (!message.success) {
       new Error("Failed to fetch data");
       return;
     }
-    setPreviousMessage(text);
-    setNewMessage(message.content);
+    setNewMessage(message?.chatMsg?.content);
   };
 
   const handleKeyDown = (event) => {
@@ -132,7 +140,15 @@ export default function ChatPage() {
     reset();
   };
 
+  const checkIfUserIsAdmin = () => {
+    return user?.id === process.env.MONGO_ADMIN_ID;
+  };
+
   useEffect(() => {
+    if (!checkIfUserIsAdmin()) {
+      router.push("/");
+      return;
+    }
     void getTextData(10, "").then((data) => {
       setMessagesList(data?.responseChatList);
       setIsLoading(false);
@@ -144,8 +160,8 @@ export default function ChatPage() {
 
   useEffect(() => {
     let previousMsg = {
-      userId: user?.id,
-      creationDate: new Date().getTime(),
+      author: handleNameByMongoId(user?.id),
+      creationDate: handleChatTimeStamp(new Date().getTime()),
       message: previousMessage,
       avatar: user?.profileImageUrl,
       header: true,
@@ -158,8 +174,8 @@ export default function ChatPage() {
 
   useEffect(() => {
     let newMsg = {
-      userId: user?.id,
-      creationDate: new Date().getTime(),
+      author: "bot",
+      creationDate: handleChatTimeStamp(new Date().getTime()),
       message: newMessage,
       avatar: "https://i.pravatar.cc/50",
       header: true,
@@ -176,13 +192,13 @@ export default function ChatPage() {
     >
       <Title title={"OpenAi"} subTitle={"chat"} />
       <SubDescription description={"Here you can test the Chat"} />
-      <div className={`h-[75vh] p-10`}>
+      <div className={`h-[70vh] p-10`}>
         {isLoading && <LoaderComponent />}
         {!isLoading && (
           <>
             <div
               id={`chat-container`}
-              className={`h-[50vh] pe-20 ps-20 overflow-auto`}
+              className={`h-[45vh] pe-20 ps-20 overflow-auto`}
             >
               {!messagesList.length && (
                 <p className={`text-accent text-xl animate-bounce`}>
@@ -210,8 +226,7 @@ export default function ChatPage() {
             <div className={`sticky top-[100vh] mt-10 pe-20 ps-20`}>
               <ChatForm
                 cleanForm={cleanForm}
-                handleSubmit={handleSubmit}
-                onSubmit={onSubmit}
+                onSubmit={handleSubmit(onSubmit)}
                 handleKeyDown={handleKeyDown}
                 register={register}
               />
