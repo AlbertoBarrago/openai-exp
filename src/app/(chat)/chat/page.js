@@ -4,7 +4,7 @@ import { Title } from "@/components/layout/title";
 import { SubDescription } from "@/components/lab/subDescription";
 import { ChatBubble } from "react-daisyui";
 import { useForm } from "react-hook-form";
-import { chatBot, chatFreeOpenai } from "@/lib/openai-api";
+import { chatBot } from "@/lib/openai-api";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ChatForm } from "@/components/chat/form";
@@ -12,7 +12,6 @@ import { LoaderComponent } from "@/components/layout/loader";
 import {
   handleChatTimeStamp,
   handleNameByMongoId,
-  handleTimeStamp,
   scrollBottom,
 } from "../../../../modules/utils";
 
@@ -40,13 +39,7 @@ async function getTextData(pageSize, filter = "") {
 export default function ChatPage() {
   const { user } = useUser();
   const { router } = useRouter();
-  const {
-    getValues,
-    reset,
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
+  const { getValues, reset, register, handleSubmit } = useForm({
     defaultValues: {
       text: "",
     },
