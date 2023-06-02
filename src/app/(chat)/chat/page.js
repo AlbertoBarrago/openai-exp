@@ -4,7 +4,7 @@ import { Title } from "@/components/layout/title";
 import { SubDescription } from "@/components/lab/subDescription";
 import { ChatBubble } from "react-daisyui";
 import { useForm } from "react-hook-form";
-import { chatBot } from "@/lib/openai-api";
+import { chatFreeOpenai } from "@/lib/openai-api";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ChatForm } from "@/components/chat/form";
@@ -91,7 +91,7 @@ export default function ChatPage() {
   };
 
   const getChatBotMessage = async (text) => {
-    const message = await chatBot("user", text);
+    const message = await chatFreeOpenai("admin", text);
     console.log("MESSAGE ---> ", message);
     if (!message.success) {
       new Error("Failed to fetch data");

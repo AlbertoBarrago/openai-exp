@@ -1,4 +1,5 @@
 import { Configuration, OpenAIApi } from "openai";
+
 /**
  * Get openai message for post
  */
@@ -7,6 +8,7 @@ class CustomFormData extends FormData {
     return {};
   }
 }
+
 /**
  * Openai configuration
  * @type {Configuration}
@@ -129,6 +131,32 @@ export const chatBot = async (role, message) => {
       messages: [{ role: role, content: message }],
     });
     chatMsg = response?.data?.choices[0].message;
+  } catch (error) {
+    console.error(error);
+    return {
+      error,
+      success: false,
+    };
+  }
+  console.log("CHAT MSG ---> ", chatMsg);
+  return { chatMsg, success: true };
+};
+
+export const chatFreeOpenai = async (role, message) => {
+  let chatMsg = "";
+  try {
+    const response = await fetch("https://chatgpt-api.shn.hk/v1/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "gpt-3.5-turbo",
+        messages: [{ role: role, content: message }],
+      }),
+    });
+    const data = await response.json();
+    chatMsg = data?.choices[0].message;
   } catch (error) {
     console.error(error);
     return {

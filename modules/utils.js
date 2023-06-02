@@ -94,6 +94,7 @@ const scrollToTop = () => {
  * @param obj
  */
 const scrollBottom = (obj) => {
+  if (!obj) return;
   obj.scrollTop = obj.scrollHeight;
 };
 
