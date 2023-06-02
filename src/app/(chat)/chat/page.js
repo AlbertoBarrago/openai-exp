@@ -72,6 +72,7 @@ export default function ChatPage() {
     }
     let request = {
       userId: data.author,
+      chatSession: user?.id,
       creationDate: new Date().getTime(),
       message: data?.message,
       avatar: data.avatar,

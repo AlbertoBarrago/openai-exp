@@ -26,6 +26,7 @@ export async function GET(req) {
   };
 
   const query = {
+    chatSession: userId,
     message: q.toString() ? q.toString() : { $exists: true },
   };
 
