@@ -100,12 +100,12 @@ export const Header = () => {
                             {route.name}
                           </span>
                         </summary>
-                        <ul className="p-2">
+                        <ul>
                           {route.subRoutes.map((subRoute) => (
                             <li tabIndex={0} key={subRoute.index}>
                               <Link
                                 href={subRoute.path}
-                                className={`btn btn-ghost text-secondary ${
+                                className={`z-[500] text-secondary ${
                                   pathname === subRoute.path ? "btn-active" : ""
                                 }`}
                                 onClick={handleClick}
