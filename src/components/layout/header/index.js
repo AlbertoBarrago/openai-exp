@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import { handleClick } from "../../../../modules/utils";
 import { AppContext } from "@/app/context/appContext";
-import { Menu, Swap } from "react-daisyui";
+import { Swap } from "react-daisyui";
 
 export const Header = () => {
   const pathname = usePathname(),
