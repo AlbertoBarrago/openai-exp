@@ -48,6 +48,7 @@ export default function ChatPage() {
   const [messagesList, setMessagesList] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [previousMessage, setPreviousMessage] = useState("");
+  const [botIsTyping, setBotIsTyping] = useState(false);
 
   const getSideFromLastMessage = () => {
     if (messagesList.length === 0) {
@@ -90,16 +91,19 @@ export default function ChatPage() {
     }
     setPreviousMessage(data?.text);
     void getChatBotMessage(data?.text);
+    scrollBottom(document.getElementById("chat-container"));
     reset();
   };
 
   const getChatBotMessage = async (text) => {
+    setBotIsTyping(true);
     const message = await chatBot("user", text);
-    console.log("MESSAGE ---> ", message);
     if (!message.success) {
       new Error("Failed to fetch data");
       return;
     }
+    setBotIsTyping(false);
+    scrollBottom(document.getElementById("chat-container"));
     setNewMessage(message?.chatMsg?.content);
   };
 
@@ -112,20 +116,22 @@ export default function ChatPage() {
 
   function bubble(author, header, time, avatar, footer, side, message) {
     return (
-      <ChatBubble end={side === "end"}>
-        {header && (
-          <ChatBubble.Header>
-            {author && <span className={`me-2`}>{author}</span>}
-            {time && (
-              <ChatBubble.Time>
-                <span className={`text-xs text-secondary`}>{time}</span>
-              </ChatBubble.Time>
-            )}
-          </ChatBubble.Header>
-        )}
-        {avatar && <ChatBubble.Avatar src={avatar} />}
-        <ChatBubble.Message>{message}</ChatBubble.Message>
-      </ChatBubble>
+      <div className={`mb-5`}>
+        <ChatBubble end={side === "end"}>
+          {header && (
+            <ChatBubble.Header>
+              {author && <span className={`me-2`}>{author}</span>}
+              {time && (
+                <ChatBubble.Time>
+                  <span className={`text-xs text-secondary`}>{time}</span>
+                </ChatBubble.Time>
+              )}
+            </ChatBubble.Header>
+          )}
+          {avatar && <ChatBubble.Avatar src={avatar} />}
+          <ChatBubble.Message>{message}</ChatBubble.Message>
+        </ChatBubble>
+      </div>
     );
   }
 
@@ -148,11 +154,12 @@ export default function ChatPage() {
       setIsLoading(false);
       setTimeout(() => {
         scrollBottom(document.getElementById("chat-container"));
-      }, 1000);
+      }, 100);
     });
   }, []);
 
   useEffect(() => {
+    if (!previousMessage) return;
     let previousMsg = {
       author: handleNameByMongoId(user?.id),
       creationDate: handleChatTimeStamp(new Date().getTime()),
@@ -167,6 +174,7 @@ export default function ChatPage() {
   }, [previousMessage]);
 
   useEffect(() => {
+    if (!newMessage) return;
     let newMsg = {
       author: "bot",
       creationDate: handleChatTimeStamp(new Date().getTime()),
@@ -174,7 +182,7 @@ export default function ChatPage() {
       avatar: "https://i.pravatar.cc/50",
       header: true,
       footer: true,
-      side: getSideFromLastMessage(),
+      side: "end",
     };
     setMessagesList([...messagesList, newMsg]);
     void postOnMongo(newMsg);
@@ -215,6 +223,9 @@ export default function ChatPage() {
                     </div>
                   );
                 })}
+              {botIsTyping && (
+                <span className="loading loading-dots loading-sm mt-10 float-right"></span>
+              )}
             </div>
 
             <div className={`sticky top-[100vh] mt-10 pe-20 ps-20`}>

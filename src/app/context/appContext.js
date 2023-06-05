@@ -15,35 +15,35 @@ export function AppContextProvider({ children }) {
       },
       {
         index: 2,
-        name: "Images",
-        icon: <i className="bi bi-caret-down"></i>,
-        hasSubRoutes: true,
-        subRoutes: [
-          {
-            index: 2_1,
-            name: "Labo...",
-            path: "/image",
-            icon: <i className="bi bi-images"></i>,
-          },
-          {
-            index: 2_2,
-            name: "Result",
-            path: "/imageResult",
-            icon: <i className="bi bi-book"></i>,
-          },
-        ],
-      },
-      {
-        index: 3,
         name: "Text",
         path: "/text",
         icon: <i className="bi bi-fonts"></i>,
       },
       {
-        index: 4,
+        index: 3,
         name: "Chat",
         path: "/chat",
         icon: <i className="bi bi-chat"></i>,
+      },
+      {
+        index: 4,
+        name: "Images",
+        icon: <i className="bi bi-caret-down"></i>,
+        hasSubRoutes: true,
+        subRoutes: [
+          {
+            index: 4_1,
+            name: "Labo...",
+            path: "/image",
+            icon: <i className="bi bi-images"></i>,
+          },
+          {
+            index: 4_2,
+            name: "Result",
+            path: "/imageResult",
+            icon: <i className="bi bi-book"></i>,
+          },
+        ],
       },
     ],
     mobileRoutes: [
@@ -73,7 +73,14 @@ export function AppContextProvider({ children }) {
         isSubRoute: true,
       },
     ],
-    privateRoutes: ["/", "/image", "/textResult", "/text", "/chat"],
+    privateRoutes: [
+      "/",
+      "/image",
+      "/textResult",
+      "/text",
+      "/chat",
+      "/imageResult",
+    ],
     theme: "night",
   });
 

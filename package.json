@@ -17,7 +17,7 @@
     "autoprefixer": "10.4.14",
     "bootstrap-icons": "^1.10.5",
     "cloudinary": "^1.37.0",
-    "daisyui": "^2.51.6",
+    "daisyui": "3.0.1",
     "eslint": "8.40.0",
     "eslint-config-next": "13.4.2",
     "mongodb": "^5.5.0",

@@ -3,7 +3,7 @@ import { Title } from "@/components/layout/title";
 import { SubDescription } from "@/components/lab/subDescription";
 import { useContext, useEffect, useState } from "react";
 import { TableText } from "@/components/commons/table";
-import { AppContext } from "@/app/context/AppContext";
+import { AppContext } from "@/app/context/appContext";
 import { LoaderComponent } from "@/components/layout/loader";
 
 async function getTextData(pageSize, filter = "") {

@@ -23,7 +23,7 @@ import {
   editImageOpenai,
   produceImageVariations,
 } from "@/lib/openai-api";
-import { AppContext } from "@/app/context/AppContext";
+import { AppContext } from "@/app/context/appContext";
 
 const confettiDuration = 5;
 

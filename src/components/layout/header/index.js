@@ -4,7 +4,7 @@ import { UserButton } from "@clerk/nextjs";
 import { usePathname } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import { handleClick } from "../../../../modules/utils";
-import { AppContext } from "@/app/context/AppContext";
+import { AppContext } from "@/app/context/appContext";
 import { Menu, Swap } from "react-daisyui";
 
 export const Header = () => {
@@ -52,19 +52,19 @@ export const Header = () => {
             </label>
             <ul
               tabIndex={0}
-              className="menu-compact dropdown-content bg-[#0e172a] w-32 roundex-box mt-3"
+              className="menu menu-sm dropdown-content shadow bg-base-100 rounded-box w-32 z-[500]"
             >
               {appState.mobileRoutes.map((route) => (
-                <li className={`w-72 pb-1 bg-auto`} key={route.index}>
-                  <Link
+                <li className={`w-32 bg-auto`} key={route.index}>
+                  <a
                     href={route.path}
                     onClick={handleClick}
-                    className={`btn btn-ghost text-secondary ${
+                    className={`btn btn-ghost pt-3 mb-1 text-secondary ${
                       route.isSubRoute ? "ms-3" : ""
                     } ${pathname === route.path ? "btn-active" : ""}`}
                   >
                     <span className={`me-1`}>{route.icon}</span> {route.name}
-                  </Link>
+                  </a>
                 </li>
               ))}
             </ul>
@@ -84,65 +84,57 @@ export const Header = () => {
           <Swap className={`ms-2`} onChange={toggleTheme} {...swampConfig} />
         </div>
         <div className="navbar-end">
-          <div className="hidden lg:flex">
-            <Menu horizontal className="p-0">
-              {appState.routes.map((route) => (
-                <Menu.Item
-                  className={``}
-                  key={route.index}
-                  tabIndex={route.hasSubRoutes ? 0 : ""}
-                >
-                  {route.hasSubRoutes && (
-                    <>
-                      <div
-                        className={`btn btn-ghost rounded-none text-secondary`}
-                      >
-                        {route.icon} {route.name}
-                      </div>
-                      <Menu className="p-0">
-                        {route.subRoutes.map((subRoute) => (
-                          <Menu.Item
-                            tabIndex={0}
-                            className={`z-[500]`}
-                            key={subRoute.index}
-                          >
-                            <Link
-                              href={subRoute.path}
-                              className={`btn btn-ghost text-secondary ${
-                                pathname === subRoute.path ? "btn-active" : ""
-                              }`}
-                              onClick={handleClick}
-                            >
-                              {subRoute.icon} {subRoute.name}
-                            </Link>
-                          </Menu.Item>
-                        ))}
-                      </Menu>
-                    </>
-                  )}
-                  {!route.hasSubRoutes && (
-                    <Link
-                      href={route.path}
-                      onClick={handleClick}
-                      className={`btn btn-ghost rounded-none text-secondary me-2 ${
-                        pathname === route.path ? "btn-active" : ""
-                      }`}
-                    >
-                      {route.icon} {route.name}
-                    </Link>
-                  )}
-                </Menu.Item>
-              ))}
-            </Menu>
+          <div className={`hidden lg:flex`}>
+            {appState.routes.map((route) => (
+              <ul
+                className={`menu menu-horizontal px-1`}
+                key={route.index}
+                tabIndex={route.hasSubRoutes ? 0 : ""}
+              >
+                {route.hasSubRoutes && (
+                  <>
+                    <li tabIndex={0}>
+                      <details>
+                        <summary className={`btn btn-ghost pt-4`}>
+                          <span className={` text-secondary uppercase`}>
+                            {route.name}
+                          </span>
+                        </summary>
+                        <ul className="p-2">
+                          {route.subRoutes.map((subRoute) => (
+                            <li tabIndex={0} key={subRoute.index}>
+                              <Link
+                                href={subRoute.path}
+                                className={`btn btn-ghost text-secondary ${
+                                  pathname === subRoute.path ? "btn-active" : ""
+                                }`}
+                                onClick={handleClick}
+                              >
+                                {subRoute.icon} {subRoute.name}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      </details>
+                    </li>
+                  </>
+                )}
+                {!route.hasSubRoutes && (
+                  <Link
+                    href={route.path}
+                    onClick={handleClick}
+                    className={`btn btn-ghost rounded-none text-secondary me-2 ${
+                      pathname === route.path ? "btn-active" : ""
+                    }`}
+                  >
+                    {route.icon} {route.name}
+                  </Link>
+                )}
+              </ul>
+            ))}
           </div>
-          <div
-            className={`relative ms-3 me-3 ${
-              !appState.isMobile ? "bottom-2" : ""
-            }`}
-          >
-            <span className={`relative top-1`}>
-              <UserButton />
-            </span>
+          <div className={`me-3 ps-5`}>
+            <UserButton />
           </div>
         </div>
       </div>

@@ -6,7 +6,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import Script from "next/script";
-import { AppContextProvider } from "@/app/context/AppContext";
+import { AppContextProvider } from "@/app/context/appContext";
 
 export const metadata = {
   title: "Albz - OpenAi",

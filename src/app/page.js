@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 import { Title } from "@/components/layout/title";
 import { DescriptionFirstPage } from "@/components/home/descriptions/firstPage";
 import { GoToLab } from "@/components/home/goToLab";
-import { AppContext } from "@/app/context/AppContext";
+import { AppContext } from "@/app/context/appContext";
 import { useContext, useState } from "react";
 
 export default function Home() {
