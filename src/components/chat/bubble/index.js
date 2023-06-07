@@ -1,4 +1,3 @@
-"use client";
 import { ChatBubble } from "react-daisyui";
 import ReactMarkdown from "react-markdown";
 
@@ -17,7 +16,7 @@ export const BubbleComp = ({ author, header, time, avatar, side, message }) => {
           </ChatBubble.Header>
         )}
         {avatar && <ChatBubble.Avatar src={avatar} />}
-        <ChatBubble.Message className={`text-left`}>
+        <ChatBubble.Message className={`text-left overflow-auto text-[.9rem]`}>
           <ReactMarkdown>{message}</ReactMarkdown>
         </ChatBubble.Message>
       </ChatBubble>

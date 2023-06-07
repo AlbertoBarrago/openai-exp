@@ -113,7 +113,10 @@ export default function TextPage() {
           </a>
         </p>
         <div className={`flex flex-col justify-center items-center`}>
-          <form className={`w-6/12`} onSubmit={handleSubmit(getTextFromOpenAi)}>
+          <form
+            className={`w-10/12 m-auto md:w-8/12 lg:w-6/12`}
+            onSubmit={handleSubmit(getTextFromOpenAi)}
+          >
             <label className={`label`}>
               <span className={`label-text`}>
                 Make it clear what you want...

@@ -5,7 +5,6 @@ import { SubDescription } from "@/components/lab/subDescription";
 import { useForm } from "react-hook-form";
 import { chatBot } from "@/lib/openai-api";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import { ChatForm } from "@/components/chat/form";
 import { LoaderComponent } from "@/components/layout/loader";
 import {
@@ -170,7 +169,7 @@ export default function ChatPage() {
 
   return (
     <main
-      className={`container mx-auto text-center w-100 p-0 md:p-2 animate__animated animate__fadeIn`}
+      className={`container mx-auto text-center w-100 p-0 md:p-1 animate__animated animate__fadeIn`}
     >
       <Title title={"OpenAi"} subTitle={"chat"} />
       <SubDescription description={"Here you can test the Chat"} />
@@ -191,6 +190,7 @@ export default function ChatPage() {
                 messagesList.map((message, index) => {
                   return (
                     <BubbleComp
+                      key={index}
                       author={message.author}
                       header={message.header}
                       time={message.creationDate}

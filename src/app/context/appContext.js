@@ -73,7 +73,7 @@ export function AppContextProvider({ children }) {
         isSubRoute: true,
       },
       {
-        index: 9,
+        index: 10,
         name: "Result",
         path: "/imageResult",
         icon: <i className="bi bi-images"></i>,
