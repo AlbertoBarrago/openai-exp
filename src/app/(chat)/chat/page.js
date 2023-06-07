@@ -2,7 +2,6 @@
 import { useUser } from "@clerk/nextjs";
 import { Title } from "@/components/layout/title";
 import { SubDescription } from "@/components/lab/subDescription";
-import { ChatBubble } from "react-daisyui";
 import { useForm } from "react-hook-form";
 import { chatBot } from "@/lib/openai-api";
 import { useEffect, useState } from "react";
@@ -14,8 +13,9 @@ import {
   handleNameByMongoId,
   scrollBottom,
 } from "../../../../modules/utils";
+import { BubbleComp } from "@/components/chat/bubble";
 
-async function getTextData(pageSize, filter = "") {
+async function getTextData(pageSize = 150, filter = "") {
   const pageNumber = 1;
   if (filter === "all") {
     filter = "";
@@ -37,18 +37,17 @@ async function getTextData(pageSize, filter = "") {
 }
 
 export default function ChatPage() {
-  const { user } = useUser();
-  const { router } = useRouter();
-  const { getValues, reset, register, handleSubmit } = useForm({
-    defaultValues: {
-      text: "",
-    },
-  });
-  const [isLoading, setIsLoading] = useState(true);
-  const [messagesList, setMessagesList] = useState([]);
-  const [newMessage, setNewMessage] = useState("");
-  const [previousMessage, setPreviousMessage] = useState("");
-  const [botIsTyping, setBotIsTyping] = useState(false);
+  const { user } = useUser(),
+    { getValues, reset, register, handleSubmit } = useForm({
+      defaultValues: {
+        text: "",
+      },
+    }),
+    [isLoading, setIsLoading] = useState(true),
+    [messagesList, setMessagesList] = useState([]),
+    [newMessage, setNewMessage] = useState(""),
+    [previousMessage, setPreviousMessage] = useState(""),
+    [botIsTyping, setBotIsTyping] = useState(false);
 
   const getSideFromLastMessage = () => {
     if (messagesList.length === 0) {
@@ -84,9 +83,9 @@ export default function ChatPage() {
     await response.json();
   };
 
-  const onSubmit = async (data) => {
-    if (!user) {
-      router.push("/sign-in");
+  const handleChatSubmit = async (data) => {
+    if (!checkIfUserIsAdmin()) {
+      console.error("User is not admin");
       return;
     }
     setPreviousMessage(data?.text);
@@ -110,30 +109,9 @@ export default function ChatPage() {
   const handleKeyDown = (event) => {
     if (event.keyCode === 13) {
       event.preventDefault();
-      void onSubmit(getValues());
+      void handleChatSubmit(getValues());
     }
   };
-
-  function bubble(author, header, time, avatar, footer, side, message) {
-    return (
-      <div className={`mb-5`}>
-        <ChatBubble end={side === "end"}>
-          {header && (
-            <ChatBubble.Header>
-              {author && <span className={`me-2`}>{author}</span>}
-              {time && (
-                <ChatBubble.Time>
-                  <span className={`text-xs text-secondary`}>{time}</span>
-                </ChatBubble.Time>
-              )}
-            </ChatBubble.Header>
-          )}
-          {avatar && <ChatBubble.Avatar src={avatar} />}
-          <ChatBubble.Message>{message}</ChatBubble.Message>
-        </ChatBubble>
-      </div>
-    );
-  }
 
   const cleanForm = (e) => {
     e.preventDefault();
@@ -145,11 +123,7 @@ export default function ChatPage() {
   };
 
   useEffect(() => {
-    if (!checkIfUserIsAdmin()) {
-      router.push("/");
-      return;
-    }
-    void getTextData(10, "").then((data) => {
+    void getTextData(null, "").then((data) => {
       setMessagesList(data?.responseChatList);
       setIsLoading(false);
       setTimeout(() => {
@@ -170,6 +144,9 @@ export default function ChatPage() {
       side: "start",
     };
     setMessagesList([...messagesList, previousMsg]);
+    setTimeout(() => {
+      scrollBottom(document.getElementById("chat-container"));
+    }, 100);
     void postOnMongo(previousMsg);
   }, [previousMessage]);
 
@@ -185,16 +162,19 @@ export default function ChatPage() {
       side: "end",
     };
     setMessagesList([...messagesList, newMsg]);
+    setTimeout(() => {
+      scrollBottom(document.getElementById("chat-container"));
+    }, 100);
     void postOnMongo(newMsg);
   }, [newMessage]);
 
   return (
     <main
-      className={`container mx-auto text-center w-100 p-2 animate__animated animate__fadeIn`}
+      className={`container mx-auto text-center w-100 p-0 md:p-2 animate__animated animate__fadeIn`}
     >
       <Title title={"OpenAi"} subTitle={"chat"} />
       <SubDescription description={"Here you can test the Chat"} />
-      <div className={`h-[70vh] p-10`}>
+      <div className={`h-[70vh]`}>
         {isLoading && <LoaderComponent />}
         {!isLoading && (
           <>
@@ -210,17 +190,14 @@ export default function ChatPage() {
               {messagesList?.length > 0 &&
                 messagesList.map((message, index) => {
                   return (
-                    <div key={index}>
-                      {bubble(
-                        message.author,
-                        message.header,
-                        message.creationDate,
-                        message.avatar,
-                        message.footer,
-                        message.side,
-                        message.message
-                      )}
-                    </div>
+                    <BubbleComp
+                      author={message.author}
+                      header={message.header}
+                      time={message.creationDate}
+                      side={message.side}
+                      message={message.message}
+                      avatar={message.avatar}
+                    ></BubbleComp>
                   );
                 })}
               {botIsTyping && (
@@ -231,7 +208,7 @@ export default function ChatPage() {
             <div className={`sticky top-[100vh] mt-10 pe-20 ps-20`}>
               <ChatForm
                 cleanForm={cleanForm}
-                onSubmit={handleSubmit(onSubmit)}
+                onSubmit={handleSubmit(handleChatSubmit)}
                 handleKeyDown={handleKeyDown}
                 register={register}
               />

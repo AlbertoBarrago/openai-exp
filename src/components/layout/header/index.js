@@ -52,14 +52,14 @@ export const Header = () => {
             </label>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content shadow bg-base-100 rounded-box w-32 z-[500]"
+              className="menu menu-sm dropdown-content shadow bg-base-100 rounded-box w-32 z-[500] mt-2"
             >
               {appState.mobileRoutes.map((route) => (
-                <li className={`w-32 bg-auto`} key={route.index}>
+                <li className={`w-auto bg-auto`} key={route.index}>
                   <a
                     href={route.path}
                     onClick={handleClick}
-                    className={`btn btn-ghost pt-3 mb-1 text-secondary ${
+                    className={` mb-5 text-secondary ${
                       route.isSubRoute ? "ms-3" : ""
                     } ${pathname === route.path ? "btn-active" : ""}`}
                   >

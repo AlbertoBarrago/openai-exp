@@ -62,8 +62,15 @@ export function AppContextProvider({ children }) {
       {
         index: 8,
         name: "Image",
-        path: "/image",
+        path: "javacript:void(0)",
         icon: <i className="bi bi-caret-down"></i>,
+      },
+      {
+        index: 9,
+        name: "Lab",
+        path: "/image",
+        icon: <i className="bi bi-images"></i>,
+        isSubRoute: true,
       },
       {
         index: 9,
