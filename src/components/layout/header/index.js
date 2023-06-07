@@ -56,15 +56,37 @@ export const Header = () => {
             >
               {appState.mobileRoutes.map((route) => (
                 <li className={`w-auto bg-auto`} key={route.index}>
-                  <a
-                    href={route.path}
-                    onClick={handleClick}
-                    className={` mb-5 text-secondary ${
-                      route.isSubRoute ? "ms-3" : ""
-                    } ${pathname === route.path ? "btn-active" : ""}`}
-                  >
-                    <span className={`me-1`}>{route.icon}</span> {route.name}
-                  </a>
+                  {!route.hasSubRoutes && (
+                    <Link
+                      href={route.path}
+                      onClick={handleClick}
+                      className={`mb-1 text-secondary ${
+                        pathname === route.path ? "btn-active" : ""
+                      }`}
+                    >
+                      {route.icon} {route.name}
+                    </Link>
+                  )}
+                  {route.hasSubRoutes && (
+                    <>
+                      <span>{route.name}</span>
+                      <ul className={`p-2`}>
+                        {route.subRoutes.map((subRoute) => (
+                          <li key={subRoute.index}>
+                            <Link
+                              href={subRoute.path}
+                              onClick={handleClick}
+                              className={`mb-1 text-secondary ${
+                                pathname === subRoute.path ? "btn-active" : ""
+                              }`}
+                            >
+                              {subRoute.icon} {subRoute.name}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </>
+                  )}
                 </li>
               ))}
             </ul>
