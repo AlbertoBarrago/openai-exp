@@ -72,14 +72,14 @@ export function AppContextProvider({ children }) {
         hasSubRoutes: true,
         subRoutes: [
           {
-            index: 10,
+            index: 9_1,
             name: "Lab",
             path: "/image",
             icon: <i className="bi bi-images"></i>,
             isSubRoute: true,
           },
           {
-            index: 11,
+            index: 9_2,
             name: "Result",
             path: "/imageResult",
             icon: <i className="bi bi-images"></i>,

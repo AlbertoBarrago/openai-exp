@@ -20,14 +20,7 @@ export default function TextPage() {
     [showConfetti, setShowConfetti] = useState(false),
     [openaiResponse, setOpenaiResponse] = useState(""),
     [isLoading, setIsLoading] = useState(false),
-    {
-      setValue,
-      getValues,
-      reset,
-      register,
-      handleSubmit,
-      formState: { errors },
-    } = useForm({
+    { setValue, getValues, reset, register, handleSubmit } = useForm({
       defaultValues: {
         text: "",
       },
@@ -79,7 +72,7 @@ export default function TextPage() {
 
   useEffect(() => {
     if (openaiResponse) {
-      insertData({ text: openaiResponse }).then((resp) => {
+      insertData({ text: openaiResponse }).then(() => {
         // console.log(resp);
       });
     }
