@@ -32,9 +32,9 @@ export const Header = () => {
   const responsiveMenu = () => {
     return (
       <div className="navbar pe-0 ps-0 md:pe-10 md:ps-10 xl:pe-20 xl:ps-20">
-        <div className="navbar-start">
+        <div className="navbar-start ms-2">
           <div className="dropdown">
-            <label tabIndex={0} className="btn btn-ghost lg:hidden">
+            <label tabIndex={0} className="cursor-pointer lg:hidden">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5"
@@ -93,7 +93,7 @@ export const Header = () => {
           </div>
           <Link
             href="/"
-            className="btn btn-ghost normal-case text-xl text-primary"
+            className="ms-2 btn btn-ghost normal-case text-xl text-primary"
           >
             <svg width="24px" height="24px" viewBox="140 140 520 520">
               <path

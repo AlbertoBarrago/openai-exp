@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 export const UploaderImage = ({ imageEdited, setImageEdited, data, reset }) => {
-  console.log(data);
   return (
     <>
       <div className="w-100 m-auto text-center mt-5">

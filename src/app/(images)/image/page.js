@@ -349,11 +349,9 @@ export default function LabImage() {
               description={"Here you can test the Image generation API"}
             />
             {alertSetUp.show && (
-              <>
-                <div className={`w-auto m-auto mb-10`}>
-                  <AlertComponent message={alertSetUp.message} type={"error"} />
-                </div>
-              </>
+              <div className={`w-auto m-auto mb-10`}>
+                <AlertComponent message={alertSetUp.message} type={"error"} />
+              </div>
             )}
           </div>
           <div className={`grid grid-cols-1 xl:grid-cols-3 text-center`}>
