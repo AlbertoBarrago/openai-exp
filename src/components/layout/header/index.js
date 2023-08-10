@@ -228,5 +228,5 @@ export const Header = () => {
     eventResize();
   }, []);
 
-  return <>{isPrivateView && <>{responsiveMenu()}</>}</>;
+  return <>{isPrivateView && responsiveMenu()}</>;
 };
