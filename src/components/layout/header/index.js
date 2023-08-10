@@ -15,7 +15,7 @@ export const Header = () => {
   const toggleTheme = () => {
     setAppState({
       ...appState,
-      theme: appState.theme === "night" ? "light" : "night",
+      theme: appState.theme === "business" ? "light" : "business",
     });
   };
 

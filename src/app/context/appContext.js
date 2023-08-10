@@ -96,7 +96,7 @@ export function AppContextProvider({ children }) {
       "/chat",
       "/imageResult",
     ],
-    theme: "night",
+    theme: "business",
   });
 
   let contextValue = {
