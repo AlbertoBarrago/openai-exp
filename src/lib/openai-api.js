@@ -1,4 +1,4 @@
-import { Configuration, OpenAIApi } from "openai";
+import { ClientOptions, OpenAI } from "openai";
 
 /**
  * Get openai message for post
@@ -13,16 +13,21 @@ class CustomFormData extends FormData {
  * Openai configuration
  * @type {Configuration}
  */
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
-  formDataCtor: CustomFormData,
-});
-delete configuration.baseOptions.headers["User-Agent"];
+// const configuration = {
+//   apiKey: process.env.OPENAI_API_KEY,
+//   formDataCtor: CustomFormData,
+// };
+const apiKey = process.env.OPENAI_API_KEY;
+// delete configuration.baseOptions.headers["User-Agent"];
 /**
  * Openai instance
- * @type {OpenAIApi}
+ * @type {OpenAI}
  */
-export const openai = new OpenAIApi(configuration);
+
+export const openai = new OpenAI({
+  apiKey,
+  dangerouslyAllowBrowser: true,
+});
 
 /**
  * Get openai message for thank you
@@ -31,17 +36,17 @@ export const openai = new OpenAIApi(configuration);
 export const getText = async (postText) => {
   let message = "";
   try {
-    const response = await openai.createCompletion({
+    const response = await openai.completions.create({
       model: "text-davinci-003",
       prompt: `${postText}`,
-      temperature: 0.7,
+      temperature: 2,
       max_tokens: 4000,
       top_p: 1,
       best_of: 1,
       frequency_penalty: 1,
       presence_penalty: 1,
     });
-    message = `${response?.data?.choices[0].text.trim()}...`;
+    message = `${response?.choices[0].text.trim()}...`;
   } catch (error) {
     console.error(error);
   }
@@ -55,12 +60,12 @@ export const getText = async (postText) => {
 export const createImageOpenai = async (prompt) => {
   let urlImage = "";
   try {
-    const imageResp = await openai.createImage({
+    const imageResp = await openai.images.generate({
       prompt: `${prompt}`,
       n: 1,
       size: "1024x1024",
     });
-    urlImage = imageResp?.data.data[0].url;
+    urlImage = imageResp?.data[0].url;
   } catch (error) {
     console.error(error);
   }
@@ -76,15 +81,17 @@ export const editImageOpenai = async (data) => {
   let urlImage;
   const fileForm = new File([file[0]], file.name, { type: "image/png" });
   const fileMask = new File([mask[0]], mask.name, { type: "image/png" });
+  const imageParams = {
+    image: fileForm,
+    mask: fileMask,
+    prompt: `${prompt.toString()}`,
+    n: 1,
+    response_format: "url",
+    size: "1024x1024",
+  };
   try {
-    const imageResp = await openai.createImageEdit(
-      fileForm,
-      `${prompt.toString()}`,
-      fileMask,
-      1,
-      "1024x1024"
-    );
-    urlImage = imageResp?.data.data[0].url;
+    const imageResp = await openai.images.edit(imageParams, null);
+    urlImage = imageResp?.data[0].url;
   } catch (error) {
     urlImage = "";
     console.error(error);
@@ -102,15 +109,19 @@ export const produceImageVariations = async (image, userId) => {
   const fileForm = new File([image.file[0]], image.file[0].name, {
     type: "image/png",
   });
+  const imageVariationData = {
+    image: fileForm,
+    n: 1,
+    size: "1024x1024",
+    response_format: "url",
+    user: userId,
+  };
   try {
-    const returnUrl = await openai.createImageVariation(
-      fileForm,
-      1,
-      "1024x1024",
-      "url",
-      userId
+    const returnUrl = await openai.images.createVariation(
+      imageVariationData,
+      null
     );
-    return returnUrl.data.data[0].url;
+    return returnUrl.data[0].url;
   } catch (error) {
     console.error(error);
     return null;
@@ -125,12 +136,18 @@ export const produceImageVariations = async (image, userId) => {
  */
 export const chatBot = async (role, message) => {
   let chatMsg = "";
+  const body = {
+    model: "gpt-4",
+    messages: [
+      {
+        content: message.toString(),
+        role: role,
+      },
+    ],
+  };
   try {
-    const response = await openai.createChatCompletion({
-      model: "gpt-3.5-turbo",
-      messages: [{ role: role, content: message }],
-    });
-    chatMsg = response?.data?.choices[0].message;
+    const response = await openai.chat.completions.create(body, null);
+    chatMsg = response?.choices[0].message;
   } catch (error) {
     console.error(error);
     return {

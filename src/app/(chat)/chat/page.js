@@ -95,7 +95,19 @@ export default function ChatPage() {
 
   const getChatBotMessage = async (text) => {
     setBotIsTyping(true);
-    const message = await chatBot("user", text);
+    // const message = await chatBot("user", text);
+    //call the route chat/route
+    const response = await fetch(
+      `${process.env.BASE_URL}/api/openai/chat/post`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({ message: text, role: "user" }),
+      }
+    );
+    const message = await response.json();
     if (!message.success) {
       new Error("Failed to fetch data");
       return;
@@ -155,7 +167,7 @@ export default function ChatPage() {
       author: "bot",
       creationDate: handleChatTimeStamp(new Date().getTime()),
       message: newMessage,
-      avatar: "https://i.pravatar.cc/50",
+      avatar: "pepe.png",
       header: true,
       footer: true,
       side: "end",
@@ -173,13 +185,13 @@ export default function ChatPage() {
     >
       <Title title={"OpenAi"} subTitle={"chat"} />
       <SubDescription description={"Here you can test the Chat"} />
-      <div className={`h-[70vh]`}>
+      <div className={`h-auto`}>
         {isLoading && <LoaderComponent />}
         {!isLoading && (
           <>
             <div
               id={`chat-container`}
-              className={`h-[45vh] pe-20 ps-20 overflow-auto`}
+              className={`h-auto pe-20 ps-20 overflow-auto`}
             >
               {!messagesList.length && (
                 <p className={`text-accent text-xl animate-bounce`}>

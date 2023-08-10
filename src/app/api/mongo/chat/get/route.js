@@ -52,7 +52,7 @@ export async function GET(req) {
     });
   });
 
-  console.log("DATA CHAT CREATED ---> ", responseChatList);
+  // console.log("DATA CHAT CREATED ---> ", responseChatList);
 
   return NextResponse.json({
     responseChatList,
