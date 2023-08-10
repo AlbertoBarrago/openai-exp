@@ -15,6 +15,9 @@ export const DescriptionFirstPage = ({ router }) => {
           src="https://ujasntkfphywizsdaapi.supabase.co/storage/v1/object/public/content/app_logos/485244ee-9158-4685-8f1e-d349e97b35e1.png"
           alt="me"
         />
+        <h3 className={`animated animate__animated animate__tada`}>
+          From today GPT-4 is available for testing!
+        </h3>
         <h4>Overview:</h4>
         <p>
           Welcome to my personal OpenAI API Testing project! This project is a
