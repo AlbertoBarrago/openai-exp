@@ -30,30 +30,6 @@ export const openai = new OpenAI({
 });
 
 /**
- * Get openai message for thank you
- * @param postText
- */
-export const getText = async (postText) => {
-  let message = "";
-  try {
-    const response = await openai.completions.create({
-      model: "text-davinci-003",
-      prompt: `${postText}`,
-      temperature: 2,
-      max_tokens: 4000,
-      top_p: 1,
-      best_of: 1,
-      frequency_penalty: 1,
-      presence_penalty: 1,
-    });
-    message = `${response?.choices[0].text.trim()}...`;
-  } catch (error) {
-    console.error(error);
-  }
-  return message;
-};
-
-/**
  * Generate image from openai
  * @param prompt
  */
@@ -128,6 +104,29 @@ export const produceImageVariations = async (image, userId) => {
   }
 };
 
+/**
+ * Get openai message for thank you
+ * @param postText
+ */
+export const getText = async (postText) => {
+  let message = "";
+  try {
+    const response = await openai.completions.create({
+      model: "text-davinci-003",
+      prompt: `${postText}`,
+      temperature: 2,
+      max_tokens: 4000,
+      top_p: 1,
+      best_of: 1,
+      frequency_penalty: 1,
+      presence_penalty: 1,
+    });
+    message = `${response?.choices[0].text.trim()}...`;
+  } catch (error) {
+    console.error(error);
+  }
+  return message;
+};
 /**
  * Get openai message for chat bot
  * @param role

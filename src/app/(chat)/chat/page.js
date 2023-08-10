@@ -3,7 +3,6 @@ import { useUser } from "@clerk/nextjs";
 import { Title } from "@/components/layout/title";
 import { SubDescription } from "@/components/lab/subDescription";
 import { useForm } from "react-hook-form";
-import { chatBot } from "@/lib/openai-api";
 import { useEffect, useState } from "react";
 import { ChatForm } from "@/components/chat/form";
 import { LoaderComponent } from "@/components/layout/loader";

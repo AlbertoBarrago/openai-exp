@@ -104,15 +104,6 @@ const scrollToElement = (id) => {
     behavior: "smooth",
   });
 };
-/**
- * Close daisy dialog
- */
-const handleClick = () => {
-  const elem = document.activeElement;
-  if (elem) {
-    elem?.blur();
-  }
-};
 
 /**
  * Handle name by mongo id
@@ -142,7 +133,6 @@ export {
   scrollToTop,
   scrollBottom,
   scrollToElement,
-  handleClick,
   handleNameByMongoId,
   handleChatTimeStamp,
 };

@@ -23,21 +23,21 @@ export const UploaderImage = ({ imageEdited, setImageEdited, data, reset }) => {
         <div className={`grid grid-cols-1 md:grid-cols-2 gap-4`}>
           <div>
             <button
-              className="mt-3 w-full btn btn-primary"
+              className="float-right mt-3 btn btn-primary"
               onClick={() => {
                 setImageEdited("");
                 reset();
               }}
             >
-              Clean
+              <i className={`bi bi-trash`}></i> Clean result
             </button>
           </div>
           <div>
             <Link
               href={"/imageResult"}
-              className={"mt-3 mb-5 w-full  btn btn-primary btn-active"}
+              className={"mt-3 mb-5 btn btn-primary btn-active float-left"}
             >
-              Go to results
+              <i className={`bi bi-link`}></i> Open result
             </Link>
           </div>
         </div>

@@ -29,6 +29,16 @@ export const Header = () => {
     document.querySelector("html").setAttribute("data-theme", appState.theme);
   }, [appState.theme]);
 
+  /**
+   * Close daisy dialog
+   */
+  const handleClick = () => {
+    const detail = document.querySelector("details[open]");
+    if (detail) {
+      detail.removeAttribute("open");
+    }
+  };
+
   const responsiveMenu = () => {
     return (
       <div className="navbar pe-0 ps-0 md:pe-10 md:ps-10 xl:pe-20 xl:ps-20">
