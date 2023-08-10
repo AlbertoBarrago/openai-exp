@@ -48,20 +48,30 @@ export default function TextPage() {
   };
   const getTextFromOpenAi = async (data) => {
     setIsLoading(true);
-    getText(data.text).then((resp) => {
-      setValue("textFromOpenai", resp);
-      setOpenaiResponse(resp);
-      setIsLoading(false);
-      setShowSuccess(true);
-      setConfettiSetup({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
-      setShowConfetti(true);
-      setTimeout(() => {
-        setShowConfetti(false);
-      }, 7000);
+
+    const res = await fetch(`${process.env.BASE_URL}/api/openai/text/post`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
     });
+    if (!res.ok) {
+      throw new Error("Failed to fetch data");
+    }
+    const resp = await res.json();
+    setValue("textFromOpenai", resp.message);
+    setOpenaiResponse(resp.message);
+    setIsLoading(false);
+    setShowSuccess(true);
+    setConfettiSetup({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
+    setShowConfetti(true);
+    setTimeout(() => {
+      setShowConfetti(false);
+    }, 7000);
   };
   const cleanForm = (e) => {
     e.preventDefault();

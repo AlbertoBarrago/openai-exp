@@ -133,6 +133,9 @@ And also, I want to test the [Clerk](https://clerk.dev/) authentication system.
 - [x] Text integration with OpenAI API
 - [x] Store image onMongo
 - [ ] Retrive test from Mongo and show it
+- [ ] Add section for chatBot 
+- [ ] Improve my loader, now suck! 
+- [ ] Please periodicaly check the code and refactor it ☺️
 - [ ] e2e tests 
 
 ## Installation
