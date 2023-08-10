@@ -104,7 +104,7 @@ export default function TextPage() {
           description={"Here you can test the Text generation API"}
         />
         <p className={`text-secondary italic mb-10`}>
-          * The API is based on the GPT-3 model. You can read more about it
+          * The API is based on the GPT-4 model. You can read more about it
           <a
             href={`https://platform.openai.com/docs/guides/completion`}
             target={`_blank`}
