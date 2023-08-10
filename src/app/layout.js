@@ -11,6 +11,39 @@ import { AppContextProvider } from "@/app/context/appContext";
 export const metadata = {
   title: "Albz - OpenAi",
   description: <meta name="description" content="OpenAi experiments" />,
+  icons: [
+    {
+      rel: "android-chrome-192x192",
+      sizes: "192x192",
+      href: "/favicon/android-chrome-192x192.png",
+    },
+    {
+      rel: "android-chrome-512x512",
+      sizes: "512x512",
+      href: "/favicon/android-chrome-512x512.png",
+    },
+    {
+      rel: "apple-touch-icon",
+      sizes: "180x180",
+      href: "/favicon/apple-touch-icon.png",
+    },
+    {
+      rel: "icon",
+      type: "image/png",
+      sizes: "32x32",
+      href: "/favicon/favicon-32x32.png",
+    },
+    {
+      rel: "icon",
+      type: "image/png",
+      sizes: "16x16",
+      href: "/favicon/favicon-16x16.png",
+    },
+    {
+      rel: "manifest",
+      href: "/favicon/site.webmanifest",
+    },
+  ],
 };
 
 export default function RootLayout({ children }) {
