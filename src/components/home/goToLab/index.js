@@ -5,22 +5,22 @@ export const GoToLab = ({ goTo }) => {
         <div>
           <button
             onClick={() => {
-              goTo("/image");
+              goTo("/text");
             }}
             className={`btn btn-btn-secondary`}
           >
-            Go to Image{" "}
+            Go to Text{" "}
             <i className="bi bi-caret-right-fill transition duration-200 hover:translate-x-0.5"></i>
           </button>
         </div>
         <div>
           <button
             onClick={() => {
-              goTo("/text");
+              goTo("/image");
             }}
             className={`btn btn-btn-secondary`}
           >
-            Go to Text{" "}
+            Go to Image{" "}
             <i className="bi bi-caret-right-fill transition duration-200 hover:translate-x-0.5"></i>
           </button>
         </div>

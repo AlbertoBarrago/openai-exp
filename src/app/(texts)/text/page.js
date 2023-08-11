@@ -150,7 +150,7 @@ export default function TextPage() {
             </label>
             <Textarea
               {...register("textFromOpenai")}
-              className={`textarea-lg w-8/12 arial h-[15rem]`}
+              className={`textarea-lg w-10/12 arial h-[15rem]`}
               disabled={true}
             />
             <Link href={"textResult"} className={`mt-2 btn btn-primary`}>
