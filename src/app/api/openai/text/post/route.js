@@ -16,7 +16,11 @@ export async function POST(req) {
     const response = await openai.completions.create({
       model: "text-davinci-003",
       prompt: `${postText.text}`,
-      temperature: 0.7,
+      temperature: 1,
+      max_tokens: 1980,
+      top_p: 1,
+      frequency_penalty: 0,
+      presence_penalty: 0,
     });
     const message = `${response?.choices[0]?.text.trim()}...`;
     console.log("TEXT API - openai", message);

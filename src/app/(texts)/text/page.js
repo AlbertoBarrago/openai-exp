@@ -59,7 +59,7 @@ export default function TextPage() {
       throw new Error("Failed to fetch data");
     }
     const resp = await res.json();
-    setValue("textFromOpenai", resp.message);
+    setValue("textFromOpenai", resp.message.replace("...", ""));
     setOpenaiResponse(resp.message);
     setIsLoading(false);
     setShowSuccess(true);
