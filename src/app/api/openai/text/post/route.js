@@ -10,19 +10,16 @@ export const openai = new OpenAI({
 export async function POST(req) {
   const postText = await req.json();
 
+  console.log("TEXT API - postText", postText);
+
   try {
     const response = await openai.completions.create({
       model: "text-davinci-003",
-      prompt: `${postText}`,
-      temperature: 2,
-      max_tokens: 4000,
-      top_p: 1,
-      best_of: 1,
-      frequency_penalty: 1,
-      presence_penalty: 1,
+      prompt: `${postText.text}`,
+      temperature: 0.7,
     });
     const message = `${response?.choices[0]?.text.trim()}...`;
-
+    console.log("TEXT API - openai", message);
     return NextResponse.json({ message });
   } catch (error) {
     console.error(error);

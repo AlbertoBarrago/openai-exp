@@ -133,7 +133,7 @@ export default function TextPage() {
               Clean
             </button>
             <button
-              disabled={showSuccess}
+              disabled={isLoading}
               className={`btn btn-primary mt-2`}
               type={"submit"}
             >
